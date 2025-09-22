@@ -143,7 +143,7 @@ const Header = () => {
         {/* Logo and Navigation Section */}
         <div className="flex items-center gap-8">
           {/* Logo - Centered on mobile, left-aligned on desktop */}
-          <div className="flex items-center gap-4 text-primary md:static absolute left-1/2 md:left-auto transform -translate-x-1/2 md:transform-none">
+          <div className="flex items-center gap-4 text-primary md:static absolute left-1/2 md:left transform -translate-x-1/2 md:transform-none">
             <Link
               to="/"
               className="text-primary text-xl font-bold leading-tight tracking-[-0.015em] hover:text-[var(--accent-color)] transition-colors focus:outline-none"
@@ -269,18 +269,30 @@ const Header = () => {
             >
               <div className="relative">
                 <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
+                  width="1.5rem"
+                  height="1.5rem"
                   viewBox="0 0 24 24"
+                  fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6M7 13l-1.5 6m0 0h9m-9 0V19a2 2 0 002 2h7a2 2 0 002-2v-4.5"
+                  <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
                   />
+
+                  <g id="SVGRepo_iconCarrier">
+                    {" "}
+                    <path
+                      d="M7.2998 5H22L20 12H8.37675M21 16H9L7 3H4M4 8H2M5 11H2M6 14H2M10 20C10 20.5523 9.55228 21 9 21C8.44772 21 8 20.5523 8 20C8 19.4477 8.44772 19 9 19C9.55228 19 10 19.4477 10 20ZM21 20C21 20.5523 20.5523 21 20 21C19.4477 21 19 20.5523 19 20C19 19.4477 19.4477 19 20 19C20.5523 19 21 19.4477 21 20Z"
+                      stroke="white"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />{" "}
+                  </g>
                 </svg>
                 {itemCount > 0 && (
                   <span className="absolute -top-2 -right-2 bg-accent text-background text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
@@ -321,17 +333,30 @@ const Header = () => {
             aria-label={`Shopping cart with ${itemCount} items`}
           >
             <svg
-              className="w-6 h-6 text-secondary hover:text-primary transition-colors"
-              fill="none"
-              stroke="currentColor"
+              width="1.5rem"
+              height="1.5rem"
               viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6M7 13l-1.5 6m0 0h9m-9 0V19a2 2 0 002 2h7a2 2 0 002-2v-4.5"
+              <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+              <g
+                id="SVGRepo_tracerCarrier"
+                stroke-linecap="round"
+                stroke-linejoin="round"
               />
+
+              <g id="SVGRepo_iconCarrier">
+                {" "}
+                <path
+                  d="M7.2998 5H22L20 12H8.37675M21 16H9L7 3H4M4 8H2M5 11H2M6 14H2M10 20C10 20.5523 9.55228 21 9 21C8.44772 21 8 20.5523 8 20C8 19.4477 8.44772 19 9 19C9.55228 19 10 19.4477 10 20ZM21 20C21 20.5523 20.5523 21 20 21C19.4477 21 19 20.5523 19 20C19 19.4477 19.4477 19 20 19C20.5523 19 21 19.4477 21 20Z"
+                  stroke="white"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />{" "}
+              </g>
             </svg>
             {itemCount > 0 && (
               <span className="absolute -top-2 -right-2 bg-accent text-background text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center">
@@ -344,22 +369,7 @@ const Header = () => {
           <button
             className="flex items-center justify-center p-2 text-secondary hover:text-primary transition-colors focus:outline-none"
             aria-label="User profile"
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-              />
-            </svg>
-          </button>
+          ></button>
         </div>
       </div>
 
