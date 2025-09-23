@@ -135,8 +135,10 @@ body {
 
 /* Focus styles for accessibility */
 *:focus {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 2px;
+  transform: scale(1.03);
+  color: blue;
+  /* outline: 2px solid var(--primary-color);
+  outline-offset: 2px; */
 }
 
 /* Smooth transitions */
@@ -233,8 +235,10 @@ body {
 
 /* Focus styles for accessibility */
 *:focus {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 2px;
+  /* outline: 2px solid var(--primary-color);
+  outline-offset: 2px; */
+  transform: scale(1.03);
+  color: blue;
 }
 
 /* Smooth transitions */

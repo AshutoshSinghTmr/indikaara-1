@@ -5,7 +5,13 @@ import ArtisanStorySection from "../components/ArtisanStorySection";
 import CategoryCarousel from "../components/CategoryCarousel";
 import FeaturedArtisan from "../components/FeaturedArtisan";
 import dataService from "../data/dataService";
-
+import CollectionsIcon from "@mui/icons-material/Collections";
+import {
+  CheckCircleOutline,
+  Public,
+  Handshake,
+  Palette,
+} from "@mui/icons-material";
 /**
  * HomePage
  * --------------------------------------------------------------------------
@@ -37,6 +43,17 @@ import dataService from "../data/dataService";
  * - Simple client-side mapping; no eager network calls beyond dataService.
  * - Minimal state; derived props computed once on load.
  */
+const Card = ({ icon: Icon, title, description }) => (
+  <div className="min-w-xl min-h-2xl bg-gray-100 p-6 rounded-2xl flex items-start space-x-4 shadow-sm transition-transform transform hover:scale-105">
+    <div className="flex-shrink-0">
+      <Icon className="text-orange-600" style={{ fontSize: "2rem" }} />
+    </div>
+    <div>
+      <h3 className="text-xl font-semibold text-gray-800">{title}</h3>
+      <p className="mt-2 text-gray-600">{description}</p>
+    </div>
+  </div>
+);
 const HomePage = () => {
   const navigate = useNavigate();
 
@@ -113,26 +130,28 @@ const HomePage = () => {
           - Provides short narrative of brand ethos
           - Has a soft gradient background for separation without heavy contrast
           - Center-constrained text for readability */}
-      <section
-        className="relative py-12 md:py-16 bg-black text-white"
+      {/* <section
+        className="relative py-6 md:py-5 bg-black text-white"
         aria-labelledby="brand-story"
       >
-        <div className="container mx-auto max-w-4xl px-4">
-          <div className="text-text-primary text-sm md:text-xl leading-relaxed text-center">
+        <div className="container mx-auto max-w-4xl">
+          <div className="text-text-primary text-sm md:text-l leading-relaxed text-center">
             <span
               style={{
                 fontFamily: "'Dancing Script', cursive",
                 fontSize: "2rem",
-                fontWeight: "700",
+                fontWeight: "400",
                 color: "var(--accent-color)",
               }}
             >
-              Every piece tells a tale.
+              Every piece tells a tale.....
             </span>
             <p
               style={{
                 fontFamily: "'Libre Baskerville', serif",
-                marginTop: "0.8rem",
+                fontSize: "1rem",
+                fontWeight: "300",
+                marginTop: "0.4rem",
                 fontStyle: "italic",
               }}
             >
@@ -144,171 +163,79 @@ const HomePage = () => {
             </p>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Glassy Gradient Transition */}
-      <div className="h-28 bg-gradient-to-b from-black via-black/70 to-white/95 backdrop-blur-md"></div>
+      {/* <div className="h-28 bg-gradient-to-b from-black via-black/70 to-white/95 backdrop-blur-md opacity-100"></div> */}
 
       {/* What We Do Section */}
-      <section
-        className="relative py-10 md:py-24 bg-white"
-        aria-labelledby="what-we-do"
-      >
-        <div className="container mx-auto max-w-6xl px-4">
-          <div className="text-center mb-16">
-            <h2
-              id="what-we-do"
-              className="text-4xl md:text-5xl font-light text-gray-900 mb-4"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
-              What we do?
-            </h2>
-            <div className="w-16 h-0.5 bg-primary mx-auto mb-6"></div>
-            <p
-              className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
-              style={{ fontFamily: "'Inter', sans-serif", fontWeight: "300" }}
-            >
-              We bridge the gap between traditional Indian craftsmanship and
-              modern homes, bringing you authentic handmade pieces that tell
-              stories of heritage and artistry.
+      {/* <div className="h-14 bg-gradient-to-b from-white via-white/70 to-gray-900 backdrop-blur-md"></div> */}
+      <section>
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 sm:p-6 lg:p-8 font-sans">
+          <div className="w-full bg-white p-6 sm:p-8 lg:p-12 rounded-3xl shadow-2xl text-center">
+            <h1 className="text-4xl font-extrabold text-gray-800 mb-2">
+              Why Connect with{" "}
+              <span className="text-orange-600">Indikaara?</span>
+            </h1>
+            <p className="text-lg text-gray-600 leading-relaxed mb-10">
+              We are a bridge between the world and India's finest artisans,
+              fostering a community built on authenticity, empowerment, and a
+              shared love for timeless craft.
             </p>
-          </div>
 
-          {/* Service Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-            {/* Service 1 */}
-            <div className="group text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent mx-auto mb-6 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <svg
-                  className="w-8 h-8 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                  />
-                </svg>
-              </div>
-              <h3
-                className="text-xl font-medium text-gray-900 mb-3"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                Curated Collections
-              </h3>
-              <p
-                className="text-gray-600 leading-relaxed"
-                style={{ fontFamily: "'Inter', sans-serif", fontWeight: "300" }}
-              >
-                Hand-selected artisan pieces that blend traditional
-                craftsmanship with contemporary aesthetics for your modern home.
+            <div className="flex flex-col space-y-2 md:flex flex-row space-x-2 text-left">
+              <Card
+                icon={CheckCircleOutline}
+                title="Authenticity Guaranteed"
+                description="Every piece tells a story, sourced directly from master craftspeople across India."
+              />
+              <Card
+                icon={Public}
+                title="Global Reach & Visibility"
+                description="We showcase your unique creations to a global audience passionate about genuine artistry."
+              />
+              <Card
+                icon={Handshake}
+                title="Empowering Artisans"
+                description="Our model ensures fair compensation, sustaining livelihoods and preserving heritage."
+              />
+              <Card
+                icon={Palette}
+                title="Diverse Art Forms"
+                description="Explore a rich tapestry of textiles, pottery, jewelry, and more from every corner of India."
+              />
+            </div>
+
+            <div className="bg-orange-50 p-6 sm:p-8 rounded-2xl mt-10">
+              <p className="italic text-gray-700 leading-relaxed text-sm sm:text-base">
+                "Indikaara didn't just sell my art; they shared my story. It's a
+                partnership that honors my craft and my heritage."
+              </p>
+              <p className="mt-3 font-semibold text-gray-800">
+                - A. Kumar, Weaver from Varanasi
               </p>
             </div>
 
-            {/* Service 2 */}
-            <div className="group text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent mx-auto mb-6 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <svg
-                  className="w-8 h-8 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
-                  />
-                </svg>
-              </div>
-              <h3
-                className="text-xl font-medium text-gray-900 mb-3"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                Artisan Stories
-              </h3>
-              <p
-                className="text-gray-600 leading-relaxed"
-                style={{ fontFamily: "'Inter', sans-serif", fontWeight: "300" }}
-              >
-                Connect with the makers behind each piece through authentic
-                stories of heritage, skill, and passion passed down through
-                generations.
-              </p>
-            </div>
-
-            {/* Service 3 */}
-            <div className="group text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent mx-auto mb-6 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <svg
-                  className="w-8 h-8 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
-              <h3
-                className="text-xl font-medium text-gray-900 mb-3"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                Cultural Preservation
-              </h3>
-              <p
-                className="text-gray-600 leading-relaxed"
-                style={{ fontFamily: "'Inter', sans-serif", fontWeight: "300" }}
-              >
-                Supporting traditional Indian crafts and artisan communities,
-                ensuring these timeless skills continue to thrive in the modern
-                world.
-              </p>
-            </div>
-          </div>
-
-          {/* Call to Action */}
-          <div className="text-center mt-16">
             <button
-              className="inline-flex items-center px-8 py-4 bg-primary text-white font-medium rounded-full hover:bg-primary/90 transition-all duration-300 hover:scale-105"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-              onClick={() => navigate("/catalogue")}
+              onClick={() => (window.location.href = "/blog")}
+              className="mt-10 w-full px-6 py-4 bg-orange-600 text-white font-bold rounded-full text-lg shadow-xl transition-all hover:bg-orange-700 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-orange-500 focus:ring-opacity-50"
             >
-              Explore Our Collection
-              <svg
-                className="ml-2 w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"
-                />
-              </svg>
+              Join Our Artisan Community
             </button>
           </div>
         </div>
       </section>
-
       {/* MAIN CONTENT CONTAINER: constrains reading width for dense sections */}
-      <div className="container mx-auto max-w-7xl px-4 py-8">
+      <div className="container mx-auto max-w-7xl px-4 py-4">
         {/* FOUNDATION PREVIEW: Brief introduction with link to dedicated page */}
-        <section className="pt-16 mb-16" aria-labelledby="foundation-preview">
+        <section
+          className="pt-8 mb-22 border-b border-green-500 bg-gray-900"
+          aria-labelledby="foundation-preview"
+        >
           <div className="text-center mb-12">
             <h2
               id="foundation-preview"
-              className="text-4xl font-bold text-primary mb-3"
+              className="text-4xl font-bold text-primary m-auto mb-3"
             >
               Our Foundation
             </h2>

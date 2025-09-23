@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import logo from "../assets/logo1.png";
+import logo from "../assets/logo4.png";
 
 /**
  * Header Component - Main navigation header for the application
@@ -159,14 +159,14 @@ const Header = () => {
               <img
                 src={logo}
                 alt="Indikaara Logo"
-                className="hidden md:block h-10 lg:h-12 w-auto"
+                className="hidden md:block h-10 lg:h-14 w-auto"
               />
             </Link>
           </div>
 
           {/* Desktop Navigation Menu */}
           <nav
-            className="hidden lg:flex items-center gap-9"
+            className="hidden lg:flex items-center gap-14 mx-12"
             role="navigation"
             aria-label="Main navigation"
           >

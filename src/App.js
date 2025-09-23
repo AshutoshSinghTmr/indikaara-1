@@ -23,6 +23,7 @@ import FoundationPage from "./pages/FoundationPage";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./styles/globals.css";
+import ScrollToTop from "./utils/scrollToTop";
 
 /**
  * App Component - Main application component with routing
@@ -33,6 +34,7 @@ function App() {
     <AuthProvider>
       <CartProvider>
         <Router>
+          <ScrollToTop />
           <Layout>
             <Routes>
               {/* Home Page Route */}
