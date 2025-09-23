@@ -7,7 +7,7 @@ import React from "react";
  */
 const TermsOfServicePage = () => {
   return (
-    <main className="min-h-screen bg-background text-primary pt-24 pb-12">
+    <main className="min-w-auto bg-background text-primary mt-10 pt-24 pb-12">
       <div className="container mx-auto max-w-4xl px-4">
         {/* Page Header */}
         <div className="text-center mb-12">
@@ -20,7 +20,7 @@ const TermsOfServicePage = () => {
         </div>
 
         {/* Terms Content */}
-        <div className="prose prose-invert max-w-none">
+        <div className="min-w-auto prose-invert max-w-none">
           <div className="bg-gray-800/50 rounded-xl p-8 space-y-8">
             {/* Introduction */}
             <section>
@@ -338,17 +338,10 @@ const TermsOfServicePage = () => {
               </p>
               <div className="bg-gray-700/50 rounded-lg p-6">
                 <p className="text-text-primary mb-2">
-                  <strong>Indikaara Handicrafts Pvt Ltd</strong>
+                  <strong>Indikaara Pvt Ltd</strong>
                 </p>
-                <p className="text-text-secondary">
-                  Email: legal@indikaara.com
-                </p>
-                <p className="text-text-secondary">Phone: +91 98765 43210</p>
-                <p className="text-text-secondary">
-                  Address: 123 Artisan Street, Craft Quarter
-                  <br />
-                  New Delhi, India - 110001
-                </p>
+                <p className="text-text-secondary">Email: info@indikaara.com</p>
+                <p className="text-text-secondary">Phone: +91 9179219231</p>
               </div>
             </section>
           </div>
