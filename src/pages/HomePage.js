@@ -5,7 +5,7 @@ import ArtisanStorySection from "../components/ArtisanStorySection";
 import CategoryCarousel from "../components/CategoryCarousel";
 import FeaturedArtisan from "../components/FeaturedArtisan";
 import dataService from "../data/dataService";
-import CollectionsIcon from "@mui/icons-material/Collections";
+
 import {
   CheckCircleOutline,
   Public,
@@ -45,7 +45,7 @@ import {
  */
 const Card = ({ icon: Icon, title, description }) => (
   <div className="min-w-xl min-h-2xl bg-gray-100 p-6 rounded-2xl flex items-start space-x-4 shadow-sm transition-transform transform hover:scale-105">
-    <div className="flex-shrink-0">
+    <div className="flex-shrink">
       <Icon className="text-orange-600" style={{ fontSize: "2rem" }} />
     </div>
     <div>
@@ -183,7 +183,7 @@ const HomePage = () => {
               shared love for timeless craft.
             </p>
 
-            <div className="flex flex-col space-y-2 md:flex flex-row space-x-2 text-left">
+            <div className="flex flex-row space-y-2 md:flex-row sm:flex-col space-x-2 text-left">
               <Card
                 icon={CheckCircleOutline}
                 title="Authenticity Guaranteed"

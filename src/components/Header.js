@@ -2,7 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import logo from "../assets/logo4.png";
-
+import MenuIcon from "@mui/icons-material/Menu";
+import PersonIcon from "@mui/icons-material/Person";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import SearchIcon from "@mui/icons-material/Search";
+import HomeIcon from "@mui/icons-material/Home";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import Diversity1Icon from "@mui/icons-material/Diversity1";
+import CorporateFareIcon from "@mui/icons-material/CorporateFare";
+import RssFeedIcon from "@mui/icons-material/RssFeed"; //ab
 /**
  * Header Component - Main navigation header for the application
  * Features: Logo, navigation menu, search bar, user actions, and profile
@@ -101,12 +110,12 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 ${
+      className={`fixed top-0 left-0 right-0 h-26 ${
         isMobileMenuOpen ? "z-40" : "z-50"
       } transition-all duration-300 ${
         isScrolled
           ? "bg-[#1a1a1a]/80 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-black/20"
-          : "bg-surface-primary border-b border-gray-700"
+          : "bg-[#1a1a1a]/80 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-black/20"
       }`}
     >
       {/* Glass effect overlay when scrolled */}
@@ -123,20 +132,7 @@ const Header = () => {
             aria-label="Toggle mobile menu"
             aria-expanded={isMobileMenuOpen}
           >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
+            <MenuIcon style={{ fontSize: "1.5rem" }} />
           </button>
         </div>
 
@@ -195,12 +191,12 @@ const Header = () => {
             >
               Foundation
             </Link>
-            {/* <Link 
-              to="/blog" 
+            <Link
+              to="/blog"
               className="text-secondary hover:text-primary text-sm font-medium leading-normal transition-colors focus:outline-none"
             >
               Blog
-            </Link> */}
+            </Link>
           </nav>
         </div>
 
@@ -208,21 +204,7 @@ const Header = () => {
         <div className="hidden md:flex items-center gap-4">
           {/* Search Bar */}
           <div className="flex items-center gap-2 bg-surface-secondary rounded-[var(--border-radius-full)] px-4 py-2 min-w-[300px]">
-            <svg
-              className="w-5 h-5 text-secondary"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
+            <SearchIcon className="w-4 h-4 text-gray-400" />
             <input
               type="text"
               placeholder="Search for handcrafted treasures..."
@@ -239,20 +221,7 @@ const Header = () => {
               aria-label={`Wishlist with ${wishlistCount} items`}
             >
               <div className="relative">
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                  />
-                </svg>
+                <FavoriteBorderIcon style={{ fontSize: "1.5rem" }} />
                 {wishlistCount > 0 && (
                   <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                     {wishlistCount > 99 ? "99+" : wishlistCount}
@@ -268,32 +237,7 @@ const Header = () => {
               aria-label={`Shopping cart with ${itemCount} items`}
             >
               <div className="relative">
-                <svg
-                  width="1.5rem"
-                  height="1.5rem"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g id="SVGRepo_bgCarrier" stroke-width="0" />
-
-                  <g
-                    id="SVGRepo_tracerCarrier"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-
-                  <g id="SVGRepo_iconCarrier">
-                    {" "}
-                    <path
-                      d="M7.2998 5H22L20 12H8.37675M21 16H9L7 3H4M4 8H2M5 11H2M6 14H2M10 20C10 20.5523 9.55228 21 9 21C8.44772 21 8 20.5523 8 20C8 19.4477 8.44772 19 9 19C9.55228 19 10 19.4477 10 20ZM21 20C21 20.5523 20.5523 21 20 21C19.4477 21 19 20.5523 19 20C19 19.4477 19.4477 19 20 19C20.5523 19 21 19.4477 21 20Z"
-                      stroke="white"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />{" "}
-                  </g>
-                </svg>
+                <ShoppingCartIcon style={{ fontSize: "1.5rem" }} />
                 {itemCount > 0 && (
                   <span className="absolute -top-2 -right-2 bg-accent text-background text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                     {itemCount > 99 ? "99+" : itemCount}
@@ -302,25 +246,13 @@ const Header = () => {
               </div>
             </Link>
 
-            <button
+            <Link
+              to="/login"
               className="flex items-center gap-2 text-secondary hover:text-primary transition-colors focus:outline-none"
               aria-label="User profile"
             >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                />
-              </svg>
-            </button>
+              <PersonIcon style={{ fontSize: "1.5rem" }} />
+            </Link>
           </div>
         </div>
 
@@ -439,107 +371,44 @@ const Header = () => {
                     className="flex items-center px-3 py-3 text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm font-medium focus:outline-none"
                     onClick={closeMobileMenu}
                   >
-                    <svg
-                      className="w-5 h-5 mr-3 text-teal-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                      />
-                    </svg>
+                    <HomeIcon className="w-5 h-5 mr-3 text-teal-500" />
                     Home
                   </Link>
                   <div className="border-b border-gray-700 mx-3"></div>
-
                   <Link
                     to="/catalogue"
                     className="flex items-center px-3 py-3 text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm font-medium focus:outline-none"
                     onClick={closeMobileMenu}
                   >
-                    <svg
-                      className="w-5 h-5 mr-3 text-teal-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                      />
-                    </svg>
+                    <InventoryIcon className="w-5 h-5 mr-3 text-teal-500" />
                     Catalogue
                   </Link>
                   <div className="border-b border-gray-700 mx-3"></div>
-
                   <Link
                     to="/artisans"
                     className="flex items-center px-3 py-3 text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm font-medium focus:outline-none"
                     onClick={closeMobileMenu}
                   >
-                    <svg
-                      className="w-5 h-5 mr-3 text-teal-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                      />
-                    </svg>
+                    <Diversity1Icon className="w-5 h-5 mr-3 text-teal-500" />
                     Artisans
                   </Link>
                   <div className="border-b border-gray-700 mx-3"></div>
-
+                  {/*ab*/}
                   <Link
                     to="/foundation"
                     className="flex items-center px-3 py-3 text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm font-medium focus:outline-none"
                     onClick={closeMobileMenu}
                   >
-                    <svg
-                      className="w-5 h-5 mr-3 text-amber-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                      />
-                    </svg>
+                    <CorporateFareIcon className="w-5 h-5 mr-3 text-teal-500" />
                     Foundation
                   </Link>
                   <div className="border-b border-gray-700 mx-3"></div>
-
                   <Link
                     to="/blog"
                     className="flex items-center px-3 py-3 text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm font-medium focus:outline-none"
                     onClick={closeMobileMenu}
                   >
-                    <svg
-                      className="w-5 h-5 mr-3 text-teal-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                      />
-                    </svg>
+                    <RssFeedIcon className="w-5 h-5 mr-3 text-teal-500" />
                     Blog
                   </Link>
                   <div className="border-b border-gray-700 mx-3"></div>
@@ -557,19 +426,7 @@ const Header = () => {
                     onClick={closeMobileMenu}
                   >
                     <div className="flex items-center">
-                      <svg
-                        className="w-5 h-5 mr-3 text-teal-500"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                        />
-                      </svg>
+                      <FavoriteBorderIcon className="w-5 h-5 mr-3 text-teal-500" />
                       Wishlist
                     </div>
                     {wishlistCount > 0 && (
@@ -586,19 +443,7 @@ const Header = () => {
                     onClick={closeMobileMenu}
                   >
                     <div className="flex items-center">
-                      <svg
-                        className="w-5 h-5 mr-3 text-teal-500"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6M7 13l-1.5 6m0 0h9m-9 0V19a2 2 0 002 2h7a2 2 0 002-2v-4.5"
-                        />
-                      </svg>
+                      <ShoppingCartIcon className="w-5 h-5 mr-3 text-teal-500" />
                       Cart
                     </div>
                     {itemCount > 0 && (
@@ -609,25 +454,13 @@ const Header = () => {
                   </Link>
                   {/* <div className="border-b border-gray-700 mx-3"></div> */}
 
-                  <button
+                  <Link
+                    to="/login"
                     className="flex items-center w-full px-3 py-3 text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition-all duration-200 text-sm font-medium focus:outline-none"
-                    onClick={closeMobileMenu}
                   >
-                    <svg
-                      className="w-5 h-5 mr-3 text-teal-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                      />
-                    </svg>
+                    <PersonIcon className="w-5 h-5 mr-2 text-teal-500" />
                     Profile
-                  </button>
+                  </Link>
                   {/* <div className="border-b border-gray-700 mx-3"></div> */}
                 </div>
               </nav>
