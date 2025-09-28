@@ -44,7 +44,7 @@ import {
  * - Minimal state; derived props computed once on load.
  */
 const Card = ({ icon: Icon, title, description }) => (
-  <div className="min-w-xl min-h-2xl bg-gray-100 p-6 rounded-2xl flex items-start space-x-4 shadow-sm transition-transform transform hover:scale-105">
+  <div className="min-w-2xl min-h-2xl bg-gray-100 p-6 rounded-2xl flex items-start space-x-4 shadow-sm transition-transform">
     <div className="flex-shrink">
       <Icon className="text-orange-600" style={{ fontSize: "2rem" }} />
     </div>
@@ -183,7 +183,7 @@ const HomePage = () => {
               shared love for timeless craft.
             </p>
 
-            <div className="flex flex-row space-y-2 md:flex-row sm:flex-col space-x-2 text-left">
+            <div className="flex flex-row flex-wrap space-y-2 space-x-2 text-left justify-center">
               <Card
                 icon={CheckCircleOutline}
                 title="Authenticity Guaranteed"
@@ -306,7 +306,122 @@ const HomePage = () => {
               <ArtisanStorySection />
             </section>
             {/* FEATURED ARTISAN: spotlight module highlighting a maker/story. */}
-            <FeaturedArtisan />
+            <section>
+              <FeaturedArtisan />
+            </section>
+
+            <section className="my-10">
+              <div className="bg-[#111827] rounded-xl p-8 md:p-12">
+                <div className="text-center mb-12">
+                  <h2 className="text-3xl font-bold text-primary mb-4">
+                    Quality & Sustainability
+                  </h2>
+                  <p className="text-text-secondary text-lg max-w-3xl mx-auto">
+                    Our commitment goes beyond beautiful products. We ensure
+                    every piece meets the highest standards while supporting
+                    sustainable practices and fair trade.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                  <div className="text-center">
+                    <div className="bg-green-600/20 text-green-400 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <svg
+                        className="w-10 h-10"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-semibold text-primary mb-2">
+                      Quality Assured
+                    </h3>
+                    <p className="text-text-secondary">
+                      Every piece undergoes rigorous quality checks
+                    </p>
+                  </div>
+
+                  <div className="text-center">
+                    <div className="bg-blue-600/20 text-blue-400 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <svg
+                        className="w-10 h-10"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"
+                        />
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-semibold text-primary mb-2">
+                      Sustainable
+                    </h3>
+                    <p className="text-text-secondary">
+                      Eco-friendly materials and processes
+                    </p>
+                  </div>
+
+                  <div className="text-center">
+                    <div className="bg-purple-600/20 text-purple-400 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <svg
+                        className="w-10 h-10"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                        />
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-semibold text-primary mb-2">
+                      Fair Trade
+                    </h3>
+                    <p className="text-text-secondary">
+                      Direct partnerships with artisan communities
+                    </p>
+                  </div>
+
+                  <div className="text-center">
+                    <div className="bg-orange-600/20 text-orange-400 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <svg
+                        className="w-10 h-10"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-semibold text-primary mb-2">
+                      Authentic
+                    </h3>
+                    <p className="text-text-secondary">
+                      Genuine traditional craftsmanship guaranteed
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
           </>
         )}
       </div>
