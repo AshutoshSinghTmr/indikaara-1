@@ -12,37 +12,7 @@ import {
   Handshake,
   Palette,
 } from "@mui/icons-material";
-/**
- * HomePage
- * --------------------------------------------------------------------------
- * Purpose:
- * - Acts as the primary landing page for Indikaara.
- * - Composes major homepage sections: Hero carousel, Brand Story, Brand Values,
- *   Category discovery grid, and a Featured Artisan highlight.
- *
- * Data Flow:
- * - Synchronously imports presentational components.
- * - On mount, fetches category metadata from dataService (local JSON layer),
- *   derives product counts per category, and stores a denormalized array of
- *   category items for rendering the discovery grid.
- *
- * Routing/Navigation:
- * - Leverages React Router's useNavigate to deep-link into Catalogue with a
- *   category query param (e.g., /catalogue?category=rugs).
- *
- * Accessibility & Semantics:
- * - Wraps page content in a <main role="main"> landmark for screen readers.
- * - Section headings use id/aria-labelledby pairs to improve nav and announce.
- *
- * Responsiveness:
- * - Tailwind utility classes drive spacing/typography per breakpoint.
- * - Hero and Brand Story are full-width; content sections are constrained to a
- *   max width container for readability.
- *
- * Performance Considerations:
- * - Simple client-side mapping; no eager network calls beyond dataService.
- * - Minimal state; derived props computed once on load.
- */
+
 const Card = ({ icon: Icon, title, description }) => (
   <div className="min-w-2xl min-h-2xl bg-gray-100 p-6 rounded-2xl flex items-start space-x-4 shadow-sm transition-transform">
     <div className="flex-shrink">
@@ -56,19 +26,9 @@ const Card = ({ icon: Icon, title, description }) => (
 );
 const HomePage = () => {
   const navigate = useNavigate();
-
-  // State: list of category objects projected for the grid. Each item shape:
-  // { id: string|number, title: string, image: string, link: string, count: number }
   const [categories, setCategories] = useState([]);
-
-  // State: simple UI flag to guard content rendering while computing/collecting data.
   const [loading, setLoading] = useState(true);
 
-  // Effect: bootstrap page data (categories) once on initial mount.
-  // - Reads raw categories from dataService
-  // - Computes product counts per category (via dataService.getProductsByCategory)
-  // - Normalizes underscore_names to human titles
-  // - Stores result and clears loading
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -102,74 +62,16 @@ const HomePage = () => {
     loadData();
   }, []);
 
-  // Handler: when a category tile is clicked, navigate to Catalogue filtered
-  // by category. We normalize the title to a compact param (lowercase, no spaces)
-  // e.g., "Vintage Rugs" -> /catalogue?category=vendagerugs
   const handleCategoryClick = (category) => {
-    console.log(`Category clicked: ${category.title}`);
-
     const categoryParam = category.title.toLowerCase().replace(/\s+/g, "");
     navigate(`/catalogue?category=${categoryParam}`);
   };
 
-  // NOTE (Future): Regions discovery section
-  // The regions block is intentionally disabled. To re-enable:
-  // - Add `const [regions, setRegions] = useState([])` state
-  // - Populate via dataService.getAllRegions() (shape: id, title, image, link)
-  // - Render a grid of CategoryCard with onClick navigating similarly to categories
-  // - Ensure aria-labelledby+heading structure mirrors other sections
-
   return (
     <main role="main">
-      {/* HERO: Full-bleed carousel with slides, text overlays, and nav dots.
-          - Composed in HeroSection
-          - Visually anchors the page and sets brand tone
-          - Full-viewport width irrespective of container constraints */}
+      {/* HERO: Full-bleed carousel with slides, text overlays, and nav dots. */}
       <HeroSection />
-      {/* BRAND STORY: Full-width storytelling band directly under hero.
-          - Provides short narrative of brand ethos
-          - Has a soft gradient background for separation without heavy contrast
-          - Center-constrained text for readability */}
-      {/* <section
-        className="relative py-6 md:py-5 bg-black text-white"
-        aria-labelledby="brand-story"
-      >
-        <div className="container mx-auto max-w-4xl">
-          <div className="text-text-primary text-sm md:text-l leading-relaxed text-center">
-            <span
-              style={{
-                fontFamily: "'Dancing Script', cursive",
-                fontSize: "2rem",
-                fontWeight: "400",
-                color: "var(--accent-color)",
-              }}
-            >
-              Every piece tells a tale.....
-            </span>
-            <p
-              style={{
-                fontFamily: "'Libre Baskerville', serif",
-                fontSize: "1rem",
-                fontWeight: "300",
-                marginTop: "0.4rem",
-                fontStyle: "italic",
-              }}
-            >
-              Our handpicked collection of unique rugs, vintage finds, and
-              beautiful decor is here to help you create a home that feels
-              uniquely you. We've traveled to find the perfect blend of warmth
-              and character, so you can fill your space with items that bring
-              you joy and comfort.
-            </p>
-          </div>
-        </div>
-      </section> */}
-
-      {/* Glassy Gradient Transition */}
-      {/* <div className="h-28 bg-gradient-to-b from-black via-black/70 to-white/95 backdrop-blur-md opacity-100"></div> */}
-
-      {/* What We Do Section */}
-      {/* <div className="h-14 bg-gradient-to-b from-white via-white/70 to-gray-900 backdrop-blur-md"></div> */}
+      {/* WHY INDIKAARA: Key value props for artisans, compelling CTA */}
       <section>
         <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 sm:p-6 lg:p-8 font-sans">
           <div className="w-full bg-white p-6 sm:p-8 lg:p-12 rounded-3xl shadow-2xl text-center">
@@ -272,11 +174,15 @@ const HomePage = () => {
           </div>
         ) : (
           <>
-            {/* CATEGORY DISCOVERY CAROUSEL
-                - A beautiful carousel of CategoryCard tiles enabling quick nav.
-                - Auto-scrolling with navigation controls and responsive design
-                - Keyed by stable category id; click navigates to Catalogue with
-                  a category query param. */}
+            {/* CATEGORY CAROUSEL: Horizontally scrollable category cards with images and counts */}
+            {/* <section className="my-16 text-center">
+              <h2 className="text-3xl font-bold text-primary mb-4">
+                Featured Categories
+              </h2>
+              <p className="text-text-secondary text-lg">
+                Explore our curated selection of categories
+              </p>
+            </section> */}
             <section className="mt-16" aria-labelledby="categories-title">
               <div className="mb-12 text-center">
                 <h2
@@ -289,16 +195,16 @@ const HomePage = () => {
                   Discover authentic Indian handicrafts by category
                 </p>
               </div>
-
+              {/* <Carousel
+                categories={categories}
+                onCategoryClick={handleCategoryClick}
+              /> */}
               <CategoryCarousel
                 categories={categories}
                 onCategoryClick={handleCategoryClick}
               />
             </section>
-            {/* ARTISAN STORY: Compelling section with scrolling banner and powerful messaging
-          - Highlights the authentic craftsmanship narrative
-          - Features scrolling text banner with key values
-          - Call-to-action to explore artisan stories */}
+            {/* ARTISAN STORY: narrative section with image/text split, link to blog */}
             <section
               className="artisan-story-section"
               style={{ marginTop: "4rem" }}
@@ -309,7 +215,7 @@ const HomePage = () => {
             <section>
               <FeaturedArtisan />
             </section>
-
+            {/* QUALITY & SUSTAINABILITY: Icon grid highlighting key values */}
             <section className="my-10">
               <div className="bg-[#111827] rounded-xl p-8 md:p-12">
                 <div className="text-center mb-12">

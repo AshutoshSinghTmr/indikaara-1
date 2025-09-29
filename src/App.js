@@ -91,55 +91,6 @@ function App() {
                   </div>
                 }
               />
-              <Route
-                path="/shipping"
-                element={
-                  <div className="p-8 text-center text-primary">
-                    Shipping Info page coming soon...
-                  </div>
-                }
-              />
-              <Route
-                path="/returns"
-                element={
-                  <div className="p-8 text-center text-primary">
-                    Returns & Exchanges page coming soon...
-                  </div>
-                }
-              />
-              <Route
-                path="/cookies"
-                element={
-                  <div className="p-8 text-center text-primary">
-                    Cookie Policy page coming soon...
-                  </div>
-                }
-              />
-              <Route
-                path="/accessibility"
-                element={
-                  <div className="p-8 text-center text-primary">
-                    Accessibility page coming soon...
-                  </div>
-                }
-              />
-              <Route
-                path="/sitemap"
-                element={
-                  <div className="p-8 text-center text-primary">
-                    Sitemap page coming soon...
-                  </div>
-                }
-              />
-              <Route
-                path="/newsletter"
-                element={
-                  <div className="p-8 text-center text-primary">
-                    Newsletter page coming soon...
-                  </div>
-                }
-              />
-
               {/* 404 Not Found Route */}
               <Route path="*" element={<NotFound />} />
             </Routes>
