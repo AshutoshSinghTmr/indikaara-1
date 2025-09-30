@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import "./CategoryCarousel.css";
+import "../styles/CategoryCarousel.css";
 
 /**
  * CategoryCarousel Component - Beautiful slidable carousel for category selection
@@ -69,7 +69,7 @@ const CategoryCarousel = ({ categories, onCategoryClick }) => {
   // Touch/Swipe functionality
   const handleTouchStart = (e) => {
     setIsDragging(true);
-    // setStartX(e.touches[0].clientX);
+    setStartX(e.touches[0].clientX);
     setIsAutoPlaying(false);
   };
 
@@ -147,9 +147,9 @@ const CategoryCarousel = ({ categories, onCategoryClick }) => {
       <div
         ref={carouselRef}
         className="relative overflow-hidden cursor-grab active:cursor-grabbing select-none carousel-container"
-        onTouchStart={handleTouchStart}
+        // onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
+        // onTouchEnd={handleTouchEnd}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}

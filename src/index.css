@@ -1,2 +1,6 @@
 /* Import global styles */
 @import "./styles/globals.css";
+* {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+}

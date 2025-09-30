@@ -5,7 +5,6 @@ import ArtisanStorySection from "../components/ArtisanStorySection";
 import CategoryCarousel from "../components/CategoryCarousel";
 import FeaturedArtisan from "../components/FeaturedArtisan";
 import dataService from "../data/dataService";
-
 import {
   CheckCircleOutline,
   Public,
@@ -195,10 +194,6 @@ const HomePage = () => {
                   Discover authentic Indian handicrafts by category
                 </p>
               </div>
-              {/* <Carousel
-                categories={categories}
-                onCategoryClick={handleCategoryClick}
-              /> */}
               <CategoryCarousel
                 categories={categories}
                 onCategoryClick={handleCategoryClick}

@@ -6,6 +6,7 @@ import "../styles/LoginPage.css"; // Assuming we have CSS for styling
 import loginBackground from "../assets/hero-vintage-1.png";
 import { Button, Divider } from "@mui/material";
 import Backdrop from "../components/Backdrop";
+
 const GOOGLE_PROFILE_CLEAR_DELAY = 2000;
 
 const LoginPage = () => {
@@ -72,7 +73,7 @@ const LoginPage = () => {
     },
     [googleLogin, navigate]
   );
-  console.log(loading);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -89,7 +90,9 @@ const LoginPage = () => {
       setLoading(false);
       return;
     }
-
+    if (password !== confirmPassword) {
+      return alert("Passwords do not match");
+    }
     const result = isLogin
       ? await login(email, password)
       : await register(userName, email, password);
@@ -101,16 +104,6 @@ const LoginPage = () => {
     }
     setLoading(false);
   };
-
-  useEffect(() => {
-    if (!isLogin && confirmPassword) {
-      if (password === confirmPassword) {
-        setError("Perfect! Passwords match.");
-      } else {
-        setError("Passwords do not match");
-      }
-    }
-  }, [password, confirmPassword, isLogin]);
 
   useEffect(() => {
     // Set mode based on path
@@ -213,7 +206,7 @@ const LoginPage = () => {
               />
             </div>
           )}
-          {isLogin && (
+          {/* {isLogin && (
             <div className="form-group remember-me">
               <input
                 type="checkbox"
@@ -223,7 +216,7 @@ const LoginPage = () => {
               />
               <label htmlFor="rememberMe">Remember me</label>
             </div>
-          )}
+          )} */}
           {error && <div className="error-message">{error}</div>}
           {/* <button type="submit" disabled={loading}>
             {loading ? "Loading..." : isLogin ? "Login" : "Register"}
@@ -305,22 +298,38 @@ const LoginPage = () => {
           {isLogin ? (
             <p>
               Don't have an account?{" "}
-              <button onClick={() => setIsLogin(false)}>Register</button>
+              <button
+                onClick={() => {
+                  setIsLogin(false);
+                  setEmail("");
+                  setPassword("");
+                  setError("");
+                  setUserName("");
+                  setConfirmPassword("");
+                }}
+              >
+                Register Here!
+              </button>
             </p>
           ) : (
             <p>
               Already have an account?{" "}
-              <button onClick={() => setIsLogin(true)}>Login</button>
+              <button
+                onClick={() => {
+                  setIsLogin(true);
+                  setEmail("");
+                  setPassword("");
+                  setError("");
+                  setUserName("");
+                  setConfirmPassword("");
+                }}
+              >
+                Login Now!
+              </button>
             </p>
           )}
         </div>
         {loading && <Backdrop loading={loading} />}
-
-        {/* {isLogin && (
-          <div className="forgot-password">
-            <a href="/forgot-password">Forgot password?</a>
-          </div>
-        )} */}
       </div>
     </div>
   );

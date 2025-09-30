@@ -24,7 +24,6 @@ import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./styles/globals.css";
 import ScrollToTop from "./utils/scrollToTop";
-
 /**
  * App Component - Main application component with routing
  * Features: React Router setup, cart context provider, layout wrapper, and page routing
