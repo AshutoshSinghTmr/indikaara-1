@@ -177,13 +177,13 @@ const HomePage = () => {
       <HeroSection />
       {/* WHY INDIKAARA: Key value props for artisans, compelling CTA */}
       <section>
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 sm:p-6 lg:p-8 font-sans">
-          <div className="w-full bg-white p-6 sm:p-8 lg:p-12 rounded-3xl shadow-2xl text-center">
-            <h1 className="text-4xl font-extrabold text-gray-800 mb-2">
+        <div className="min-h-[580px] sm:min-h-[620px] lg:min-h-screen bg-gray-50 flex items-start sm:items-center justify-center p-3 sm:p-6 lg:p-8 font-sans">
+          <div className="w-full bg-white p-4 sm:p-7 lg:p-12 rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl text-center max-w-6xl mx-auto">
+            <h1 className="text-2xl xs:text-3xl sm:text-4xl font-extrabold text-gray-800 mb-3 leading-tight">
               Why Connect with{" "}
               <span className="text-orange-600">Indikaara?</span>
             </h1>
-            <p className="text-lg text-gray-600 leading-relaxed mb-10">
+            <p className="text-sm xs:text-base sm:text-lg text-gray-600 leading-relaxed mb-6 sm:mb-8">
               We are a bridge between the world and India's finest artisans,
               fostering a community built on authenticity, empowerment, and a
               shared love for timeless craft.
@@ -192,33 +192,33 @@ const HomePage = () => {
             {/* Why Connect Cards with highlight + reveal animation */}
             <WhyConnectCards />
 
-            <div className="bg-orange-50 p-6 sm:p-8 rounded-2xl mt-10">
-              <p className="italic text-gray-700 leading-relaxed text-sm sm:text-base">
+            <div className="bg-orange-50 p-4 sm:p-6 rounded-xl sm:rounded-2xl mt-8 sm:mt-10">
+              <p className="italic text-gray-700 leading-relaxed text-xs sm:text-sm">
                 "Indikaara didn't just sell my art; they shared my story. It's a
                 partnership that honors my craft and my heritage."
               </p>
-              <p className="mt-3 font-semibold text-gray-800">
+              <p className="mt-2 sm:mt-3 font-semibold text-gray-800 text-xs sm:text-sm">
                 - A. Kumar, Weaver from Varanasi
               </p>
             </div>
 
             <button
               onClick={() => (window.location.href = "/blog")}
-              className="mt-10 w-full px-6 py-4 bg-orange-600 text-white font-bold rounded-full text-lg shadow-xl transition-all hover:bg-orange-700 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-orange-500 focus:ring-opacity-50"
+              className="mt-8 sm:mt-10 w-full px-5 py-3 sm:px-6 sm:py-4 bg-orange-600 text-white font-bold rounded-full text-base sm:text-lg shadow-lg sm:shadow-xl transition-all hover:bg-orange-700 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-orange-500 focus:ring-opacity-50"
             >
               Join Our Artisan Community
             </button>
           </div>
         </div>
       </section>
-      {/* MAIN CONTENT CONTAINER: constrains reading width for dense sections */}
-      <div className="container mx-auto max-w-7xl px-4 py-4">
+      {/* MAIN CONTENT AREA (now full-width) */}
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-4">
         {/* FOUNDATION PREVIEW: Brief introduction with link to dedicated page */}
         <section
-          className="pt-8 mb-22 border-b border-green-500 bg-gray-900"
+          className="pt-8 mb-22 border-b border-green-500 bg-gray-900 w-full"
           aria-labelledby="foundation-preview"
         >
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 max-w-6xl mx-auto">
             <h2
               id="foundation-preview"
               className="text-4xl font-bold text-primary m-auto mb-3"
@@ -267,13 +267,16 @@ const HomePage = () => {
                 Explore our curated selection of categories
               </p>
             </section> */}
-            <section className="mt-16" aria-labelledby="categories-title">
-              <div className="mb-12 text-center">
+            <section
+              className="mt-16 w-full"
+              aria-labelledby="categories-title"
+            >
+              <div className="mb-12 text-center max-w-6xl mx-auto">
                 <h2
                   id="categories-title"
                   className="text-4xl font-bold text-primary mb-3"
                 >
-                  Shop by Category
+                  Explore by Category
                 </h2>
                 <p className="text-text-secondary text-lg">
                   Discover authentic Indian handicrafts by category
@@ -286,34 +289,34 @@ const HomePage = () => {
             </section>
             {/* ARTISAN STORY: narrative section with image/text split, link to blog */}
             <section
-              className="artisan-story-section"
+              className="artisan-story-section w-full"
               style={{ marginTop: "4rem" }}
             >
               <ArtisanStorySection />
             </section>
             {/* FEATURED ARTISAN: spotlight module highlighting a maker/story. */}
-            <section>
+            <section className="w-full">
               <FeaturedArtisan />
             </section>
             {/* QUALITY & SUSTAINABILITY: Icon grid highlighting key values */}
-            <section className="my-10">
-              <div className="bg-[#111827] rounded-xl p-8 md:p-12">
-                <div className="text-center mb-12">
-                  <h2 className="text-3xl font-bold text-primary mb-4">
+            <section className="my-10 w-full">
+              <div className="bg-[#111827] rounded-none sm:rounded-xl p-6 sm:p-8 md:p-12 w-full">
+                <div className="text-center mb-10 sm:mb-12">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-3 sm:mb-4">
                     Quality & Sustainability
                   </h2>
-                  <p className="text-text-secondary text-lg max-w-3xl mx-auto">
+                  <p className="text-text-secondary text-sm sm:text-base md:text-lg max-w-3xl mx-auto">
                     Our commitment goes beyond beautiful products. We ensure
                     every piece meets the highest standards while supporting
                     sustainable practices and fair trade.
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                  <div className="text-center">
-                    <div className="bg-green-600/20 text-green-400 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+                  <div className="text-center px-1">
+                    <div className="bg-green-600/20 text-green-400 w-10 h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                       <svg
-                        className="w-10 h-10"
+                        className="w-5 h-5 sm:w-8 sm:h-8 md:w-10 md:h-10"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -326,18 +329,18 @@ const HomePage = () => {
                         />
                       </svg>
                     </div>
-                    <h3 className="text-xl font-semibold text-primary mb-2">
+                    <h3 className="text-sm sm:text-lg md:text-xl font-semibold text-primary mb-1 sm:mb-2">
                       Quality Assured
                     </h3>
-                    <p className="text-text-secondary">
+                    <p className="text-text-secondary text-xs sm:text-sm md:text-base">
                       Every piece undergoes rigorous quality checks
                     </p>
                   </div>
 
-                  <div className="text-center">
-                    <div className="bg-blue-600/20 text-blue-400 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="text-center px-1">
+                    <div className="bg-blue-600/20 text-blue-400 w-10 h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                       <svg
-                        className="w-10 h-10"
+                        className="w-5 h-5 sm:w-8 sm:h-8 md:w-10 md:h-10"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -350,18 +353,18 @@ const HomePage = () => {
                         />
                       </svg>
                     </div>
-                    <h3 className="text-xl font-semibold text-primary mb-2">
+                    <h3 className="text-sm sm:text-lg md:text-xl font-semibold text-primary mb-1 sm:mb-2">
                       Sustainable
                     </h3>
-                    <p className="text-text-secondary">
+                    <p className="text-text-secondary text-xs sm:text-sm md:text-base">
                       Eco-friendly materials and processes
                     </p>
                   </div>
 
-                  <div className="text-center">
-                    <div className="bg-purple-600/20 text-purple-400 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="text-center px-1">
+                    <div className="bg-purple-600/20 text-purple-400 w-10 h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                       <svg
-                        className="w-10 h-10"
+                        className="w-5 h-5 sm:w-8 sm:h-8 md:w-10 md:h-10"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -374,18 +377,18 @@ const HomePage = () => {
                         />
                       </svg>
                     </div>
-                    <h3 className="text-xl font-semibold text-primary mb-2">
+                    <h3 className="text-sm sm:text-lg md:text-xl font-semibold text-primary mb-1 sm:mb-2">
                       Fair Trade
                     </h3>
-                    <p className="text-text-secondary">
+                    <p className="text-text-secondary text-xs sm:text-sm md:text-base">
                       Direct partnerships with artisan communities
                     </p>
                   </div>
 
-                  <div className="text-center">
-                    <div className="bg-orange-600/20 text-orange-400 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="text-center px-1">
+                    <div className="bg-orange-600/20 text-orange-400 w-10 h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                       <svg
-                        className="w-10 h-10"
+                        className="w-5 h-5 sm:w-8 sm:h-8 md:w-10 md:h-10"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -398,10 +401,10 @@ const HomePage = () => {
                         />
                       </svg>
                     </div>
-                    <h3 className="text-xl font-semibold text-primary mb-2">
+                    <h3 className="text-sm sm:text-lg md:text-xl font-semibold text-primary mb-1 sm:mb-2">
                       Authentic
                     </h3>
-                    <p className="text-text-secondary">
+                    <p className="text-text-secondary text-xs sm:text-sm md:text-base">
                       Genuine traditional craftsmanship guaranteed
                     </p>
                   </div>
@@ -413,9 +416,9 @@ const HomePage = () => {
         {/* OUR CERTIFICATIONS: credibility logos displayed above footer */}
         <section
           aria-labelledby="certifications-title"
-          className="mt-24 mb-12 px-4 sm:px-6 lg:px-8"
+          className="mt-24 mb-12 w-full"
         >
-          <div className="max-w-7xl mx-auto">
+          <div className="w-full px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
               <h2
                 id="certifications-title"
@@ -428,7 +431,7 @@ const HomePage = () => {
                 commitment to quality, transparency, and ethical global trade.
               </p>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-6 items-center w-full">
               {[
                 {
                   file: require("../assets/certifications/EPC-logo.png"),
@@ -449,19 +452,16 @@ const HomePage = () => {
               ].map((c, idx) => (
                 <div
                   key={c.alt}
-                  className="group relative flex items-center justify-center rounded-2xl bg-white/95 dark:bg-white p-10 sm:p-12 border border-gray-200 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"
+                  className="group relative flex items-center justify-center rounded-lg bg-[#191919]/80 backdrop-blur-sm aspect-square p-2 sm:p-3 lg:p-4 border border-white/10 shadow-sm hover:shadow-md hover:border-white/20 transition-all duration-300 overflow-hidden max-w-[120px] sm:max-w-[140px] lg:max-w-[160px] mx-auto"
                 >
                   <img
                     src={c.file}
                     alt={`${c.alt} Certification`}
-                    className="w-full max-w-xs sm:max-w-sm max-h-40 object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+                    className="w-full h-full object-contain opacity-85 group-hover:opacity-100 transition-opacity duration-300 scale-95 group-hover:scale-100"
                     loading="lazy"
                   />
                   <span className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-10 bg-gradient-to-br from-orange-400 via-pink-400 to-yellow-300 transition-opacity duration-300 mix-blend-multiply" />
                   <span className="sr-only">{c.alt} certification logo</span>
-                  <span className="absolute top-3 left-4 text-[10px] tracking-widest font-semibold text-gray-400">
-                    {String(idx + 1).padStart(2, "0")}
-                  </span>
                 </div>
               ))}
             </div>

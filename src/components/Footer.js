@@ -122,7 +122,7 @@ const Footer = () => {
 
               {/* Facebook */}
               <a
-                href="https://www.facebook.com/search/top?q=indikaara%20exports"
+                href="https://www.facebook.com/profile.php?id=61577220497565"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-text-secondary hover:text-primary transition-colors"
