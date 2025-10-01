@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
+import CloseIcon from "@mui/icons-material/Close";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
@@ -12,6 +13,8 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [wishlistCount, setWishlistCount] = useState(0);
   const [cartCount, setCartCount] = useState(0); // placeholder; integrate with cart context later
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const mobileSearchInputRef = React.useRef(null);
 
   // Wishlist/cart count fetch (simple localStorage placeholders)
   useEffect(() => {
@@ -43,25 +46,44 @@ export default function Header() {
     };
   }, []);
 
+  // Focus input when mobile search opens & handle ESC close
+  useEffect(() => {
+    if (mobileSearchOpen && mobileSearchInputRef.current) {
+      mobileSearchInputRef.current.focus();
+    }
+  }, [mobileSearchOpen]);
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === "Escape" && mobileSearchOpen) {
+        setMobileSearchOpen(false);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [mobileSearchOpen]);
+
   return (
+    <>
     <header className="fixed top-0 left-0 right-0 z-50 h-20 md:h-24 lg:h-28 bg-[#111]/85 backdrop-blur-md border-b border-white/10 shadow-lg transition-[height] duration-300">
       {/* decorative subtle gradient */}
       <div className="absolute inset-0 bg-gradient-to-r from-white/5 via-transparent to-white/5 pointer-events-none" />
-      {/* Burger extreme left outside to ensure truly flush */}
-      <button
-        onClick={() => setIsOpen(true)}
-        aria-label="Open navigation menu"
-        aria-expanded={isOpen}
-        className="absolute left-0 top-1/2 -translate-y-1/2 pl-3 pr-4 py-3 text-[#E6BB8D] hover:text-[#f3d3a8] focus:outline-none focus:ring-2 focus:ring-[#E6BB8D]/40 rounded-r-md z-50"
-      >
-        {/** Burger icon resized: uses wrapper span so Tailwind font-size controls SVG (MUI sets 1em) **/}
-        <span
-          className="block leading-none text-[2rem] md:text-[2.2rem] lg:text-[2.8rem] w-[2rem] md:w-[2.2rem] lg:w-[2.8rem] h-[1.92rem] md:h-[2.4rem] lg:h-[3.2rem]"
-          aria-hidden="true"
+      {/* Burger extreme left; stable vertical alignment using flex instead of translate */}
+      <div className="absolute inset-y-0 left-0 flex items-center">
+        <button
+          onClick={() => setIsOpen(true)}
+          aria-label="Open navigation menu"
+          aria-expanded={isOpen}
+          className="pl-3 pr-4 py-3 text-[#E6BB8D] hover:text-[#f3d3a8] focus:outline-none focus:ring-2 focus:ring-[#E6BB8D]/40 rounded-r-md z-50 relative"
         >
-          <MenuIcon fontSize="inherit" className="w-full h-full" />
-        </span>
-      </button>
+          <span
+            className="block leading-none text-[2rem] md:text-[2.2rem] lg:text-[2.8rem] w-[2rem] md:w-[2.2rem] lg:w-[2.8rem] h-[1.92rem] md:h-[2.4rem] lg:h-[3.2rem] transition-transform duration-300 ease-out"
+            aria-hidden="true"
+          >
+            <MenuIcon fontSize="inherit" className="w-full h-full" />
+          </span>
+        </button>
+      </div>
       <div className="relative w-full h-full flex items-center justify-center px-4 md:px-8">
         {/* Centered Logo */}
         <div className="flex items-center select-none">
@@ -133,6 +155,9 @@ export default function Header() {
           <button
             type="button"
             aria-label="Search"
+            aria-expanded={mobileSearchOpen}
+            aria-controls="mobile-search-bar"
+            onClick={() => setMobileSearchOpen((o) => !o)}
             className="lg:hidden p-2 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors"
           >
             <SearchIcon fontSize="large" className="text-[#E6BB8D]" />
@@ -146,6 +171,40 @@ export default function Header() {
           toggleDrawer={(open) => (open ? setIsOpen(true) : setIsOpen(false))}
         />
       </div>
-    </header>
+  </header>
+  {/* Mobile / tablet inline search bar (below fixed navbar) */}
+    {mobileSearchOpen && (
+      <div
+        id="mobile-search-bar"
+        role="search"
+        className="lg:hidden fixed left-0 right-0 top-20 md:top-24 z-40 bg-[#1a1a1a]/95 backdrop-blur-md border-b border-white/10 px-4 py-3 flex items-center gap-3 animate-fade-in"
+      >
+        <SearchIcon className="text-[#E6BB8D]" />
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            // Future: navigate to search results page
+            setMobileSearchOpen(false);
+          }}
+          className="flex-1"
+        >
+          <input
+            ref={mobileSearchInputRef}
+            type="text"
+            placeholder="Search products, artisans..."
+            className="w-full bg-transparent border-none outline-none text-white placeholder:text-white/50 text-base"
+          />
+        </form>
+        <button
+          type="button"
+            aria-label="Close search"
+            onClick={() => setMobileSearchOpen(false)}
+            className="p-2 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+        >
+          <CloseIcon fontSize="medium" />
+        </button>
+      </div>
+    )}
+    </>
   );
 }

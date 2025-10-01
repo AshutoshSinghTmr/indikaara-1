@@ -1,64 +1,176 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import CloseIcon from "@mui/icons-material/Close";
+import { Link } from "react-router-dom";
+
+// Simple icon placeholders (replace with themed icons later if needed)
 
 export default function SideNav({ isOpen, setIsOpen, toggleDrawer }) {
   const handleClose = () => setIsOpen(false);
-  const DrawerList = (
-    <Box
-      sx={{ width: 260 }}
-      role="presentation"
-      className="bg-[#111] h-full text-white"
-    >
-      <List>
-        {[
-          "Home",
-          "Catalogue",
-          "Our Businesses",
-          "Our Foundation",
-          "Artisans",
-          "Blog",
-        ].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton onClick={handleClose}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {["Profile", "Cart", "Whishlist"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton onClick={handleClose}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
+  const [openBusinesses, setOpenBusinesses] = React.useState(false);
+
+  // Navigation link config
+  const primaryLinks = [
+    { label: "Home", to: "/" },
+    { label: "Catalogue", to: "/catalogue" },
+    {
+      label: "Our Businesses",
+      to: "/businesses",
+      items: [
+        { id: 1, name: "Rugs" },
+        { id: 2, name: "Handicraft" },
+        { id: 3, name: "Vintage Collection" },
+        { id: 4, name: "Fine Arts" },
+        { id: 5, name: "Biomass Pellets and Briquettes" },
+      ],
+    },
+    { label: "Our Foundation", to: "/foundation" },
+    { label: "Artisans", to: "/artisans" },
+    { label: "Blog", to: "/blog" },
+  ];
+  const secondaryLinks = [
+    { label: "Profile", to: "/login" },
+    { label: "Cart", to: "/cart" },
+    { label: "Wishlist", to: "/wishlist" },
+  ];
+
+  // Responsive width: 100% (<md), 50% (md>=), 25% (lg>=)
+  const drawerPaperStyles = {
+    "& .MuiBackdrop-root": {
+      backgroundColor: "rgba(0,0,0,0.55)",
+      backdropFilter: "blur(2px)",
+      transition: "background-color 300ms ease, backdrop-filter 300ms ease",
+    },
+    "& .MuiDrawer-paper": {
+      background:
+        "linear-gradient(135deg, rgba(17,17,17,0.94), rgba(20,20,20,0.88))",
+      backdropFilter: "blur(14px)",
+      WebkitBackdropFilter: "blur(14px)",
+      width: "100%",
+      boxShadow:
+        "0 0 0 1px rgba(255,255,255,0.06), 0 12px 36px -6px rgba(0,0,0,0.65)",
+      transition:
+        "transform 380ms cubic-bezier(0.22,0.72,0.28,1), width 300ms ease",
+    },
+    "@media (min-width: 768px)": {
+      // md
+      "& .MuiDrawer-paper": { width: "50%" },
+    },
+    "@media (min-width: 1024px)": {
+      // lg
+      "& .MuiDrawer-paper": { width: "25%" },
+    },
+  };
+
+  const LinkBlock = ({ item }) => {
+    // Special handling for expandable 'Our Businesses'
+    if (item.label === "Our Businesses" && item.items) {
+      return (
+        <div className="w-full">
+          <button
+            type="button"
+            onClick={() => setOpenBusinesses((o) => !o)}
+            aria-expanded={openBusinesses}
+            aria-controls="businesses-submenu"
+            className="group relative w-full px-4 py-5 flex flex-col items-center justify-center text-center focus:outline-none"
+          >
+            <span className="flex items-center gap-2">
+              <span className="text-lg md:text-xl lg:text-2xl font-semibold tracking-wide text-white group-hover:text-[#E6BB8D] transition-colors duration-200">
+                {item.label}
+              </span>
+              <span
+                className={`transition-transform duration-300 text-white/70 group-hover:text-[#E6BB8D] ${
+                  openBusinesses ? "rotate-180" : "rotate-0"
+                }`}
+                aria-hidden="true"
+              >
+                ▾
+              </span>
+            </span>
+            <span className="absolute inset-x-8 bottom-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+          </button>
+          <div
+            id="businesses-submenu"
+            className={`overflow-hidden transition-[max-height,opacity] duration-500 ease-out ${
+              openBusinesses ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"
+            }`}
+            aria-hidden={!openBusinesses}
+          >
+            <ul className="py-2 space-y-1">
+              {item.items.map((sub) => (
+                <li key={sub.id} className="px-6">
+                  <Link
+                    to={`/businesses/${sub.name
+                      .replace(/\s+/g, "-")
+                      .toLowerCase()}`}
+                    onClick={handleClose}
+                    className="flex justify-center block w-full text-left rounded-md px-3 py-3 bg-white/5 hover:bg-white/10 active:bg-white/15 text-sm md:text-base lg:text-lg font-medium tracking-wide text-white/80 hover:text-[#E6BB8D] transition-colors"
+                  >
+                    {sub.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <Link
+        to={item.to}
+        onClick={handleClose}
+        className="group relative px-4 py-5 flex flex-col items-center justify-center text-center"
+      >
+        <span className="text-lg md:text-xl lg:text-2xl font-semibold tracking-wide text-white group-hover:text-[#E6BB8D] transition-colors duration-200">
+          {item.label}
+        </span>
+        <span className="absolute inset-x-8 bottom-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+      </Link>
+    );
+  };
 
   return (
-    <div>
-      {/* Drawer anchored explicitly to the left */}
-      <Drawer anchor="left" open={isOpen} onClose={() => toggleDrawer(false)}>
-        {DrawerList}
-      </Drawer>
-    </div>
+    <Drawer
+      anchor="left"
+      open={isOpen}
+      onClose={() => toggleDrawer(false)}
+      ModalProps={{ keepMounted: true }}
+      sx={drawerPaperStyles}
+    >
+      <div className="h-full flex flex-col">
+        {/* Top bar with close */}
+        <div className="flex items-center justify-between px-4 py-3">
+          <button
+            onClick={handleClose}
+            aria-label="Close navigation"
+            className="p-2 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+          >
+            <CloseIcon fontSize="large" />
+          </button>
+        </div>
+        {/* Scrollable nav area */}
+        <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+          <nav className="pt-2" aria-label="Primary">
+            {primaryLinks.map((item) => (
+              <LinkBlock key={item.label} item={item} />
+            ))}
+          </nav>
+
+          <div className="my-4 mx-12 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+          <span className="flex justify-center text-white/40 text-2xl md:text-xl lg:text-2xl font-semibold tracking-wide text-white">
+            My Account
+          </span>
+          <nav aria-label="Secondary" className="pb-4 m-2">
+            {secondaryLinks.map((item) => (
+              <LinkBlock key={item.label} item={item} />
+            ))}
+          </nav>
+        </div>
+        {/* Footer / brand accent */}
+        <div className="px-4 py-4 border-t border-white/10 text-center text-xs text-white/40 tracking-wide">
+          © 2025 Indikaara
+        </div>
+      </div>
+    </Drawer>
   );
 }
