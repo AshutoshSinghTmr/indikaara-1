@@ -18,9 +18,9 @@ export default function SideNav({ isOpen, setIsOpen, toggleDrawer }) {
       items: [
         { id: 1, name: "Rugs" },
         { id: 2, name: "Handicrafted Products" },
-        { id: 3, name: "Biomass Pellets & Briquettes" },
-        { id: 4, name: "Clothing" },
-        { id: 5, name: "Millet Foods" },
+        { id: 3, name: "Biomass Pellets & Briquettes", comingSoon: true },
+        { id: 4, name: "Clothing", comingSoon: true },
+        { id: 5, name: "Millet Foods", comingSoon: true },
       ],
     },
     { label: "Our Foundation", to: "/foundation" },
@@ -96,19 +96,38 @@ export default function SideNav({ isOpen, setIsOpen, toggleDrawer }) {
             aria-hidden={!openBusinesses}
           >
             <ul className="py-2 space-y-1">
-              {item.items.map((sub) => (
-                <li key={sub.id} className="px-6">
-                  <Link
-                    to={`/businesses/${sub.name
-                      .replace(/\s+/g, "-")
-                      .toLowerCase()}`}
-                    onClick={handleClose}
-                    className="flex justify-center block w-full text-left rounded-md px-3 py-3 bg-white/5 hover:bg-white/10 active:bg-white/15 text-sm md:text-base lg:text-lg font-medium tracking-wide text-white/80 hover:text-[#ac1f23] transition-colors"
-                  >
-                    {sub.name}
-                  </Link>
-                </li>
-              ))}
+              {item.items.map((sub) => {
+                const makeSlug = (name) =>
+                  name
+                    .toLowerCase()
+                    .replace(/&|\//g, " ") // treat & and / as separators
+                    .replace(/[^a-z0-9\s-]/g, "") // remove other special chars
+                    .trim()
+                    .replace(/\s+/g, "-");
+                const baseSlug = makeSlug(sub.name);
+                const target = sub.comingSoon
+                  ? `/coming-soon/${baseSlug}`
+                  : `/businesses/${baseSlug}`;
+                return (
+                  <li key={sub.id} className="px-6">
+                    <Link
+                      to={target}
+                      onClick={handleClose}
+                      aria-label={
+                        sub.comingSoon ? `${sub.name} (Coming Soon)` : sub.name
+                      }
+                      className="relative flex justify-center items-center gap-2 block w-full text-left rounded-md px-3 py-3 bg-white/5 hover:bg-white/10 active:bg-white/15 text-sm md:text-base lg:text-lg font-medium tracking-wide text-white/80 hover:text-[#ac1f23] transition-colors"
+                    >
+                      <span>{sub.name}</span>
+                      {sub.comingSoon && (
+                        <span className="text-[10px] uppercase tracking-wider font-semibold text-[#ac1f23] bg-[#ac1f23]/10 px-2 py-0.5 rounded-full">
+                          Soon
+                        </span>
+                      )}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>

@@ -410,6 +410,68 @@ const HomePage = () => {
             </section>
           </>
         )}
+        {/* OUR CERTIFICATIONS: credibility logos displayed above footer */}
+        <section
+          aria-labelledby="certifications-title"
+          className="mt-24 mb-12 px-4 sm:px-6 lg:px-8"
+        >
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-10">
+              <h2
+                id="certifications-title"
+                className="text-3xl md:text-4xl font-bold text-primary mb-4"
+              >
+                Our Certifications
+              </h2>
+              <p className="text-text-secondary text-base md:text-lg max-w-3xl mx-auto">
+                Recognitions and compliance frameworks that reflect our
+                commitment to quality, transparency, and ethical global trade.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+              {[
+                {
+                  file: require("../assets/certifications/EPC-logo.png"),
+                  alt: "EPC",
+                },
+                {
+                  file: require("../assets/certifications/ISO-logo.png"),
+                  alt: "ISO",
+                },
+                {
+                  file: require("../assets/certifications/IEC-logo.webp"),
+                  alt: "IEC",
+                },
+                {
+                  file: require("../assets/certifications/GST-logo.webp"),
+                  alt: "GST",
+                },
+              ].map((c, idx) => (
+                <div
+                  key={c.alt}
+                  className="group relative flex items-center justify-center rounded-2xl bg-white/95 dark:bg-white p-10 sm:p-12 border border-gray-200 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden"
+                >
+                  <img
+                    src={c.file}
+                    alt={`${c.alt} Certification`}
+                    className="w-full max-w-xs sm:max-w-sm max-h-40 object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+                    loading="lazy"
+                  />
+                  <span className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-10 bg-gradient-to-br from-orange-400 via-pink-400 to-yellow-300 transition-opacity duration-300 mix-blend-multiply" />
+                  <span className="sr-only">{c.alt} certification logo</span>
+                  <span className="absolute top-3 left-4 text-[10px] tracking-widest font-semibold text-gray-400">
+                    {String(idx + 1).padStart(2, "0")}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-10 text-center">
+              <p className="text-xs uppercase tracking-wider text-text-secondary/60">
+                Independently verified | Trade & Quality Compliance
+              </p>
+            </div>
+          </div>
+        </section>
       </div>
     </main>
   );

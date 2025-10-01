@@ -20,6 +20,7 @@ import ContactPage from "./pages/ContactPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import TermsOfServicePage from "./pages/TermsOfServicePage";
 import FoundationPage from "./pages/FoundationPage";
+import ComingSoonPage from "./pages/ComingSoonPage";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./styles/globals.css";
@@ -78,6 +79,7 @@ function App() {
               <Route path="/faq" element={<FAQPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/foundation" element={<FoundationPage />} />
+              <Route path="/coming-soon/:slug" element={<ComingSoonPage />} />
               <Route path="/privacy" element={<PrivacyPolicyPage />} />
               <Route path="/terms" element={<TermsOfServicePage />} />
 
