@@ -7,7 +7,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
 import SideNav from "./SideNav";
-import logo from "../assets/logo2.png";
+import CombinedLogo from "./CombinedLogo";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -87,14 +87,8 @@ export default function Header() {
         <div className="relative w-full h-full flex items-center justify-center px-4 md:px-8">
           {/* Centered Logo */}
           <div className="flex items-center select-none">
-            <Link to="/" className="block">
-              <img
-                src={logo}
-                alt="Indikaara"
-                className="h-12 md:h-16 lg:h-20 w-auto drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)] transition-all duration-300"
-                loading="lazy"
-                decoding="async"
-              />
+            <Link to="/" className="block h-12 md:h-16 lg:h-20">
+              <CombinedLogo className="h-full" />
             </Link>
           </div>
 
