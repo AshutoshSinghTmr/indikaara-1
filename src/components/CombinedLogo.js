@@ -91,11 +91,10 @@ const CombinedLogo = ({ className = "" }) => {
                   />
                 ) : (
                   <span
-                    className="text-white font-semibold md:font-bold lg:font-extrabold tracking-wide md:tracking-normal lg:tracking-wide whitespace-nowrap drop-shadow-[0_2px_6px_rgba(0,0,0,0.55)] leading-none select-none"
+                    className="text-white font-semibold md:font-bold lg:font-extrabold whitespace-nowrap drop-shadow-[0_2px_6px_rgba(0,0,0,0.55)] leading-none select-none flex items-center justify-center"
                     style={{
-                      fontSize: "clamp(0.9rem, 2.6vw, 2.6rem)",
-                      letterSpacing: "0.5px",
-                      transform: "translateY(2%)",
+                      fontSize: "clamp(1.15rem, 3.4vw, 3rem)",
+                      letterSpacing: "0.75px",
                     }}
                   >
                     {lang.label}
