@@ -122,7 +122,7 @@ const Footer = () => {
 
               {/* Facebook */}
               <a
-                href="https://facebook.com/indikaara"
+                href="https://www.facebook.com/search/top?q=indikaara%20exports"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-text-secondary hover:text-primary transition-colors"

@@ -10,23 +10,128 @@ import {
   Public,
   Handshake,
   Palette,
+  Recycling,
 } from "@mui/icons-material";
 
-const Card = ({ icon: Icon, title, description }) => (
-  <div className="min-w-2xl min-h-2xl bg-gray-100 p-6 rounded-2xl flex items-start space-x-4 shadow-sm transition-transform">
-    <div className="flex-shrink">
-      <Icon className="text-orange-600" style={{ fontSize: "2rem" }} />
+const Card = ({ icon: Icon, title, description, highlight }) => (
+  <div
+    className={
+      `why-card h-full opacity-0 translate-y-6 group relative p-6 rounded-2xl flex flex-col shadow-sm transition-all duration-500 ease-out ` +
+      (highlight
+        ? "bg-gradient-to-br from-orange-50 via-orange-100 to-orange-50 border border-orange-300/60 shadow-[0_4px_18px_-4px_rgba(255,140,0,0.35)] hover:shadow-[0_6px_24px_-4px_rgba(255,140,0,0.45)] hover:-translate-y-1"
+        : "bg-gray-100/90 hover:bg-gray-100 hover:-translate-y-1 hover:shadow-md")
+    }
+    tabIndex={0}
+  >
+    <div className="flex items-start gap-4">
+      <div className="flex-shrink-0">
+        <Icon
+          className={
+            highlight
+              ? "text-orange-600 drop-shadow-md"
+              : "text-orange-600 drop-shadow-sm"
+          }
+          style={{ fontSize: "2rem" }}
+        />
+      </div>
+      <div className="flex-1">
+        <h3
+          className={`text-lg sm:text-xl font-semibold tracking-wide ${
+            highlight ? "text-orange-700" : "text-gray-800"
+          }`}
+        >
+          {title}
+        </h3>
+        <p
+          className={`mt-2 text-sm sm:text-base leading-relaxed ${
+            highlight ? "text-orange-800/80" : "text-gray-600"
+          }`}
+        >
+          {description}
+        </p>
+      </div>
     </div>
-    <div>
-      <h3 className="text-xl font-semibold text-gray-800">{title}</h3>
-      <p className="mt-2 text-gray-600">{description}</p>
-    </div>
+    {highlight && (
+      <span className="absolute -top-2 -right-2 bg-orange-600 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow">
+        Featured
+      </span>
+    )}
   </div>
 );
 const HomePage = () => {
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Card data for Why Connect section
+  const whyCards = [
+    {
+      icon: Recycling,
+      title: "Waste to Product Innovation",
+      description:
+        "Upcycling textile remnants, metal offcuts & organic by‑products into new collections — reducing landfill impact while celebrating circular design.",
+      highlight: true,
+    },
+    {
+      icon: CheckCircleOutline,
+      title: "Authenticity Guaranteed",
+      description:
+        "Every piece tells a story, sourced directly from master craftspeople across India.",
+    },
+    {
+      icon: Public,
+      title: "Global Reach & Visibility",
+      description:
+        "We showcase your unique creations to a global audience passionate about genuine artistry.",
+    },
+    {
+      icon: Handshake,
+      title: "Empowering Artisans",
+      description:
+        "Our model ensures fair compensation, sustaining livelihoods and preserving heritage.",
+    },
+    {
+      icon: Palette,
+      title: "Diverse Art Forms",
+      description:
+        "Explore a rich tapestry of textiles, pottery, jewelry, and more from every corner of India.",
+    },
+    {
+      icon: Handshake,
+      title: "Circular Supply Chain",
+      description:
+        "Collaborating across sourcing, production & logistics to minimize waste, repurpose by‑products and shorten material loops.",
+    },
+  ];
+
+  const WhyConnectCards = () => {
+    useEffect(() => {
+      const cards = document.querySelectorAll(".why-card");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("!opacity-100", "!translate-y-0");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.2 }
+      );
+      cards.forEach((c, idx) => {
+        c.style.transitionDelay = `${idx * 80}ms`;
+        observer.observe(c);
+      });
+      return () => observer.disconnect();
+    }, []);
+    return (
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 text-left items-stretch">
+        {whyCards.map((c) => (
+          <Card key={c.title} {...c} />
+        ))}
+      </div>
+    );
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -84,28 +189,8 @@ const HomePage = () => {
               shared love for timeless craft.
             </p>
 
-            <div className="flex flex-row flex-wrap space-y-2 space-x-2 text-left justify-center">
-              <Card
-                icon={CheckCircleOutline}
-                title="Authenticity Guaranteed"
-                description="Every piece tells a story, sourced directly from master craftspeople across India."
-              />
-              <Card
-                icon={Public}
-                title="Global Reach & Visibility"
-                description="We showcase your unique creations to a global audience passionate about genuine artistry."
-              />
-              <Card
-                icon={Handshake}
-                title="Empowering Artisans"
-                description="Our model ensures fair compensation, sustaining livelihoods and preserving heritage."
-              />
-              <Card
-                icon={Palette}
-                title="Diverse Art Forms"
-                description="Explore a rich tapestry of textiles, pottery, jewelry, and more from every corner of India."
-              />
-            </div>
+            {/* Why Connect Cards with highlight + reveal animation */}
+            <WhyConnectCards />
 
             <div className="bg-orange-50 p-6 sm:p-8 rounded-2xl mt-10">
               <p className="italic text-gray-700 leading-relaxed text-sm sm:text-base">

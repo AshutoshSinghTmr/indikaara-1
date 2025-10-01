@@ -12,16 +12,15 @@ export default function SideNav({ isOpen, setIsOpen, toggleDrawer }) {
   // Navigation link config
   const primaryLinks = [
     { label: "Home", to: "/" },
-    { label: "Catalogue", to: "/catalogue" },
     {
       label: "Our Businesses",
       to: "/businesses",
       items: [
         { id: 1, name: "Rugs" },
-        { id: 2, name: "Handicraft" },
-        { id: 3, name: "Vintage Collection" },
-        { id: 4, name: "Fine Arts" },
-        { id: 5, name: "Biomass Pellets and Briquettes" },
+        { id: 2, name: "Handicrafted Products" },
+        { id: 3, name: "Biomass Pellets & Briquettes" },
+        { id: 4, name: "Clothing" },
+        { id: 5, name: "Millet Foods" },
       ],
     },
     { label: "Our Foundation", to: "/foundation" },
@@ -58,7 +57,7 @@ export default function SideNav({ isOpen, setIsOpen, toggleDrawer }) {
     },
     "@media (min-width: 1024px)": {
       // lg
-      "& .MuiDrawer-paper": { width: "25%" },
+      "& .MuiDrawer-paper": { width: "35%" },
     },
   };
 
@@ -75,11 +74,11 @@ export default function SideNav({ isOpen, setIsOpen, toggleDrawer }) {
             className="group relative w-full px-4 py-5 flex flex-col items-center justify-center text-center focus:outline-none"
           >
             <span className="flex items-center gap-2">
-              <span className="text-lg md:text-xl lg:text-2xl font-semibold tracking-wide text-white group-hover:text-[#E6BB8D] transition-colors duration-200">
+              <span className="text-lg md:text-xl lg:text-2xl font-semibold tracking-wide text-white group-hover:text-[#ac1f23] transition-colors duration-200">
                 {item.label}
               </span>
               <span
-                className={`transition-transform duration-300 text-white/70 group-hover:text-[#E6BB8D] ${
+                className={`transition-transform duration-300 text-white/70 group-hover:text-[#ac1f23] ${
                   openBusinesses ? "rotate-180" : "rotate-0"
                 }`}
                 aria-hidden="true"
@@ -104,7 +103,7 @@ export default function SideNav({ isOpen, setIsOpen, toggleDrawer }) {
                       .replace(/\s+/g, "-")
                       .toLowerCase()}`}
                     onClick={handleClose}
-                    className="flex justify-center block w-full text-left rounded-md px-3 py-3 bg-white/5 hover:bg-white/10 active:bg-white/15 text-sm md:text-base lg:text-lg font-medium tracking-wide text-white/80 hover:text-[#E6BB8D] transition-colors"
+                    className="flex justify-center block w-full text-left rounded-md px-3 py-3 bg-white/5 hover:bg-white/10 active:bg-white/15 text-sm md:text-base lg:text-lg font-medium tracking-wide text-white/80 hover:text-[#ac1f23] transition-colors"
                   >
                     {sub.name}
                   </Link>
@@ -121,7 +120,7 @@ export default function SideNav({ isOpen, setIsOpen, toggleDrawer }) {
         onClick={handleClose}
         className="group relative px-4 py-5 flex flex-col items-center justify-center text-center"
       >
-        <span className="text-lg md:text-xl lg:text-2xl font-semibold tracking-wide text-white group-hover:text-[#E6BB8D] transition-colors duration-200">
+        <span className="text-lg md:text-xl lg:text-2xl font-semibold tracking-wide text-white group-hover:text-[#ac1f23] transition-colors duration-200">
           {item.label}
         </span>
         <span className="absolute inset-x-8 bottom-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
