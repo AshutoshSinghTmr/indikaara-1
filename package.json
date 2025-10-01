@@ -14,11 +14,9 @@
     "axios": "^1.12.0",
     "env-cmd": "^11.0.0",
     "framer-motion": "^12.23.22",
-    "i18next": "^25.5.2",
     "jwt-decode": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-i18next": "^16.0.0",
     "react-router-dom": "^6.22.3",
     "react-scripts": "5.0.1",
     "react-slick": "^0.31.0",
@@ -58,6 +56,6 @@
   },
   "devDependencies": {
     "shx": "^0.4.0",
-    "typescript": "^5.3.3"
+    "typescript": "4.9.5"
   }
 }
