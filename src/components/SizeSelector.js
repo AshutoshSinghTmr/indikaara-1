@@ -1,9 +1,18 @@
-import React, { useState, useEffect } from 'react';
-const SizeSelector = ({ priceOptions = [], onSizeSelect, selectedSize }) => {
-  const [internalSelectedSize, setInternalSelectedSize] = useState(selectedSize || '');
+import React, { useState, useEffect } from "react";
+// Added hidePrices prop (boolean) to optionally suppress price display (e.g., for Rugs)
+// Buttons restyled to be square and uniform
+const SizeSelector = ({
+  priceOptions = [],
+  onSizeSelect,
+  selectedSize,
+  hidePrices = false,
+}) => {
+  const [internalSelectedSize, setInternalSelectedSize] = useState(
+    selectedSize || ""
+  );
 
   useEffect(() => {
-    setInternalSelectedSize(selectedSize || '');
+    setInternalSelectedSize(selectedSize || "");
   }, [selectedSize]);
 
   const formatPrice = (amount) => {
@@ -26,47 +35,50 @@ const SizeSelector = ({ priceOptions = [], onSizeSelect, selectedSize }) => {
   }
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-lg font-semibold text-primary mb-4">Select Size</h3>
-      
-      <div className="grid grid-cols-1 gap-3">
+    <div className="space-y-4 max-w-full sm:max-w-md md:max-w-lg mx-auto">
+      <h3 className="text-lg font-semibold text-primary mb-2 text-center">
+        Select Size
+      </h3>
+
+      <div className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-2 sm:gap-3">
         {priceOptions.map((option, index) => {
           const isSelected = internalSelectedSize === option.size;
-          
+
           return (
             <button
-              key={option.size + '-' + index}
+              key={option.size + "-" + index}
               onClick={() => handleSizeSelect(option.size, option.amount)}
-              className={`p-4 border-2 rounded-lg text-left transition-all duration-200 ${
+              className={`aspect-square flex flex-col items-center justify-center border-2 rounded-md text-center px-1.5 py-1.5 sm:px-2 sm:py-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent/60 focus:ring-offset-2 focus:ring-offset-transparent ${
                 isSelected
-                  ? 'border-accent bg-accent/10 text-primary'
-                  : 'border-gray-300 hover:border-accent/50 text-secondary hover:text-primary'
+                  ? "border-accent bg-accent/10 text-primary shadow-md"
+                  : "border-gray-300 hover:border-accent/50 text-secondary hover:text-primary"
               }`}
             >
-              <div className="flex justify-between items-center">
-                <div>
-                  <span className="font-medium text-base">{option.size}</span>
-                  {isSelected && (
-                    <div className="text-sm text-accent mt-1">
-                      ✓ Selected
-                    </div>
-                  )}
-                </div>
-                <div className="text-right">
-                  <span className="font-bold text-lg text-accent">
-                    {formatPrice(option.amount)}
-                  </span>
-                </div>
-              </div>
+              <span className="font-medium text-[11px] sm:text-sm md:text-base leading-tight">
+                {option.size}
+              </span>
+              {!hidePrices && (
+                <span className="mt-0.5 font-bold text-[10px] sm:text-xs md:text-sm text-accent">
+                  {formatPrice(option.amount)}
+                </span>
+              )}
+              {isSelected && (
+                <span className="mt-0.5 text-[9px] sm:text-[10px] md:text-xs text-accent">
+                  ✓
+                </span>
+              )}
             </button>
           );
         })}
       </div>
-      
+
       {internalSelectedSize && (
-        <div className="mt-4 p-3 bg-accent/10 rounded-lg">
-          <p className="text-sm text-secondary">
-            Selected: <span className="font-medium text-primary">{internalSelectedSize}</span>
+        <div className="mt-2 p-2 bg-accent/5 border border-accent/30 rounded-md text-center max-w-sm mx-auto">
+          <p className="text-[11px] sm:text-xs md:text-sm text-secondary">
+            Selected Size:{" "}
+            <span className="font-medium text-primary">
+              {internalSelectedSize}
+            </span>
           </p>
         </div>
       )}

@@ -2,7 +2,9 @@ import * as React from "react";
 import Drawer from "@mui/material/Drawer";
 import CloseIcon from "@mui/icons-material/Close";
 import { Link } from "react-router-dom";
-
+import PersonIcon from "@mui/icons-material/Person";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 // Simple icon placeholders (replace with themed icons later if needed)
 
 export default function SideNav({ isOpen, setIsOpen, toggleDrawer }) {
@@ -28,9 +30,17 @@ export default function SideNav({ isOpen, setIsOpen, toggleDrawer }) {
     { label: "Blog", to: "/blog" },
   ];
   const secondaryLinks = [
-    { label: "Profile", to: "/login" },
-    { label: "Cart", to: "/cart" },
-    { label: "Wishlist", to: "/wishlist" },
+    {
+      label: "Profile",
+      to: "/login",
+      icon: <PersonIcon fontSize="large" />,
+    },
+    { label: "Cart", to: "/cart", icon: <ShoppingCartIcon fontSize="large" /> },
+    {
+      label: "Wishlist",
+      to: "/wishlist",
+      icon: <FavoriteIcon fontSize="large" />,
+    },
   ];
 
   // Responsive width: 100% (<md), 50% (md>=), 25% (lg>=)
@@ -140,6 +150,8 @@ export default function SideNav({ isOpen, setIsOpen, toggleDrawer }) {
         className="group relative px-4 py-5 flex flex-col items-center justify-center text-center"
       >
         <span className="text-lg md:text-xl lg:text-2xl font-semibold tracking-wide text-white group-hover:text-[#ac1f23] transition-colors duration-200">
+          {item.icon ? item.icon : null}
+          {"  "}
           {item.label}
         </span>
         <span className="absolute inset-x-8 bottom-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />

@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
-import { getAllImages, getDefaultImage } from '../utils/imageUtils';
+import React, { useState, useRef } from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import "./ImageGalleryCarousel.css";
+import { getAllImages, getDefaultImage } from "../utils/imageUtils";
 
 /**
  * ImageGallery Component - Product image gallery with main image and thumbnails
@@ -8,23 +12,29 @@ import { getAllImages, getDefaultImage } from '../utils/imageUtils';
  */
 const ImageGallery = ({ images, productName }) => {
   const [selectedImage, setSelectedImage] = useState(0);
+  const mainSliderRef = useRef(null);
 
   // Check if images are already processed (from transformed data)
   let processedImages;
-  if (images && images.length > 0 && typeof images[0] === 'string' && images[0].startsWith('/assets/')) {
+  if (
+    images &&
+    images.length > 0 &&
+    typeof images[0] === "string" &&
+    images[0].startsWith("/assets/")
+  ) {
     // Images are already processed by dataService
     processedImages = images;
   } else {
     // Process raw images using utilities
     processedImages = getAllImages(images || []);
   }
-  
+
   // If no processed images, use default
   if (!processedImages || processedImages.length === 0) {
     const defaultImg = getDefaultImage();
     return (
       <div className="w-full h-96 bg-gray-800 rounded-xl flex items-center justify-center">
-        <div 
+        <div
           className="w-full h-full bg-center bg-no-repeat bg-cover rounded-xl"
           style={{ backgroundImage: `url("${defaultImg}")` }}
           role="img"
@@ -34,41 +44,108 @@ const ImageGallery = ({ images, productName }) => {
     );
   }
 
-  return (
-    <div className="space-y-4">
-      {/* Main Image */}
-      <div className="rounded-xl overflow-hidden group cursor-pointer">
-        <div 
-          className="w-full h-96 bg-center bg-no-repeat bg-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
-          style={{ backgroundImage: `url("${processedImages[selectedImage]}")` }}
-          role="img"
-          aria-label={`${productName} - Main image`}
-        />
-      </div>
+  const showArrows = processedImages.length > 1;
 
-      {/* Thumbnail Grid */}
-      {processedImages.length > 1 && (
-        <div className="grid grid-cols-2 gap-4">
-          {processedImages.slice(1, 3).map((image, index) => (
-            <div 
-              key={index + 1}
-              className={`rounded-xl overflow-hidden group cursor-pointer ${
-                selectedImage === index + 1 ? 'ring-2 ring-[var(--primary-color)]' : ''
-              }`}
-              onClick={() => setSelectedImage(index + 1)}
-            >
-              <div 
-                className="w-full h-32 bg-center bg-no-repeat bg-cover aspect-square transition-transform duration-500 ease-in-out group-hover:scale-110"
-                style={{ backgroundImage: `url("${image}")` }}
+  const settings = {
+    dots: true,
+    arrows: showArrows,
+    infinite: processedImages.length > 1,
+    speed: 600,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    adaptiveHeight: false,
+    beforeChange: (_, next) => setSelectedImage(next),
+    nextArrow: <SampleNextArrow />,
+    prevArrow: <SamplePrevArrow />,
+    autoplay: processedImages.length > 1,
+    autoplaySpeed: 4500,
+    pauseOnHover: true,
+    swipe: true,
+    lazyLoad: "ondemand",
+  };
+
+  return (
+    <div className="relative">
+      <div className="relative">
+        <Slider ref={mainSliderRef} {...settings}>
+          {processedImages.map((img, idx) => (
+            <div key={idx}>
+              <div
+                className="gallery-slide-bg"
+                style={{
+                  backgroundImage: `url('${img}')`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
                 role="img"
-                aria-label={`${productName} - Image ${index + 2}`}
+                aria-label={`${productName} - Image ${idx + 1}`}
               />
             </div>
+          ))}
+        </Slider>
+      </div>
+
+      {processedImages.length > 1 && (
+        <div className="gallery-thumbs-wrapper grid grid-cols-4 sm:grid-cols-6 md:grid-cols-6 gap-3">
+          {processedImages.map((thumb, tIdx) => (
+            <button
+              key={tIdx}
+              type="button"
+              className="gallery-thumb-button"
+              data-active={selectedImage === tIdx}
+              onClick={() => {
+                setSelectedImage(tIdx);
+                if (mainSliderRef.current)
+                  mainSliderRef.current.slickGoTo(tIdx);
+              }}
+              aria-label={`View image ${tIdx + 1}`}
+            >
+              <img
+                src={thumb}
+                alt={`${productName} thumbnail ${tIdx + 1}`}
+                className="gallery-thumb-img"
+              />
+            </button>
           ))}
         </div>
       )}
     </div>
   );
 };
+
+// Custom arrows to match theme
+const ArrowBase = ({ className, style, onClick, direction }) => {
+  return (
+    <button
+      type="button"
+      aria-label={direction === "next" ? "Next image" : "Previous image"}
+      className={`!flex !items-center !justify-center !w-12 !h-12 !rounded-full !backdrop-blur-sm !bg-black/30 hover:!bg-black/50 !border !border-white/10 transition-colors shadow-lg absolute ${
+        direction === "next" ? "!right-4" : "!left-4"
+      } !top-1/2 -translate-y-1/2 z-30`}
+      style={style}
+      onClick={onClick}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="w-6 h-6 text-[var(--accent-color)]"
+      >
+        {direction === "next" ? (
+          <path d="M9 18l6-6-6-6" />
+        ) : (
+          <path d="M15 18l-6-6 6-6" />
+        )}
+      </svg>
+    </button>
+  );
+};
+
+const SampleNextArrow = (props) => <ArrowBase {...props} direction="next" />;
+const SamplePrevArrow = (props) => <ArrowBase {...props} direction="prev" />;
 
 export default ImageGallery;

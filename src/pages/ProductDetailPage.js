@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
-import ImageGallery from '../components/ImageGallery';
-import Breadcrumb from '../components/Breadcrumb';
-import ProductInfoSection from '../components/ProductInfoSection';
-import SizeSelector from '../components/SizeSelector';
-import Button from '../components/Button';
-import dataService from '../data/dataService';
-
-/**
+import React, { useState, useEffect, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartContext";
+import ImageGallery from "../components/ImageGallery";
+import Breadcrumb from "../components/Breadcrumb";
+import ProductInfoSection from "../components/ProductInfoSection";
+import SizeSelector from "../components/SizeSelector";
+import Button from "../components/Button";
+import dataService from "../data/dataService";
+// Removed unused MUI icon imports to clean up warnings
+/**;
  * ProductDetailPage Component - Detailed product view with images, description, and purchase option
  * Features: Image gallery, breadcrumb navigation, product details, cultural context, artisan story
  */
@@ -21,27 +21,133 @@ const ProductDetailPage = () => {
   // const [relatedProducts, setRelatedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [quantity, setQuantity] = useState(1);
+  // Enforce Minimum Order Quantity (MOQ) of 25
+  const [quantity, setQuantity] = useState(25);
   const [addedToCart, setAddedToCart] = useState(false);
-  const [selectedSize, setSelectedSize] = useState('');
+  const [selectedSize, setSelectedSize] = useState("");
   const [currentPrice, setCurrentPrice] = useState(null);
   const [isInWishlist, setIsInWishlist] = useState(false);
-  const [wishlistMessage, setWishlistMessage] = useState('');
-  const [shareMessage, setShareMessage] = useState('');
+  const [wishlistMessage, setWishlistMessage] = useState("");
+  const [shareMessage, setShareMessage] = useState("");
+  const galleryWrapperRef = useRef(null); // outer normal flow container
+  const galleryInnerRef = useRef(null); // element that becomes fixed
+  const placeholderRef = useRef(null); // placeholder to preserve height when fixed
+  const craftingRef = useRef(null); // anchor to release sticky
+  const careRef = useRef(null); // Care Instructions release anchor
+  const [headerHeight, setHeaderHeight] = useState(0); // dynamic header height
+
+  // Measure header height (supports responsive height changes & future shrink-on-scroll)
+  useEffect(() => {
+    const measure = () => {
+      const header = document.querySelector("header");
+      if (header) {
+        const h = header.getBoundingClientRect().height;
+        setHeaderHeight(h);
+      }
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    // slight delay to capture any late layout adjustments
+    const t = setTimeout(measure, 150);
+    return () => {
+      window.removeEventListener("resize", measure);
+      clearTimeout(t);
+    };
+  }, []);
+
+  // JS fallback sticky for browsers / layout where CSS sticky fails
+  useEffect(() => {
+    const handleScroll = () => {
+      const minWidth = 1024; // lg breakpoint
+      if (window.innerWidth < minWidth) {
+        // reset any fixed state on small screens
+        if (galleryInnerRef.current) {
+          galleryInnerRef.current.style.position = "";
+          galleryInnerRef.current.style.top = "";
+          galleryInnerRef.current.style.width = "";
+        }
+        if (placeholderRef.current)
+          placeholderRef.current.style.display = "none";
+        return;
+      }
+      if (!galleryWrapperRef.current || !galleryInnerRef.current) return;
+      const offsetBuffer = 20; // breathing room below header
+      const headerOffset = (headerHeight || 100) + offsetBuffer;
+      const rect = galleryWrapperRef.current.getBoundingClientRect();
+      const viewportTop = rect.top;
+      // Determine release point based on Care Instructions section bottom (preferred)
+      let releaseMode = null; // null=fixed eligible, 'absolute'=anchor at bottom, 'reset'=normal flow
+      const galleryHeight = galleryInnerRef.current?.offsetHeight || 0;
+
+      const anchorEl = careRef.current || craftingRef.current; // fallback to crafting if care not mounted
+      if (anchorEl) {
+        const anchorRect = anchorEl.getBoundingClientRect();
+        // If bottom of anchor is above the space the fixed gallery would occupy -> release
+        if (anchorRect.bottom <= headerOffset + galleryHeight - 8) {
+          releaseMode = "absolute";
+        }
+      }
+
+      if (releaseMode === "absolute") {
+        // Pin the gallery to the bottom of its wrapper smoothly
+        const wrapperRect = galleryWrapperRef.current.getBoundingClientRect();
+        const absoluteTop = wrapperRect.height - galleryHeight; // position within wrapper
+        galleryInnerRef.current.style.position = "absolute";
+        galleryInnerRef.current.style.top = absoluteTop + "px";
+        galleryInnerRef.current.style.width = "100%";
+        galleryInnerRef.current.style.transition = "top 180ms ease-out";
+        if (placeholderRef.current)
+          placeholderRef.current.style.display = "none";
+        return;
+      }
+
+      const stopPoint = rect.height - (window.innerHeight - headerOffset); // legacy guard
+      if (viewportTop <= headerOffset && stopPoint > 0) {
+        // activate fixed
+        if (placeholderRef.current) {
+          placeholderRef.current.style.display = "block";
+          placeholderRef.current.style.height =
+            galleryInnerRef.current.offsetHeight + "px";
+        }
+        galleryInnerRef.current.style.position = "fixed";
+        galleryInnerRef.current.style.top = headerOffset + "px";
+        galleryInnerRef.current.style.width =
+          galleryWrapperRef.current.offsetWidth + "px";
+        galleryInnerRef.current.style.transition = "top 120ms ease-out";
+      } else {
+        // reset
+        if (galleryInnerRef.current) {
+          galleryInnerRef.current.style.position = "";
+          galleryInnerRef.current.style.top = "";
+          galleryInnerRef.current.style.width = "";
+          galleryInnerRef.current.style.transition = "";
+        }
+        if (placeholderRef.current)
+          placeholderRef.current.style.display = "none";
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+    handleScroll();
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, [headerHeight]);
 
   // Load product data
   useEffect(() => {
     const loadProduct = () => {
       setLoading(true);
-      
+
       try {
         // Get product from dataService
         const productData = dataService.getProductById(parseInt(id));
-        
+
         if (productData) {
           // Get raw product data to access dimensions
           const rawProduct = dataService.getRawProductById(parseInt(id));
-          
+
           // Transform product data to match component expectations
           const transformedProduct = {
             id: productData.id,
@@ -64,43 +170,52 @@ const ProductDetailPage = () => {
             artisan: {
               name: productData.artisan,
               location: productData.region,
-              experience: '20+ years',
-              story: `Meet ${productData.artisan.split(' ')[0]}, a master artisan from ${productData.region}. With over 20 years of experience in ${productData.category.toLowerCase()}, they bring exceptional skill and passion to every piece they create.`
+              experience: "20+ years",
+              story: `Meet ${
+                productData.artisan.split(" ")[0]
+              }, a master artisan from ${
+                productData.region
+              }. With over 20 years of experience in ${productData.category.toLowerCase()}, they bring exceptional skill and passion to every piece they create.`,
             },
-            culturalContext: `This ${productData.name.toLowerCase()} represents the rich cultural heritage of ${productData.region}. Each piece is crafted using traditional techniques passed down through generations, embodying the artistic traditions of the region.`,
+            culturalContext: `This ${productData.name.toLowerCase()} represents the rich cultural heritage of ${
+              productData.region
+            }. Each piece is crafted using traditional techniques passed down through generations, embodying the artistic traditions of the region.`,
             craftingTechnique: `The creation of this masterpiece involves traditional techniques specific to ${productData.region}. Master artisans carefully select the finest materials and employ time-honored methods to ensure authenticity and quality.`,
             specifications: productData.specifications || {
-              material: 'Traditional materials',
-              careInstructions: 'Handle with care'
-            }
+              material: "Traditional materials",
+              careInstructions: "Handle with care",
+            },
           };
 
           setProduct(transformedProduct);
           setRawProductData(rawProduct);
-          
+
           // Set initial size and price from new priceOptions structure
-          if (transformedProduct.priceOptions && transformedProduct.priceOptions.length > 0) {
+          if (
+            transformedProduct.priceOptions &&
+            transformedProduct.priceOptions.length > 0
+          ) {
             const firstOption = transformedProduct.priceOptions[0];
             setSelectedSize(firstOption.size);
             setCurrentPrice(firstOption.amount);
           } else if (transformedProduct.price) {
             setCurrentPrice(transformedProduct.price);
-            setSelectedSize('Standard');
+            setSelectedSize("Standard");
           }
-          
+
           // Load related products
           // const related = dataService.getRelatedProducts(parseInt(id), 4);
           // setRelatedProducts(related);
-          
+
           setError(null);
         } else {
-          setError('Product not found');
+          setError("Product not found");
         }
       } catch (err) {
-        console.error('Error loading product:', err);
-        setError('Failed to load product details');
+        console.error("Error loading product:", err);
+        setError("Failed to load product details");
       }
-      
+
       setLoading(false);
     };
 
@@ -110,22 +225,29 @@ const ProductDetailPage = () => {
   }, [id]);
 
   // Generate breadcrumb items dynamically
-  const breadcrumbItems = product ? [
-    { label: 'Home', path: '/' },
-    { label: 'Catalogue', path: '/catalogue' },
-    { label: product.category, path: `/catalogue?categories=${product.category.toLowerCase()}` },
-    { label: product.name, path: '' }
-  ] : [
-    { label: 'Home', path: '/' },
-    { label: 'Catalogue', path: '/catalogue' }
-  ];
+  const breadcrumbItems = product
+    ? [
+        { label: "Home", path: "/" },
+        { label: "Catalogue", path: "/catalogue" },
+        {
+          label: product.category,
+          path: `/catalogue?categories=${product.category.toLowerCase()}`,
+        },
+        { label: product.name, path: "" },
+      ]
+    : [
+        { label: "Home", path: "/" },
+        { label: "Catalogue", path: "/catalogue" },
+      ];
 
   // Handle size selection
   const handleSizeChange = (size) => {
     setSelectedSize(size);
     // Update price based on selected size from priceOptions
     if (product.priceOptions) {
-      const selectedOption = product.priceOptions.find(option => option.size === size);
+      const selectedOption = product.priceOptions.find(
+        (option) => option.size === size
+      );
       if (selectedOption) {
         setCurrentPrice(selectedOption.amount);
       }
@@ -142,32 +264,37 @@ const ProductDetailPage = () => {
     if (product) {
       // Use current price if available, otherwise fallback to product price
       const priceToUse = currentPrice || product.price;
-      
-      addToCart({
-        id: product.id,
-        title: product.name,
-        price: priceToUse,
-        image: product.images[0],
-        category: product.category,
-        size: selectedSize || (product.dimensions && product.dimensions.length > 0 ? product.dimensions[0] : 'Standard'),
-        color: rawProductData?.color?.[0] || 'Standard',
-        material: rawProductData?.material || 'Handcrafted',
-        dimensions: selectedSize || (product.dimensions && product.dimensions.length > 0 ? product.dimensions[0] : null)
-      }, quantity);
-      
+
+      addToCart(
+        {
+          id: product.id,
+          title: product.name,
+          price: priceToUse,
+          image: product.images[0],
+          category: product.category,
+          size:
+            selectedSize ||
+            (product.dimensions && product.dimensions.length > 0
+              ? product.dimensions[0]
+              : "Standard"),
+          color: rawProductData?.color?.[0] || "Standard",
+          material: rawProductData?.material || "Handcrafted",
+          dimensions:
+            selectedSize ||
+            (product.dimensions && product.dimensions.length > 0
+              ? product.dimensions[0]
+              : null),
+        },
+        quantity
+      );
+
       setAddedToCart(true);
-      
+
       // Reset the added state after 2 seconds
       setTimeout(() => {
         setAddedToCart(false);
       }, 2000);
     }
-  };
-
-  // Handle buy now (add to cart and navigate to cart)
-  const handleBuyNow = () => {
-    handleAddToCart();
-    navigate('/cart');
   };
 
   // Handle navigation back
@@ -179,20 +306,26 @@ const ProductDetailPage = () => {
   const handleAddToWishlist = () => {
     try {
       // Get existing wishlist from localStorage
-      const existingWishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
-      
+      const existingWishlist = JSON.parse(
+        localStorage.getItem("wishlist") || "[]"
+      );
+
       // Check if product is already in wishlist
-      const isAlreadyInWishlist = existingWishlist.some(item => item.id === product.id);
-      
+      const isAlreadyInWishlist = existingWishlist.some(
+        (item) => item.id === product.id
+      );
+
       if (isAlreadyInWishlist) {
         // Remove from wishlist
-        const updatedWishlist = existingWishlist.filter(item => item.id !== product.id);
-        localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+        const updatedWishlist = existingWishlist.filter(
+          (item) => item.id !== product.id
+        );
+        localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
         setIsInWishlist(false);
-        setWishlistMessage('Removed from wishlist');
-        
+        setWishlistMessage("Removed from wishlist");
+
         // Dispatch custom event to update header count
-        window.dispatchEvent(new Event('wishlistUpdated'));
+        window.dispatchEvent(new Event("wishlistUpdated"));
       } else {
         // Add to wishlist
         const wishlistItem = {
@@ -200,29 +333,29 @@ const ProductDetailPage = () => {
           name: product.name,
           price: currentPrice || product.price,
           priceRange: product.priceRange,
-          image: product.images?.[0] || '',
+          image: product.images?.[0] || "",
           category: product.category,
-          addedAt: new Date().toISOString()
+          addedAt: new Date().toISOString(),
         };
-        
+
         const updatedWishlist = [...existingWishlist, wishlistItem];
-        localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+        localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
         setIsInWishlist(true);
-        setWishlistMessage('Added to wishlist');
-        
+        setWishlistMessage("Added to wishlist");
+
         // Dispatch custom event to update header count
-        window.dispatchEvent(new Event('wishlistUpdated'));
+        window.dispatchEvent(new Event("wishlistUpdated"));
       }
-      
+
       // Clear message after 3 seconds
       setTimeout(() => {
-        setWishlistMessage('');
+        setWishlistMessage("");
       }, 3000);
     } catch (error) {
-      console.error('Error managing wishlist:', error);
-      setWishlistMessage('Error updating wishlist');
+      console.error("Error managing wishlist:", error);
+      setWishlistMessage("Error updating wishlist");
       setTimeout(() => {
-        setWishlistMessage('');
+        setWishlistMessage("");
       }, 3000);
     }
   };
@@ -232,36 +365,42 @@ const ProductDetailPage = () => {
     try {
       const shareData = {
         title: product.name,
-        text: `Check out this beautiful ${product.category.toLowerCase()} - ${product.name}`,
-        url: window.location.href
+        text: `Check out this beautiful ${product.category.toLowerCase()} - ${
+          product.name
+        }`,
+        url: window.location.href,
       };
 
       // Check if Web Share API is supported
-      if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+      if (
+        navigator.share &&
+        navigator.canShare &&
+        navigator.canShare(shareData)
+      ) {
         await navigator.share(shareData);
-        setShareMessage('Shared successfully');
+        setShareMessage("Shared successfully");
       } else {
         // Fallback: Copy to clipboard
         await navigator.clipboard.writeText(window.location.href);
-        setShareMessage('Link copied to clipboard');
+        setShareMessage("Link copied to clipboard");
       }
-      
+
       // Clear message after 3 seconds
       setTimeout(() => {
-        setShareMessage('');
+        setShareMessage("");
       }, 3000);
     } catch (error) {
-      console.error('Error sharing:', error);
+      console.error("Error sharing:", error);
       // Fallback: Try to copy to clipboard
       try {
         await navigator.clipboard.writeText(window.location.href);
-        setShareMessage('Link copied to clipboard');
+        setShareMessage("Link copied to clipboard");
       } catch (clipboardError) {
-        setShareMessage('Unable to share or copy link');
+        setShareMessage("Unable to share or copy link");
       }
-      
+
       setTimeout(() => {
-        setShareMessage('');
+        setShareMessage("");
       }, 3000);
     }
   };
@@ -270,11 +409,15 @@ const ProductDetailPage = () => {
   useEffect(() => {
     if (product) {
       try {
-        const existingWishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
-        const isInWishlist = existingWishlist.some(item => item.id === product.id);
+        const existingWishlist = JSON.parse(
+          localStorage.getItem("wishlist") || "[]"
+        );
+        const isInWishlist = existingWishlist.some(
+          (item) => item.id === product.id
+        );
         setIsInWishlist(isInWishlist);
       } catch (error) {
-        console.error('Error checking wishlist:', error);
+        console.error("Error checking wishlist:", error);
       }
     }
   }, [product]);
@@ -299,7 +442,9 @@ const ProductDetailPage = () => {
       <main className="container mx-auto px-4 py-8 max-w-6xl" role="main">
         <div className="text-center py-12">
           <div className="text-6xl mb-4">😔</div>
-          <h2 className="text-2xl font-bold text-primary mb-2">Product Not Found</h2>
+          <h2 className="text-2xl font-bold text-primary mb-2">
+            Product Not Found
+          </h2>
           <p className="text-secondary mb-6">
             The product you're looking for doesn't exist or has been moved.
           </p>
@@ -307,7 +452,7 @@ const ProductDetailPage = () => {
             <Button variant="outline" onClick={handleGoBack}>
               Go Back
             </Button>
-            <Button variant="primary" onClick={() => navigate('/catalogue')}>
+            <Button variant="primary" onClick={() => navigate("/catalogue")}>
               Browse Catalogue
             </Button>
           </div>
@@ -317,31 +462,57 @@ const ProductDetailPage = () => {
   }
 
   return (
-    <main className="container mx-auto px-4 py-8 pt-24 max-w-6xl" role="main">
-      {/* Breadcrumb Navigation */}
-      <Breadcrumb items={breadcrumbItems} />
-
+    <main
+      className="container mx-auto px-4 sm:px-6 lg:px-10 xl:px-12 py-8 max-w-7xl"
+      role="main"
+      // Base top padding ensures no overlap on initial paint before measurement; dynamic added after measure
+      style={{ paddingTop: (headerHeight || 120) + 48 }}
+    >
       {/* Product Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        {/* Product Images */}
-        <div>
-          <ImageGallery images={product.image || product.images || []} productName={product.name} />
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">
+        {/* Product Images (Sticky on large screens) */}
+        <div
+          className="lg:col-span-5 xl:col-span-5 relative"
+          ref={galleryWrapperRef}
+        >
+          <div
+            ref={placeholderRef}
+            style={{ display: "none" }}
+            aria-hidden="true"
+          ></div>
+          <div className="lg:top-36 xl:top-40" ref={galleryInnerRef}>
+            <ImageGallery
+              images={product.image || product.images || []}
+              productName={product.name}
+            />
+          </div>
         </div>
 
         {/* Product Information */}
-        <div className="space-y-8">
+        <div className="lg:col-span-7 xl:col-span-7 space-y-10">
+          {/* Breadcrumb Navigation */}
+          <div className="mb-8 mt-2">
+            <Breadcrumb items={breadcrumbItems} />
+          </div>
           {/* Product Header */}
-          <div>
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2">{product.name}</h1>
-            <p className="text-secondary leading-relaxed mb-4">
+          <div className="flex flex-col justify-between items-start bg-gray-800/60 backdrop-blur-sm w-full rounded-2xl border border-white/10 p-6 shadow-lg space-y-4">
+            <h1 className="sm:text-2xl md:text-4xl lg:text-5xl font-bold mb-2">
+              {product.name}
+            </h1>
+            <p className="text-secondary text-xl leading-relaxed my-5">
               {product.description}
             </p>
-            {currentPrice ? (
+            {/* Price Display: Rugs => Price on request; others => normal pricing logic */}
+            {product.category && product.category.toLowerCase() === "rugs" ? (
+              <div className="inline-block text-white text-xl md:text-2xl font-bold px-6 py-3 rounded-[var(--border-radius-lg)] shadow-lg border-2 border-[var(--accent-color)]">
+                Price on request
+              </div>
+            ) : currentPrice ? (
               <div className="inline-block text-white text-xl md:text-2xl font-bold px-6 py-3 rounded-[var(--border-radius-lg)] shadow-lg border-2 border-[var(--accent-color)]">
                 ₹ {currentPrice.toLocaleString()}
               </div>
-            ) : (product.priceRange && product.priceRange !== null) ? (
-              <div className="inline-block  text-white text-xl md:text-2xl font-bold px-6 py-3 rounded-[var(--border-radius-lg)] shadow-lg border-2 border-[var(--accent-color)]">
+            ) : product.priceRange && product.priceRange !== null ? (
+              <div className="inline-block text-white text-xl md:text-2xl font-bold px-6 py-3 rounded-[var(--border-radius-lg)] shadow-lg border-2 border-[var(--accent-color)]">
                 {product.priceRange}
               </div>
             ) : product.price ? (
@@ -353,10 +524,183 @@ const ProductDetailPage = () => {
                 Price on request
               </div>
             )}
+            {/* Minimum Order Quantity notice */}
+            <div className="mt-4 inline-flex items-center gap-2 bg-gray-800/70 backdrop-blur-sm border border-[var(--accent-color)]/40 rounded-full px-4 py-2 text-sm text-secondary shadow-sm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="w-4 h-4 text-[var(--accent-color)]"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="16" x2="12" y2="12" />
+                <line x1="12" y1="8" x2="12" y2="8" />
+              </svg>
+              <span className="text-[var(--accent-color)] font-semibold">
+                Minimum Order Quantity:
+              </span>
+              <span className="text-primary font-medium">25 units</span>
+            </div>
+          </div>
+          {product.specifications && (
+            <div className="space-y-3">
+              <h2 className="text-2xl font-bold text-[var(--accent-color)]">
+                Specifications
+              </h2>
+              <div className="bg-gray-800 rounded-lg p-4 space-y-2">
+                {Object.entries(product.specifications).map(([key, value]) => (
+                  <div key={key} className="flex justify-between">
+                    <span className="text-secondary capitalize">
+                      {key.replace(/([A-Z])/g, " $1").trim()}:
+                    </span>
+                    <span className="text-primary">{value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {/* Size Selector (moved above info sections) */}
+          {product.priceOptions && product.priceOptions.length > 1 && (
+            <div className="mt-2">
+              <SizeSelector
+                priceOptions={product.priceOptions}
+                selectedSize={selectedSize}
+                hidePrices={
+                  product.category && product.category.toLowerCase() === "rugs"
+                }
+                onSizeSelect={(size, amount) => {
+                  handleSizeChange(size);
+                  handlePriceChange(amount);
+                }}
+              />
+            </div>
+          )}
+          {/* Quantity Selector */}
+          <div className="pt-4">
+            <div className="flex flex-col items-center text-center">
+              <label
+                htmlFor="quantity"
+                className="block text-sm font-medium text-secondary mb-1 tracking-wide"
+              >
+                Quantity (Min 25)
+              </label>
+              <p className="text-[11px] sm:text-xs text-secondary/70 mb-4 max-w-xs">
+                This handcrafted product has a minimum order quantity of 25
+                units.
+              </p>
+              <div className="flex items-center gap-4 sm:gap-6">
+                <button
+                  onClick={() => setQuantity(Math.max(25, quantity - 1))}
+                  disabled={quantity <= 25}
+                  className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-card-bg border border-border-color text-primary transition-colors flex items-center justify-center text-xl font-semibold ${
+                    quantity > 25
+                      ? "hover:bg-border-color cursor-pointer"
+                      : "opacity-40 cursor-not-allowed"
+                  }`}
+                  aria-label="Decrease quantity (minimum 25)"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="w-7 h-7"
+                  >
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                </button>
+                <span className="w-20 sm:w-24 text-center text-primary font-bold text-2xl select-none">
+                  {quantity}
+                </span>
+                <button
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-card-bg border border-border-color text-primary hover:bg-border-color transition-colors flex items-center justify-center text-xl font-semibold"
+                  aria-label="Increase quantity"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="w-7 h-7"
+                  >
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div className="mt-8 flex justify-center">
+              <Button
+                variant={addedToCart ? "success" : "secondary"}
+                size="lg"
+                onClick={handleAddToCart}
+                className="min-w-[260px] sm:min-w-[320px]"
+                aria-label={`Add ${product.name} to cart`}
+                disabled={addedToCart}
+              >
+                {addedToCart ? (
+                  <span className="flex items-center gap-2">
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    Added to Cart!
+                  </span>
+                ) : (
+                  "Add to Cart"
+                )}
+              </Button>
+            </div>
           </div>
 
+          {/* Additional Actions */}
+          <div className="flex gap-4 pt-2">
+            <Button
+              variant="outline"
+              size="md"
+              onClick={handleAddToWishlist}
+              className={`flex-1 transition-colors ${
+                isInWishlist
+                  ? "bg-red-100 border-red-300 text-red-700 hover:bg-red-200"
+                  : ""
+              }`}
+            >
+              {isInWishlist ? "❤️ In Wishlist" : "🤍 Add to Wishlist"}
+            </Button>
+            <Button
+              variant="outline"
+              size="md"
+              onClick={handleShare}
+              className="flex-1"
+            >
+              📤 Share
+            </Button>
+          </div>
+          {/* Product Specifications */}
+
           {/* Product Details Sections */}
-          <div className="space-y-6">
+          <div className="space-y-6 mt-4">
             {/* Cultural Context */}
             <ProductInfoSection
               title="Cultural Context"
@@ -370,125 +714,16 @@ const ProductDetailPage = () => {
             />
 
             {/* Crafting Technique */}
-            <ProductInfoSection
-              title="Crafting Technique"
-              content={product.craftingTechnique}
-            />
-
-            {/* Product Specifications */}
-            {product.specifications && (
-              <div className="space-y-3">
-                <h2 className="text-2xl font-bold text-[var(--accent-color)]">
-                  Specifications
-                </h2>
-                <div className="bg-gray-800 rounded-lg p-4 space-y-2">
-                  {Object.entries(product.specifications).map(([key, value]) => (
-                    <div key={key} className="flex justify-between">
-                      <span className="text-secondary capitalize">
-                        {key.replace(/([A-Z])/g, ' $1').trim()}:
-                      </span>
-                      <span className="text-primary">{value}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Size Selector */}
-          {product.priceOptions && product.priceOptions.length > 1 && (
-            <SizeSelector
-              priceOptions={product.priceOptions}
-              selectedSize={selectedSize}
-              onSizeSelect={(size, amount) => {
-                handleSizeChange(size);
-                handlePriceChange(amount);
-              }}
-            />
-          )}
-
-          {/* Quantity Selector */}
-          <div className="pt-6">
-            <label htmlFor="quantity" className="block text-sm font-medium text-secondary mb-3">
-              Quantity
-            </label>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="w-10 h-10 rounded-full bg-card-bg border border-border-color text-primary hover:bg-border-color transition-colors flex items-center justify-center"
-                aria-label="Decrease quantity"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
-                </svg>
-              </button>
-              <span className="w-12 text-center text-primary font-medium text-lg">
-                {quantity}
-              </span>
-              <button
-                onClick={() => setQuantity(quantity + 1)}
-                className="w-10 h-10 rounded-full bg-card-bg border border-border-color text-primary hover:bg-border-color transition-colors flex items-center justify-center"
-                aria-label="Increase quantity"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-              </button>
+            <div ref={craftingRef}>
+              <ProductInfoSection
+                title="Crafting Technique"
+                content={product.craftingTechnique}
+              />
             </div>
           </div>
 
-          {/* Purchase Buttons */}
-          <div className="pt-6 space-y-3">
-            <Button
-              variant="primary"
-              size="lg"
-              onClick={handleBuyNow}
-              className="w-full"
-              aria-label={`Buy ${product.name} now`}
-            >
-              Buy Now
-            </Button>
-            <Button
-              variant={addedToCart ? "success" : "secondary"}
-              size="lg"
-              onClick={handleAddToCart}
-              className="w-full"
-              aria-label={`Add ${product.name} to cart`}
-              disabled={addedToCart}
-            >
-              {addedToCart ? (
-                <span className="flex items-center gap-2">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  Added to Cart!
-                </span>
-              ) : (
-                'Add to Cart'
-              )}
-            </Button>
-          </div>
+          {/* Purchase Button (Buy Now hidden as requested) */}
 
-          {/* Additional Actions */}
-          <div className="flex gap-4 pt-2">
-            <Button
-              variant="outline"
-              size="md"
-              onClick={handleAddToWishlist}
-              className={`flex-1 transition-colors ${isInWishlist ? 'bg-red-100 border-red-300 text-red-700 hover:bg-red-200' : ''}`}
-            >
-              {isInWishlist ? '❤️ In Wishlist' : '🤍 Add to Wishlist'}
-            </Button>
-            <Button
-              variant="outline"
-              size="md"
-              onClick={handleShare}
-              className="flex-1"
-            >
-              📤 Share
-            </Button>
-          </div>
-          
           {/* Feedback Messages */}
           {wishlistMessage && (
             <div className="mt-2 p-2 bg-teal-100 border border-teal-300 text-teal-700 rounded text-sm text-center">
@@ -500,53 +735,50 @@ const ProductDetailPage = () => {
               {shareMessage}
             </div>
           )}
-        </div>
-      </div>
-
-      {/* Additional Product Information */}
-      <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {/* Artisan Info Card */}
-        <div className="bg-gray-800 rounded-lg p-6">
-          <h3 className="text-xl font-bold text-primary mb-3">Meet the Artisan</h3>
-          <div className="space-y-2">
-            <p className="text-secondary">
-              <span className="font-medium">Name:</span> {product.artisan.name}
-            </p>
-            <p className="text-secondary">
-              <span className="font-medium">Location:</span> {product.artisan.location}
-            </p>
-            <p className="text-secondary">
-              <span className="font-medium">Experience:</span> {product.artisan.experience}
-            </p>
-          </div>
-        </div>
-
-        {/* Region Info Card */}
-        <div className="bg-gray-800 rounded-lg p-6">
-          <h3 className="text-xl font-bold text-primary mb-3">Origin</h3>
-          <div className="space-y-2">
-            <p className="text-secondary">
-              <span className="font-medium">Region:</span> {product.region}
-            </p>
-            <p className="text-secondary">
-              <span className="font-medium">Category:</span> {product.category}
-            </p>
-            <p className="text-secondary">
-              <span className="font-medium">Type:</span> {product.subcategory}
-            </p>
-          </div>
-        </div>
-
-        {/* Care Instructions Card */}
-        <div className="bg-gray-800 rounded-lg p-6">
-          <h3 className="text-xl font-bold text-primary mb-3">Care Instructions</h3>
-          <div className="space-y-2">
-            <p className="text-secondary">
-              {product.specifications?.careInstructions || 'Handle with care'}
-            </p>
-            <p className="text-sm text-secondary opacity-75">
-              Proper care ensures longevity of this handcrafted piece.
-            </p>
+          {/* Additional Product Information (moved inside right column for alignment) */}
+          <div className="mt-14 flex flex-col gap-8">
+            {/* Care Instructions Card */}
+            <div
+              ref={careRef}
+              className="bg-gray-800 rounded-lg p-6 shadow-md border border-white/5 min-h-[220px] w-full"
+            >
+              <h3 className="text-xl font-bold text-primary mb-4">
+                Care Instructions
+              </h3>
+              <ul className="list-disc list-inside space-y-1">
+                {(rawProductData?.details && rawProductData.details.length > 0
+                  ? rawProductData.details
+                  : product.specifications?.careInstructions
+                  ? [product.specifications.careInstructions]
+                  : ["Handle with care"]
+                ).map((line, idx) => (
+                  <li key={idx} className="text-secondary text-sm leading-snug">
+                    {line}
+                  </li>
+                ))}
+              </ul>
+              <p className="text-xs text-secondary/60 mt-3 tracking-wide">
+                Following these guidelines helps preserve the craftsmanship and
+                longevity of this piece.
+              </p>
+            </div>
+            {/* Origin Card */}
+            <div className="bg-gray-800 rounded-lg p-6 shadow-md border border-white/5 min-h-[160px] w-full">
+              <h3 className="text-xl font-bold text-primary mb-3">Origin</h3>
+              <div className="space-y-2">
+                <p className="text-secondary">
+                  <span className="font-medium">Region:</span> {product.region}
+                </p>
+                <p className="text-secondary">
+                  <span className="font-medium">Category:</span>{" "}
+                  {product.category}
+                </p>
+                <p className="text-secondary">
+                  <span className="font-medium">Type:</span>{" "}
+                  {product.subcategory}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
