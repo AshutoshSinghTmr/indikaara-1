@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import Button from "../components/Button";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 /**
  * CartPage Component - Shopping cart page with items and summary
  */
@@ -35,6 +34,34 @@ const CartPage = () => {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(amount);
+  };
+
+  // Determine if any rugs are in cart
+  const hasRugs = useMemo(
+    () => items.some((i) => (i.category || "").toLowerCase() === "rugs"),
+    [items]
+  );
+
+  // Build enquiry email body
+  const buildEnquiryMailto = () => {
+    if (!items.length) return "mailto:enquiries@indikaara.com";
+    const subject = encodeURIComponent(
+      "Product Enquiry - Indikaara Cart Items"
+    );
+    const lines = items.map(
+      (item, idx) =>
+        `${idx + 1}. ${item.title} | Category: ${
+          item.category || "N/A"
+        } | Size: ${item.dimensions || "N/A"} | Qty: ${
+          item.quantity
+        } | Unit Price: ${item.price}`
+    );
+    const totalLine = `Total Line Items: ${items.length}\nSubtotal (approx): ${subtotal}`;
+    const guidance = `\n\nPlease provide pricing, lead time and shipping details for the above items.\n`;
+    const body = encodeURIComponent(
+      lines.join("\n") + "\n" + totalLine + guidance
+    );
+    return `mailto:enquiries@indikaara.com?subject=${subject}&body=${body}`;
   };
 
   if (items.length === 0) {
@@ -333,17 +360,51 @@ const CartPage = () => {
               </div>
             </div>
 
-            <div className="mt-8 space-y-3">
-              <Link to="/checkout" className="block">
-                <Button variant="primary" size="lg" className="w-full">
-                  Proceed to Checkout
-                </Button>
-              </Link>
-              <Link to="/catalogue" className="block">
-                <Button variant="secondary" size="lg" className="w-full">
-                  Continue Shopping
-                </Button>
-              </Link>
+            <div className="mt-8 space-y-4">
+              {/* Enquiry + Payment Actions */}
+              <div className="flex flex-col gap-3">
+                <a
+                  href={buildEnquiryMailto()}
+                  className="block"
+                  aria-label="Create an enquiry email for the items in your cart"
+                >
+                  <Button variant="secondary" size="lg" className="w-full">
+                    Enquire Now
+                  </Button>
+                </a>
+                {!hasRugs && (
+                  <>
+                    <div className="flex items-center gap-3 justify-center text-xs uppercase tracking-wider text-text-secondary/70">
+                      <span
+                        className="flex-1 h-px bg-border-color"
+                        aria-hidden="true"
+                      />
+                      <span>OR</span>
+                      <span
+                        className="flex-1 h-px bg-border-color"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <Link to="/checkout" className="block">
+                      <Button variant="primary" size="lg" className="w-full">
+                        Make Payment
+                      </Button>
+                    </Link>
+                  </>
+                )}
+                {hasRugs && (
+                  <div className="text-xs text-text-secondary bg-background/60 border border-border-color rounded-md p-3 leading-relaxed">
+                    Checkout / direct payment is disabled because your cart
+                    contains Rug items requiring a custom quotation. Please use
+                    "Enquire Now" to request pricing & shipping details.
+                  </div>
+                )}
+                <Link to="/catalogue" className="block">
+                  <Button variant="outline" size="lg" className="w-full">
+                    Continue Shopping
+                  </Button>
+                </Link>
+              </div>
             </div>
 
             {/* Authenticity Badge */}

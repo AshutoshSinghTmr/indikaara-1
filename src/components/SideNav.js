@@ -117,7 +117,7 @@ export default function SideNav({ isOpen, setIsOpen, toggleDrawer }) {
                 const baseSlug = makeSlug(sub.name);
                 const target = sub.comingSoon
                   ? `/coming-soon/${baseSlug}`
-                  : `/businesses/${baseSlug}`;
+                  : `/catalogue/?category=${baseSlug}`;
                 return (
                   <li key={sub.id} className="px-6">
                     <Link
