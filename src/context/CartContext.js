@@ -1,68 +1,78 @@
-import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import React, { createContext, useContext, useReducer, useEffect } from "react";
 
 // Cart Context
 const CartContext = createContext();
 
 // Action types
 const CART_ACTIONS = {
-  ADD_ITEM: 'ADD_ITEM',
-  REMOVE_ITEM: 'REMOVE_ITEM',
-  UPDATE_QUANTITY: 'UPDATE_QUANTITY',
-  CLEAR_CART: 'CLEAR_CART',
-  LOAD_CART: 'LOAD_CART'
+  ADD_ITEM: "ADD_ITEM",
+  REMOVE_ITEM: "REMOVE_ITEM",
+  UPDATE_QUANTITY: "UPDATE_QUANTITY",
+  CLEAR_CART: "CLEAR_CART",
+  LOAD_CART: "LOAD_CART",
 };
 
 // Cart reducer
 const cartReducer = (state, action) => {
   switch (action.type) {
     case CART_ACTIONS.ADD_ITEM: {
-      const existingItem = state.items.find(item => item.id === action.payload.id);
-      
+      const existingItem = state.items.find(
+        (item) => item.id === action.payload.id
+      );
+
       if (existingItem) {
         return {
           ...state,
-          items: state.items.map(item =>
+          items: state.items.map((item) =>
             item.id === action.payload.id
-              ? { ...item, quantity: item.quantity + (action.payload.quantity || 1) }
+              ? {
+                  ...item,
+                  quantity: item.quantity + (action.payload.quantity || 1),
+                }
               : item
-          )
+          ),
         };
       }
-      
+
       return {
         ...state,
-        items: [...state.items, { ...action.payload, quantity: action.payload.quantity || 1 }]
+        items: [
+          ...state.items,
+          { ...action.payload, quantity: action.payload.quantity || 1 },
+        ],
       };
     }
-    
+
     case CART_ACTIONS.REMOVE_ITEM:
       return {
         ...state,
-        items: state.items.filter(item => item.id !== action.payload.id)
+        items: state.items.filter((item) => item.id !== action.payload.id),
       };
-    
+
     case CART_ACTIONS.UPDATE_QUANTITY:
       return {
         ...state,
-        items: state.items.map(item =>
-          item.id === action.payload.id
-            ? { ...item, quantity: Math.max(0, action.payload.quantity) }
-            : item
-        ).filter(item => item.quantity > 0)
+        items: state.items
+          .map((item) =>
+            item.id === action.payload.id
+              ? { ...item, quantity: Math.max(0, action.payload.quantity) }
+              : item
+          )
+          .filter((item) => item.quantity > 0),
       };
-    
+
     case CART_ACTIONS.CLEAR_CART:
       return {
         ...state,
-        items: []
+        items: [],
       };
-    
+
     case CART_ACTIONS.LOAD_CART:
       return {
         ...state,
-        items: action.payload.items || []
+        items: action.payload.items || [],
       };
-    
+
     default:
       return state;
   }
@@ -71,7 +81,7 @@ const cartReducer = (state, action) => {
 // Initial state
 const initialState = {
   items: [],
-  isOpen: false
+  isOpen: false,
 };
 
 // Cart Provider Component
@@ -80,49 +90,63 @@ export const CartProvider = ({ children }) => {
 
   // Load cart from localStorage on mount
   useEffect(() => {
-    const savedCart = localStorage.getItem('indikaara-cart');
+    const savedCart = localStorage.getItem("indikaara-cart");
     if (savedCart) {
       try {
         const cartData = JSON.parse(savedCart);
         dispatch({ type: CART_ACTIONS.LOAD_CART, payload: cartData });
       } catch (error) {
-        console.error('Error loading cart from localStorage:', error);
+        console.error("Error loading cart from localStorage:", error);
       }
     }
   }, []);
 
   // Save cart to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem('indikaara-cart', JSON.stringify({ items: state.items }));
+    localStorage.setItem(
+      "indikaara-cart",
+      JSON.stringify({ items: state.items })
+    );
+    try {
+      window.dispatchEvent(new Event("cartUpdated"));
+    } catch (e) {
+      // no-op in non-browser environments
+    }
   }, [state.items]);
 
   // Calculate totals
-  const subtotal = state.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+  const subtotal = state.items.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
   const shipping = subtotal > 0 ? 250 : 0; // Free shipping over certain amount could be added
   const tax = subtotal * 0.05; // 5% tax
   const total = subtotal + shipping + tax;
-  
-  const itemCount = state.items.reduce((count, item) => count + item.quantity, 0);
+
+  const itemCount = state.items.reduce(
+    (count, item) => count + item.quantity,
+    0
+  );
 
   // Cart actions
   const addToCart = (product, quantity = 1) => {
     dispatch({
       type: CART_ACTIONS.ADD_ITEM,
-      payload: { ...product, quantity }
+      payload: { ...product, quantity },
     });
   };
 
   const removeFromCart = (productId) => {
     dispatch({
       type: CART_ACTIONS.REMOVE_ITEM,
-      payload: { id: productId }
+      payload: { id: productId },
     });
   };
 
   const updateQuantity = (productId, quantity) => {
     dispatch({
       type: CART_ACTIONS.UPDATE_QUANTITY,
-      payload: { id: productId, quantity }
+      payload: { id: productId, quantity },
     });
   };
 
@@ -140,7 +164,7 @@ export const CartProvider = ({ children }) => {
     addToCart,
     removeFromCart,
     updateQuantity,
-    clearCart
+    clearCart,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
@@ -150,7 +174,7 @@ export const CartProvider = ({ children }) => {
 export const useCart = () => {
   const context = useContext(CartContext);
   if (!context) {
-    throw new Error('useCart must be used within a CartProvider');
+    throw new Error("useCart must be used within a CartProvider");
   }
   return context;
 };

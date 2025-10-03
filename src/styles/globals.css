@@ -147,6 +147,54 @@ body {
     border-color 0.2s ease-in-out;
 }
 
+/* Icon badge styles for cart & wishlist */
+.icon-badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 9999px;
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(6px) saturate(160%);
+  -webkit-backdrop-filter: blur(6px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+}
+.cart-badge {
+  background: linear-gradient(135deg, #ffcf5a, #f39c12);
+  color: #1a1a1a;
+}
+.wishlist-badge {
+  background: linear-gradient(135deg, #ff6b81, #ac1f23);
+  color: #fff;
+}
+
+@keyframes badgePulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.4;
+  }
+  55% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.icon-badge-pulse {
+  animation: badgePulse 0.45s ease-out;
+}
+
 /* Header contrast & glow utilities */
 .header-contrast *:not(svg):not(path) {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55), 0 0 6px rgba(0, 0, 0, 0.35);

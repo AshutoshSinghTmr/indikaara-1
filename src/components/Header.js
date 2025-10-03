@@ -12,7 +12,8 @@ import CombinedLogo from "./CombinedLogo";
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [wishlistCount, setWishlistCount] = useState(0);
-  const [cartCount, setCartCount] = useState(0); // placeholder; integrate with cart context later
+  const [cartCount, setCartCount] = useState(0); // total quantity
+  const [cartPulse, setCartPulse] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const mobileSearchInputRef = React.useRef(null);
   const [scrolled, setScrolled] = useState(false);
@@ -34,8 +35,15 @@ export default function Header() {
       setWishlistCount(wishlist.length);
     } catch {}
     try {
-      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-      setCartCount(cart.length || 0);
+      const cartRaw = JSON.parse(
+        localStorage.getItem("indikaara-cart") || '{"items":[]}'
+      );
+      const itemsArr = cartRaw.items || [];
+      const totalQty = itemsArr.reduce(
+        (sum, it) => sum + (Number(it.quantity) || 0),
+        0
+      );
+      setCartCount(totalQty);
     } catch {}
     const handler = () => {
       try {
@@ -43,8 +51,21 @@ export default function Header() {
         setWishlistCount(wishlist.length);
       } catch {}
       try {
-        const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-        setCartCount(cart.length || 0);
+        const cartRaw = JSON.parse(
+          localStorage.getItem("indikaara-cart") || '{"items":[]}'
+        );
+        const itemsArr = cartRaw.items || [];
+        const totalQty = itemsArr.reduce(
+          (sum, it) => sum + (Number(it.quantity) || 0),
+          0
+        );
+        setCartCount((prev) => {
+          if (prev !== totalQty) {
+            setCartPulse(true);
+            setTimeout(() => setCartPulse(false), 500);
+          }
+          return totalQty;
+        });
       } catch {}
     };
     window.addEventListener("storage", handler);
@@ -148,8 +169,8 @@ export default function Header() {
               >
                 <FavoriteBorderIcon className="text-white" fontSize="large" />
                 {wishlistCount > 0 && (
-                  <span className="absolute -top-1 -right-2 bg-red-500 text-[10px] min-w-[16px] h-4 px-[4px] rounded-full flex items-center justify-center text-white font-semibold">
-                    {wishlistCount > 99 ? "99+" : wishlistCount}
+                  <span className="icon-badge wishlist-badge">
+                    {wishlistCount > 999 ? "999+" : wishlistCount}
                   </span>
                 )}
               </Link>
@@ -161,8 +182,12 @@ export default function Header() {
               >
                 <ShoppingCartIcon className="text-white" fontSize="large" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-2 bg-amber-500 text-[10px] min-w-[16px] h-4 px-[4px] rounded-full flex items-center justify-center text-black font-semibold">
-                    {cartCount > 99 ? "99+" : cartCount}
+                  <span
+                    className={`icon-badge cart-badge ${
+                      cartPulse ? "icon-badge-pulse" : ""
+                    }`}
+                  >
+                    {cartCount > 999 ? "999+" : cartCount}
                   </span>
                 )}
               </Link>
@@ -175,25 +200,16 @@ export default function Header() {
                 <PersonIcon className="text-white" fontSize="large" />
               </Link>
             </div>
-            {/* Small & medium: only search icon */}
-            <button
-              type="button"
-              aria-label="Search"
-              aria-expanded={mobileSearchOpen}
-              aria-controls="mobile-search-bar"
-              onClick={() => setMobileSearchOpen((o) => !o)}
-              className="lg:hidden p-2 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors"
-            >
-              <SearchIcon fontSize="large" className="text-[#ac1f23]" />
-            </button>
-          </div>
 
-          {/* Side Navigation */}
-          <SideNav
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-            toggleDrawer={(open) => (open ? setIsOpen(true) : setIsOpen(false))}
-          />
+            {/* Side Navigation */}
+            <SideNav
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              toggleDrawer={(open) =>
+                open ? setIsOpen(true) : setIsOpen(false)
+              }
+            />
+          </div>
         </div>
       </header>
       {mobileSearchOpen && (
