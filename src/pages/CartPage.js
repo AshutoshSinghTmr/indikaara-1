@@ -215,9 +215,15 @@ const CartPage = () => {
                           )}
                         </div>
 
-                        {/* Price - More prominent */}
+                        {/* Price - Hidden for Rugs */}
                         <p className="text-primary font-bold text-lg">
-                          {formatCurrency(item.price)}
+                          {(item.category || "").toLowerCase() === "rugs" ? (
+                            <span className="text-text-secondary font-normal text-sm tracking-wide">
+                              Price on enquiry
+                            </span>
+                          ) : (
+                            formatCurrency(item.price)
+                          )}
                         </p>
                       </div>
 
@@ -336,27 +342,57 @@ const CartPage = () => {
               <div className="flex justify-between text-sm">
                 <span className="text-text-secondary">Subtotal</span>
                 <span className="text-primary font-medium">
-                  {formatCurrency(subtotal)}
+                  {hasRugs ? (
+                    <span className="text-text-secondary/70 italic">—</span>
+                  ) : (
+                    formatCurrency(subtotal)
+                  )}
                 </span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-text-secondary">Shipping</span>
                 <span className="text-primary font-medium">
-                  {formatCurrency(shipping)}
+                  {hasRugs ? (
+                    <span className="text-text-secondary/70 italic">
+                      On enquiry
+                    </span>
+                  ) : (
+                    formatCurrency(shipping)
+                  )}
                 </span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-text-secondary">Tax</span>
                 <span className="text-primary font-medium">
-                  {formatCurrency(tax)}
+                  {hasRugs ? (
+                    <span className="text-text-secondary/70 italic">
+                      On enquiry
+                    </span>
+                  ) : (
+                    formatCurrency(tax)
+                  )}
                 </span>
               </div>
 
               <div className="border-t border-border-color pt-4">
                 <div className="flex justify-between font-bold text-lg">
                   <span className="text-primary">Total</span>
-                  <span className="text-primary">{formatCurrency(total)}</span>
+                  <span className="text-primary">
+                    {hasRugs ? (
+                      <span className="text-text-secondary font-normal text-sm italic">
+                        Provided after quotation
+                      </span>
+                    ) : (
+                      formatCurrency(total)
+                    )}
+                  </span>
                 </div>
+                {hasRugs && (
+                  <p className="mt-3 text-[11px] leading-relaxed text-text-secondary/80 bg-background/60 border border-border-color rounded-md p-3">
+                    One or more Rug items require a custom quotation. Pricing,
+                    shipping and tax will be shared once you submit an enquiry.
+                  </p>
+                )}
               </div>
             </div>
 
