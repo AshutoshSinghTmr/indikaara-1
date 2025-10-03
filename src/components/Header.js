@@ -15,6 +15,17 @@ export default function Header() {
   const [cartCount, setCartCount] = useState(0); // placeholder; integrate with cart context later
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const mobileSearchInputRef = React.useRef(null);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Track scroll position to deepen glass effect after slight scroll
+  useEffect(() => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 12);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   // Wishlist/cart count fetch (simple localStorage placeholders)
   useEffect(() => {
@@ -65,9 +76,31 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 h-20 md:h-24 lg:h-28 bg-[#111]/85 backdrop-blur-md border-b border-white/10 shadow-lg transition-[height] duration-300">
-        {/* decorative subtle gradient */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white/5 via-transparent to-white/5 pointer-events-none" />
+      <header
+        className={`header-contrast ${
+          scrolled ? "scrolled" : ""
+        } fixed top-0 left-0 right-0 z-50 h-20 md:h-24 lg:h-28 transition-all duration-300 border-b overflow-hidden
+        ${
+          scrolled
+            ? "backdrop-blur-2xl bg-[#0b0b0f]/72 border-white/15 shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_4px_24px_-4px_rgba(255,255,255,0.12),0_8px_40px_-8px_rgba(172,31,35,0.35)]"
+            : "backdrop-blur-xl bg-[#111418]/55 border-white/10 shadow-lg"
+        }
+        before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_20%_15%,rgba(255,255,255,0.12),transparent_60%)] before:pointer-events-none
+        after:absolute after:inset-0 after:bg-gradient-to-r after:from-white/10 after:via-white/0 after:to-white/10 after:opacity-60 after:pointer-events-none
+        ${scrolled ? "before:animate-pulse slow-glow" : ""}
+        `}
+        style={{
+          WebkitBackdropFilter: scrolled
+            ? "blur(26px) saturate(180%)"
+            : "blur(18px) saturate(160%)",
+        }}
+      >
+        {/* Glow outline ring (extra subtle) */}
+        {scrolled && (
+          <div className="pointer-events-none absolute inset-0 ring-1 ring-white/10 shadow-[0_0_0_1px_rgba(255,255,255,0.04)]" />
+        )}
+        {/* Glass inner border accent */}
+        <div className="absolute inset-0 border-t border-white/5/30 pointer-events-none" />
         {/* Burger extreme left; stable vertical alignment using flex instead of translate */}
         <div className="absolute inset-y-0 left-0 flex items-center">
           <button
@@ -163,7 +196,6 @@ export default function Header() {
           />
         </div>
       </header>
-      {/* Mobile / tablet inline search bar (below fixed navbar) */}
       {mobileSearchOpen && (
         <div
           id="mobile-search-bar"

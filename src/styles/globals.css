@@ -147,6 +147,18 @@ body {
     border-color 0.2s ease-in-out;
 }
 
+/* Header contrast & glow utilities */
+.header-contrast *:not(svg):not(path) {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55), 0 0 6px rgba(0, 0, 0, 0.35);
+}
+.header-contrast .icon-glow svg {
+  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.4));
+}
+.header-contrast.scrolled:not(.menu-open) {
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.35),
+    0 6px 24px -8px rgba(0, 0, 0, 0.5);
+}
+
 /* When mobile menu is open we want the header to stop applying backdrop filters
    and semi-transparency so the overlay/panel can remain opaque above content */
 .no-backdrop,
