@@ -1,8 +1,14 @@
-import productsJson from './products.json';
-import { rawProductData } from './productsdata.js';
-import { getImagePath } from '../utils/imageUtils.js';
-import { getCategoryImage, getDefaultCategoryImage } from '../utils/categoryImages.js';
-import { getRegionImage, getDefaultRegionImage } from '../utils/regionImages.js';
+import productsJson from "./products.json";
+import { rawProductData } from "./productsdata.js";
+import { getImagePath } from "../utils/imageUtils.js";
+import {
+  getCategoryImage,
+  getDefaultCategoryImage,
+} from "../utils/categoryImages.js";
+import {
+  getRegionImage,
+  getDefaultRegionImage,
+} from "../utils/regionImages.js";
 
 /**
  * Data Service - Handles all data operations for products, categories, and regions
@@ -22,38 +28,68 @@ class DataService {
     const categories = [];
     const regions = new Set();
 
-    this.rawData.products.forEach(categoryData => {
-      // Add category to categories array
-      categories.push({
-        id: categoryData.categoryId,
-        name: categoryData.category,
-        image: this.getDefaultCategoryImage(categoryData.category)
-      });
+    // Helper to normalize legacy categories into unified naming
+    const normalizeCategory = (name) => {
+      if (!name) return name;
+      const lower = name.toLowerCase();
+      // Treat any vintage / home decor (and wall hanging) variant as Handicraft Items
+      if (
+        lower.includes("vintage") ||
+        lower.includes("home decor") ||
+        lower.includes("home_decor") ||
+        lower.includes("wall hanging") ||
+        lower.includes("wall_hanging")
+      ) {
+        return "Handicraft Items";
+      }
+      return name;
+    };
+
+    this.rawData.products.forEach((categoryData) => {
+      const normalizedCategoryName = normalizeCategory(categoryData.category);
+
+      // Only push category if not already added (avoid duplicates after normalization)
+      if (!categories.some((c) => c.name === normalizedCategoryName)) {
+        categories.push({
+          id: categoryData.categoryId,
+          name: normalizedCategoryName,
+          image: this.getDefaultCategoryImage(normalizedCategoryName),
+        });
+      }
 
       // Transform each item in the category
-      categoryData.items.forEach(item => {
+      categoryData.items.forEach((item) => {
         // Handle new price structure - array of {size, amount}
-        const basePrice = Array.isArray(item.price) && item.price.length > 0 
-          ? item.price[0].amount 
-          : (typeof item.price === 'number' ? item.price : 0);
+        const basePrice =
+          Array.isArray(item.price) && item.price.length > 0
+            ? item.price[0].amount
+            : typeof item.price === "number"
+            ? item.price
+            : 0;
 
         const transformedProduct = {
           id: item.id,
           name: item.name,
           price: basePrice, // Use first price option as base price
-          priceOptions: Array.isArray(item.price) ? item.price : [{ size: "Standard", amount: basePrice }], // Store all price options
+          priceOptions: Array.isArray(item.price)
+            ? item.price
+            : [{ size: "Standard", amount: basePrice }], // Store all price options
           originalPrice: basePrice * 1.2, // Simulate original price
-          category: categoryData.category,
+          category: normalizedCategoryName,
           region: item.manufacturer || "India", // Use manufacturer as region fallback
           artisan: item.manufacturer,
           rating: Math.round((Math.random() * 2 + 3) * 10) / 10, // Random rating 3-5
           reviews: Math.floor(Math.random() * 200 + 10), // Random reviews 10-210
-          images: item.image.map(img => this.convertImagePath(img)),
+          images: item.image.map((img) => this.convertImagePath(img)),
           description: item.description,
           features: item.details || [],
           specifications: {
-            Material: Array.isArray(item.material) ? item.material.join(', ') : item.material,
-            Color: Array.isArray(item.color) ? item.color.join(', ') : item.color,
+            Material: Array.isArray(item.material)
+              ? item.material.join(", ")
+              : item.material,
+            Color: Array.isArray(item.color)
+              ? item.color.join(", ")
+              : item.color,
             Technique: item.weavingTechnique || "Handcrafted",
             SKU: item.SKU,
             // Remove Dimensions from specifications since dimensionsAvailable is removed
@@ -62,11 +98,11 @@ class DataService {
           tags: item.tags || [],
           featured: Math.random() > 0.8, // 20% chance of being featured
           inStock: true,
-          story: item.story
+          story: item.story,
         };
 
         products.push(transformedProduct);
-        
+
         // Add region to set
         if (item.manufacturer) {
           regions.add(item.manufacturer);
@@ -80,8 +116,8 @@ class DataService {
       regions: Array.from(regions).map((region, index) => ({
         id: index + 1,
         name: region,
-        image: this.getDefaultRegionImage(region)
-      }))
+        image: this.getDefaultRegionImage(region),
+      })),
     };
   }
 
@@ -98,36 +134,40 @@ class DataService {
     if (localImage) {
       return localImage;
     }
-    
+
     // Fallback to default category image
     return getDefaultCategoryImage();
   }
 
-  // Get default region images  
+  // Get default region images
   getDefaultRegionImage(region) {
     // Try to get image from local assets first
     const localImage = getRegionImage(region);
     if (localImage) {
       return localImage;
     }
-    
+
     // Fallback to default region image
     return getDefaultRegionImage();
   }
 
   // Product Methods
-  getAllProducts() { 
+  getAllProducts() {
     return this.transformedData.products;
   }
 
   getProductById(id) {
-    return this.transformedData.products.find(product => product.id === parseInt(id));
+    return this.transformedData.products.find(
+      (product) => product.id === parseInt(id)
+    );
   }
 
   getRawProductById(id) {
     // Find raw product data by searching through rawData.products
     for (const categoryData of this.rawData.products) {
-      const product = categoryData.items.find(item => item.id === parseInt(id));
+      const product = categoryData.items.find(
+        (item) => item.id === parseInt(id)
+      );
       if (product) {
         return product;
       }
@@ -136,32 +176,49 @@ class DataService {
   }
 
   getFeaturedProducts() {
-    return this.transformedData.products.filter(product => product.featured);
+    return this.transformedData.products.filter((product) => product.featured);
   }
 
   getProductsByCategory(category) {
-    return this.transformedData.products.filter(product => 
-      product.category.toLowerCase() === category.toLowerCase()
+    if (!category) return [];
+    const requested = category.toLowerCase();
+    const normalizeInput = (c) => {
+      const l = c.toLowerCase();
+      if (
+        l.includes("vintage") ||
+        l.includes("home decor") ||
+        l.includes("home_decor") ||
+        l.includes("wall hanging") ||
+        l.includes("wall_hanging")
+      ) {
+        return "handicraft items";
+      }
+      return l;
+    };
+    const target = normalizeInput(requested);
+    return this.transformedData.products.filter(
+      (p) => normalizeInput(p.category) === target
     );
   }
 
   getProductsByRegion(region) {
-    return this.transformedData.products.filter(product => 
+    return this.transformedData.products.filter((product) =>
       product.region.toLowerCase().includes(region.toLowerCase())
     );
   }
 
   searchProducts(query) {
     if (!query) return this.transformedData.products;
-    
+
     const searchTerm = query.toLowerCase();
-    return this.transformedData.products.filter(product =>
-      product.name.toLowerCase().includes(searchTerm) ||
-      product.description.toLowerCase().includes(searchTerm) ||
-      product.category.toLowerCase().includes(searchTerm) ||
-      product.region.toLowerCase().includes(searchTerm) ||
-      product.artisan.toLowerCase().includes(searchTerm) ||
-      product.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+    return this.transformedData.products.filter(
+      (product) =>
+        product.name.toLowerCase().includes(searchTerm) ||
+        product.description.toLowerCase().includes(searchTerm) ||
+        product.category.toLowerCase().includes(searchTerm) ||
+        product.region.toLowerCase().includes(searchTerm) ||
+        product.artisan.toLowerCase().includes(searchTerm) ||
+        product.tags.some((tag) => tag.toLowerCase().includes(searchTerm))
     );
   }
 
@@ -169,53 +226,70 @@ class DataService {
     let filteredProducts = this.transformedData.products;
 
     // Filter by category
-    if (filters.category && filters.category !== 'All') {
-      filteredProducts = filteredProducts.filter(product => {
+    if (filters.category && filters.category !== "All") {
+      filteredProducts = filteredProducts.filter((product) => {
         // Handle both display format ("Wall Hanging") and raw format ("Wall_Hanging")
         const productCategory = product.category;
         const filterCategory = filters.category;
-        
+        const normalize = (c) => {
+          const l = c.toLowerCase();
+          if (
+            l.includes("vintage") ||
+            l.includes("home decor") ||
+            l.includes("home_decor") ||
+            l.includes("wall hanging") ||
+            l.includes("wall_hanging")
+          ) {
+            return "handicraft items";
+          }
+          return l;
+        };
+
         // Try exact match first
         if (productCategory === filterCategory) {
           return true;
         }
-        
+
         // Try comparing normalized versions (replace underscores with spaces and vice versa)
-        const normalizedProductCategory = productCategory.replace(/_/g, ' ');
-        const normalizedFilterCategory = filterCategory.replace(/\s/g, '_');
-        
-        return normalizedProductCategory === filterCategory || 
-               productCategory === normalizedFilterCategory;
+        const normalizedProductCategory = productCategory.replace(/_/g, " ");
+        const normalizedFilterCategory = filterCategory.replace(/\s/g, "_");
+
+        // Normalized grouping to unified category
+        if (normalize(productCategory) === normalize(filterCategory)) {
+          return true;
+        }
+        return (
+          normalizedProductCategory === filterCategory ||
+          productCategory === normalizedFilterCategory
+        );
       });
     }
 
     // Filter by region
-    if (filters.region && filters.region !== 'All') {
-      filteredProducts = filteredProducts.filter(product =>
-        product.region === filters.region
+    if (filters.region && filters.region !== "All") {
+      filteredProducts = filteredProducts.filter(
+        (product) => product.region === filters.region
       );
     }
 
     // Filter by price range
     if (filters.priceRange) {
       const [min, max] = filters.priceRange;
-      filteredProducts = filteredProducts.filter(product =>
-        product.price >= min && product.price <= max
+      filteredProducts = filteredProducts.filter(
+        (product) => product.price >= min && product.price <= max
       );
     }
 
     // Filter by rating
     if (filters.minRating) {
-      filteredProducts = filteredProducts.filter(product =>
-        product.rating >= filters.minRating
+      filteredProducts = filteredProducts.filter(
+        (product) => product.rating >= filters.minRating
       );
     }
 
     // Filter by availability
     if (filters.inStock) {
-      filteredProducts = filteredProducts.filter(product =>
-        product.inStock
-      );
+      filteredProducts = filteredProducts.filter((product) => product.inStock);
     }
 
     // Sort results
@@ -228,19 +302,19 @@ class DataService {
 
   sortProducts(products, sortBy) {
     const productsCopy = [...products];
-    
+
     switch (sortBy) {
-      case 'price-low-high':
+      case "price-low-high":
         return productsCopy.sort((a, b) => a.price - b.price);
-      case 'price-high-low':
+      case "price-high-low":
         return productsCopy.sort((a, b) => b.price - a.price);
-      case 'rating':
+      case "rating":
         return productsCopy.sort((a, b) => b.rating - a.rating);
-      case 'reviews':
+      case "reviews":
         return productsCopy.sort((a, b) => b.reviews - a.reviews);
-      case 'name':
+      case "name":
         return productsCopy.sort((a, b) => a.name.localeCompare(b.name));
-      case 'newest':
+      case "newest":
         return productsCopy.sort((a, b) => b.id - a.id);
       default:
         return productsCopy;
@@ -253,11 +327,13 @@ class DataService {
   }
 
   getCategoryById(id) {
-    return this.transformedData.categories.find(category => category.id === id);
+    return this.transformedData.categories.find(
+      (category) => category.id === id
+    );
   }
 
   getCategoryNames() {
-    return this.transformedData.categories.map(category => category.name);
+    return this.transformedData.categories.map((category) => category.name);
   }
 
   // Region Methods
@@ -266,15 +342,19 @@ class DataService {
   }
 
   getRegionById(id) {
-    return this.transformedData.regions.find(region => region.id === id);
+    return this.transformedData.regions.find((region) => region.id === id);
   }
 
   getRegionNames() {
-    return this.transformedData.regions.map(region => region.name);
+    return this.transformedData.regions.map((region) => region.name);
   }
 
   getUniqueRegionsFromProducts() {
-    const regions = [...new Set(this.transformedData.products.map(product => product.region))];
+    const regions = [
+      ...new Set(
+        this.transformedData.products.map((product) => product.region)
+      ),
+    ];
     return regions.sort();
   }
 
@@ -288,17 +368,24 @@ class DataService {
   }
 
   getAveragePrice() {
-    const productsWithPrice = this.transformedData.products.filter(product => product.price);
-    const total = productsWithPrice.reduce((sum, product) => sum + product.price, 0);
+    const productsWithPrice = this.transformedData.products.filter(
+      (product) => product.price
+    );
+    const total = productsWithPrice.reduce(
+      (sum, product) => sum + product.price,
+      0
+    );
     return Math.round(total / productsWithPrice.length);
   }
 
   getPriceRange() {
-    const productsWithPrice = this.transformedData.products.filter(product => product.price);
-    const prices = productsWithPrice.map(product => product.price);
+    const productsWithPrice = this.transformedData.products.filter(
+      (product) => product.price
+    );
+    const prices = productsWithPrice.map((product) => product.price);
     return {
       min: Math.min(...prices),
-      max: Math.max(...prices)
+      max: Math.max(...prices),
     };
   }
 
@@ -308,22 +395,21 @@ class DataService {
     if (!product) return [];
 
     // Get products from same category, excluding current product
-    const related = this.transformedData.products.filter(p => 
-      p.id !== product.id && 
-      (p.category === product.category || p.region === product.region)
+    const related = this.transformedData.products.filter(
+      (p) =>
+        p.id !== product.id &&
+        (p.category === product.category || p.region === product.region)
     );
 
     // Sort by rating and return limited results
-    return related
-      .sort((a, b) => b.rating - a.rating)
-      .slice(0, limit);
+    return related.sort((a, b) => b.rating - a.rating).slice(0, limit);
   }
 
   // Recommendations
   getRecommendations(limit = 6) {
     // Return highest rated products that are in stock
     return this.transformedData.products
-      .filter(product => product.inStock)
+      .filter((product) => product.inStock)
       .sort((a, b) => b.rating - a.rating)
       .slice(0, limit);
   }

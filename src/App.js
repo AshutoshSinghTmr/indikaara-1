@@ -21,6 +21,7 @@ import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import TermsOfServicePage from "./pages/TermsOfServicePage";
 import FoundationPage from "./pages/FoundationPage";
 import ComingSoonPage from "./pages/ComingSoonPage";
+import EnquiryPage from "./pages/EnquiryPage";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./styles/globals.css";
@@ -48,6 +49,9 @@ function App() {
 
               {/* Cart Route */}
               <Route path="/cart" element={<CartPage />} />
+
+              {/* Enquiry Route */}
+              <Route path="/enquiry" element={<EnquiryPage />} />
 
               {/* Wishlist Route */}
               <Route path="/wishlist" element={<WishlistPage />} />

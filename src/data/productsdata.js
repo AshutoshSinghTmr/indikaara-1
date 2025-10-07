@@ -8,17 +8,17 @@ export const rawProductData = {
           id: 10001,
           name: "APIYA",
           price: [
-            {size: "6 x 9 ft", amount: 220000},
-            {size: "8 x 10 ft", amount: 310000},
-            {size: "9 x 12 ft", amount: 391230},
-            {size: "10 x 14 ft", amount: 480000}
+            { size: "6 x 9 ft", amount: 220000 },
+            { size: "8 x 10 ft", amount: 310000 },
+            { size: "9 x 12 ft", amount: 391230 },
+            { size: "10 x 14 ft", amount: 480000 },
           ],
           image: [
-            '../../assets/products/rugs/mirzapur_rugs/apiya/1.webp',
-            '../../assets/products/rugs/mirzapur_rugs/apiya/2.webp',
-            '../../assets/products/rugs/mirzapur_rugs/apiya/3.webp',
-            '../../assets/products/rugs/mirzapur_rugs/apiya/4.webp',
-            '../../assets/products/rugs/mirzapur_rugs/apiya/5.webp',
+            "../../assets/products/rugs/mirzapur_rugs/apiya/1.webp",
+            "../../assets/products/rugs/mirzapur_rugs/apiya/2.webp",
+            "../../assets/products/rugs/mirzapur_rugs/apiya/3.webp",
+            "../../assets/products/rugs/mirzapur_rugs/apiya/4.webp",
+            "../../assets/products/rugs/mirzapur_rugs/apiya/5.webp",
           ],
           story:
             "Introducing our exquisite hand-knotted carpets, where craftsmanship meets luxury. Each carpet is meticulously woven by skilled artisans using traditional techniques passed down through generations, resulting in a masterpiece of beauty and quality. Made from premium materials such as wool, silk, and cotton, our hand-knotted carpets boast unparalleled softness, durability, and intricate detail. Whether adorning your living room, bedroom, or office, these carpets add a touch of elegance and sophistication to any space. Elevate your decor with the timeless allure of our hand-knotted carpets, where every thread tells a story of artistry and tradition.",
@@ -42,7 +42,7 @@ export const rawProductData = {
         {
           id: 10002,
           name: "AMBROSIA",
-          price: [{size: "9 x 12 ft", amount: 289800}],
+          price: [{ size: "9 x 12 ft", amount: 289800 }],
           image: [
             "../../assets/products/rugs/mirzapur_rugs/ambrosia/1.webp",
             "../../assets/products/rugs/mirzapur_rugs/ambrosia/2.webp",
@@ -70,7 +70,11 @@ export const rawProductData = {
         {
           id: 10003,
           name: "ASTARA",
-          price: [{size: "2.6 x 6 ft", amount: 42525}, {size: "4 x 6 ft", amount: 59250}, {size: "5 x 7 ft", amount: 99225}],
+          price: [
+            { size: "2.6 x 6 ft", amount: 42525 },
+            { size: "4 x 6 ft", amount: 59250 },
+            { size: "5 x 7 ft", amount: 99225 },
+          ],
           image: [
             "../../assets/products/rugs/mirzapur_rugs/astara/1.webp",
             "../../assets/products/rugs/mirzapur_rugs/astara/2.webp",
@@ -97,7 +101,7 @@ export const rawProductData = {
         {
           id: 10004,
           name: "AURORA",
-          price: [{size: "5.6 x 8.6 ft", amount: 169352}],
+          price: [{ size: "5.6 x 8.6 ft", amount: 169352 }],
           image: [
             "../../assets/products/rugs/mirzapur_rugs/aurora/1.webp",
             "../../assets/products/rugs/mirzapur_rugs/aurora/2.webp",
@@ -125,7 +129,7 @@ export const rawProductData = {
         {
           id: 10005,
           name: "PORAL",
-          price: [{size: "5 x 8 ft", amount: 201600}],
+          price: [{ size: "5 x 8 ft", amount: 201600 }],
           image: [
             "../../assets/products/rugs/mirzapur_rugs/poral/1.jpg",
             "../../assets/products/rugs/mirzapur_rugs/poral/2.jpg",
@@ -152,7 +156,11 @@ export const rawProductData = {
         {
           id: 10006,
           name: "AMRITA",
-          price: [{size: "4 x 6 ft", amount: 75600}, {size: "8 x 10 ft", amount: 216000}, {size: "9 x 12 ft", amount: 340200}],
+          price: [
+            { size: "4 x 6 ft", amount: 75600 },
+            { size: "8 x 10 ft", amount: 216000 },
+            { size: "9 x 12 ft", amount: 340200 },
+          ],
           image: [
             "../../assets/products/rugs/mirzapur_rugs/amrita/1.webp",
             "../../assets/products/rugs/mirzapur_rugs/amrita/2.webp",
@@ -181,7 +189,10 @@ export const rawProductData = {
         {
           id: 10007,
           name: "ARAK",
-          price: [{size: "5 x 7 ft", amount: 90038}, {size: "8 x 10 ft", amount: 205800}],
+          price: [
+            { size: "5 x 7 ft", amount: 90038 },
+            { size: "8 x 10 ft", amount: 205800 },
+          ],
           image: [
             "../../assets/products/rugs/mirzapur_rugs/arak/1.webp",
             "../../assets/products/rugs/mirzapur_rugs/arak/2.webp",
@@ -210,7 +221,7 @@ export const rawProductData = {
         {
           id: 10008,
           name: "PAINTA",
-          price: [{size: "5 x 8 ft", amount: 105000}],
+          price: [{ size: "5 x 8 ft", amount: 105000 }],
           image: [
             "../../assets/products/rugs/mirzapur_rugs/painta/1.webp",
             "../../assets/products/rugs/mirzapur_rugs/painta/2.webp",
@@ -239,7 +250,7 @@ export const rawProductData = {
         {
           id: 10009,
           name: "VOLCANO",
-          price: [{size: "5 x 8 ft", amount: 105000}],
+          price: [{ size: "5 x 8 ft", amount: 105000 }],
           image: [
             "../../assets/products/rugs/mirzapur_rugs/volcano/1.webp",
             "../../assets/products/rugs/mirzapur_rugs/volcano/2.webp",
@@ -268,7 +279,7 @@ export const rawProductData = {
         {
           id: 10010,
           name: "NICO",
-          price: [{size: "5 x 7 ft", amount: 33075}],
+          price: [{ size: "5 x 7 ft", amount: 33075 }],
           image: [
             "../../assets/products/rugs/mirzapur_rugs/nico/1.webp",
             "../../assets/products/rugs/mirzapur_rugs/nico/2.webp",
@@ -297,7 +308,11 @@ export const rawProductData = {
         {
           id: 10011,
           name: "OMARA",
-          price: [{size: "6 x 9 ft", amount: 153090}, {size: "8 x 10 ft", amount: 226800}, {size: "9 x 12 ft", amount: 306180}],  
+          price: [
+            { size: "6 x 9 ft", amount: 153090 },
+            { size: "8 x 10 ft", amount: 226800 },
+            { size: "9 x 12 ft", amount: 306180 },
+          ],
           image: [
             "../../assets/products/rugs/mirzapur_rugs/omara/1.webp",
             "../../assets/products/rugs/mirzapur_rugs/omara/2.webp",
@@ -326,7 +341,11 @@ export const rawProductData = {
         {
           id: 10012,
           name: "DIAMOND",
-          price: [{size: "4 x 6 ft", amount: 22680}, {size: "5 x 7 ft", amount: 33075}, {size: "6 x 9 ft", amount: 51030}],
+          price: [
+            { size: "4 x 6 ft", amount: 22680 },
+            { size: "5 x 7 ft", amount: 33075 },
+            { size: "6 x 9 ft", amount: 51030 },
+          ],
           image: [
             "../../assets/products/rugs/mirzapur_rugs/diamond/1.webp",
             "../../assets/products/rugs/mirzapur_rugs/diamond/2.webp",
@@ -355,7 +374,7 @@ export const rawProductData = {
         {
           id: 10013,
           name: "DOYAN",
-          price: [{size: "8 x 10 ft", amount: 192780}],
+          price: [{ size: "8 x 10 ft", amount: 192780 }],
           image: [
             "../assets/products/rugs/mirzapur_rugs/doyan/1.webp",
             "../assets/products/rugs/mirzapur_rugs/doyan/2.webp",
@@ -382,7 +401,12 @@ export const rawProductData = {
         {
           id: 10014,
           name: "FANGO",
-          price: [{size: "2.6 x 6 ft", amount: 27563}, {size: "5 x 7 ft", amount: 65313}, {size: "8 x 10 ft", amount: 147000}, {size: "9 x 12 ft", amount: 198450}],
+          price: [
+            { size: "2.6 x 6 ft", amount: 27563 },
+            { size: "5 x 7 ft", amount: 65313 },
+            { size: "8 x 10 ft", amount: 147000 },
+            { size: "9 x 12 ft", amount: 198450 },
+          ],
           image: [
             "../assets/products/rugs/mirzapur_rugs/fango/1.jpg",
             "../assets/products/rugs/mirzapur_rugs/fango/2.webp",
@@ -411,7 +435,7 @@ export const rawProductData = {
         {
           id: 10015,
           name: "LARIAL",
-          price: [{size: "5 x 7 ft", amount: 45938}],
+          price: [{ size: "5 x 7 ft", amount: 45938 }],
           image: [
             "../assets/products/rugs/mirzapur_rugs/larial/1.webp",
             "../assets/products/rugs/mirzapur_rugs/larial/2.webp",
@@ -440,7 +464,13 @@ export const rawProductData = {
         {
           id: 10016,
           name: "LUSH",
-          price: [{size: "2.6 x 6 ft", amount: 27563}, {size: "5 x 7 ft", amount: 65313}, {size: "6 x 9 ft", amount: 105300}, {size: "8 x 10 ft", amount: 147000}, {size: "9 x 12 ft", amount: 198450}],
+          price: [
+            { size: "2.6 x 6 ft", amount: 27563 },
+            { size: "5 x 7 ft", amount: 65313 },
+            { size: "6 x 9 ft", amount: 105300 },
+            { size: "8 x 10 ft", amount: 147000 },
+            { size: "9 x 12 ft", amount: 198450 },
+          ],
           image: [
             "../assets/products/rugs/mirzapur_rugs/lush/1.webp",
             "../assets/products/rugs/mirzapur_rugs/lush/2.webp",
@@ -469,7 +499,10 @@ export const rawProductData = {
         {
           id: 10017,
           name: "SKYE",
-          price: [{size: "8 x 10 ft", amount: 71400}, {size: "9 x 12 ft", amount: 96390}],
+          price: [
+            { size: "8 x 10 ft", amount: 71400 },
+            { size: "9 x 12 ft", amount: 96390 },
+          ],
           image: [
             "../assets/products/rugs/mirzapur_rugs/skye/1.webp",
             "../assets/products/rugs/mirzapur_rugs/skye/2.webp",
@@ -498,7 +531,7 @@ export const rawProductData = {
         {
           id: 10018,
           name: "DISCOID",
-          price: [{size: "8 x 8 ft", amount: 105000}],
+          price: [{ size: "8 x 8 ft", amount: 105000 }],
           image: [
             "../assets/products/rugs/mirzapur_rugs/discoid/1.webp",
             "../assets/products/rugs/mirzapur_rugs/discoid/2.webp",
@@ -527,7 +560,10 @@ export const rawProductData = {
         {
           id: 10019,
           name: "COASTAL",
-          price: [{size: "8 x 10 ft", amount: 105000}, {size: "9 x 12 ft", amount: 141750}],
+          price: [
+            { size: "8 x 10 ft", amount: 105000 },
+            { size: "9 x 12 ft", amount: 141750 },
+          ],
           image: [
             "../assets/products/rugs/mirzapur_rugs/coastal/1.webp",
             "../assets/products/rugs/mirzapur_rugs/coastal/2.webp",
@@ -556,7 +592,11 @@ export const rawProductData = {
         {
           id: 10020,
           name: "IMPRESSION",
-          price: [{size: "5 x 7 ft", amount: 64313}, {size: "6 x 9 ft", amount: 99225}, {size: "8 x 10 ft", amount: 147000}],
+          price: [
+            { size: "5 x 7 ft", amount: 64313 },
+            { size: "6 x 9 ft", amount: 99225 },
+            { size: "8 x 10 ft", amount: 147000 },
+          ],
           image: [
             "../assets/products/rugs/mirzapur_rugs/impression/1.webp",
             "../assets/products/rugs/mirzapur_rugs/impression/2.webp",
@@ -586,31 +626,27 @@ export const rawProductData = {
       ],
     },
     {
-      category: "Vintage Collections",
-      categoryId: 20000,
-      items: [
-        
-      ],
-    },
-    {
-      category: "Home Decor",
+      category: "Handicraft Products",
       categoryId: 30000,
       items: [
         {
           id: 30001,
           name: "Vintage Tripod Fan",
-          price: [{ size: "Height: 4 ft", amount: 3500}],
-          image: ["../assets/products/home_decor/vintage_crafts/vintage_tripod_fan/1.jpg"],
-          description: "Feel the breeze of the past with this retro masterpiece. A vintage tripod fan that makes any room unforgettable.",
+          price: [{ size: "Height: 4 ft", amount: 3500 }],
+          image: [
+            "../assets/products/home_decor/vintage_crafts/vintage_tripod_fan/1.jpg",
+          ],
+          description:
+            "Feel the breeze of the past with this retro masterpiece. A vintage tripod fan that makes any room unforgettable.",
           story: null,
           details: [
             "Use : Indoor use only",
             "Suitable for Medium Traffic Areas",
             "Made in India",
           ],
-          color: ['Gold', 'Brown'],
+          color: ["Gold", "Brown"],
           weavingTechnique: null,
-          material: ['Metal', 'Wood'],
+          material: ["Metal", "Wood"],
           manufacturer: "Vintage Crafts",
           tags: ["abstract", "Modern"],
           SKU: "2025070201",
@@ -619,17 +655,20 @@ export const rawProductData = {
           id: 30002,
           name: "Panther Head Showpiece",
           price: [{ size: "Height: 13 inches", amount: 1050 }],
-          image: ["../assets/products/home_decor/vintage_crafts/panther_head_showpiece/1.jpg"],
-          description: "Indulge in the essence of the wild with our Panther Head Showpiece, meticulously handcrafted to perfection. Crafted from premium resin, its intricate details and lifelike features capture the essence of the majestic panther. Standing tall at 13 inches, it commands attention and admiration, serving as a captivating centerpiece for any room. Ideal for gifting, it embodies strength and grace, making it a thoughtful gesture for loved ones who appreciate timeless beauty. Elevate your space with the allure of the panther, a symbol of elegance and power, embodied in this exquisite showpiece.",
+          image: [
+            "../assets/products/home_decor/vintage_crafts/panther_head_showpiece/1.jpg",
+          ],
+          description:
+            "Indulge in the essence of the wild with our Panther Head Showpiece, meticulously handcrafted to perfection. Crafted from premium resin, its intricate details and lifelike features capture the essence of the majestic panther. Standing tall at 13 inches, it commands attention and admiration, serving as a captivating centerpiece for any room. Ideal for gifting, it embodies strength and grace, making it a thoughtful gesture for loved ones who appreciate timeless beauty. Elevate your space with the allure of the panther, a symbol of elegance and power, embodied in this exquisite showpiece.",
           story: null,
           details: [
             "Use : Indoor use only",
             "Suitable for Medium Traffic Areas",
             "Made in India",
           ],
-          color: ['White', 'Black'],
+          color: ["White", "Black"],
           weavingTechnique: null,
-          material: ['Resin'],
+          material: ["Resin"],
           manufacturer: "Vintage Crafts",
           tags: ["abstract", "Modern"],
           SKU: "2025070202",
@@ -638,17 +677,20 @@ export const rawProductData = {
           id: 30003,
           name: "Bioscope with Gramophone",
           price: [{ size: "12 x 10 inches", amount: 2950 }],
-          image: ["../assets/products/home_decor/vintage_crafts/bioscope_with_gramophone/1.jpg"],
-          description: "Revive the Romance of Classic Eras: Our Vintage Gramophone with Bioscope – A Melody for Your Ears, a Cinematic Journey for Your Soul.",
+          image: [
+            "../assets/products/home_decor/vintage_crafts/bioscope_with_gramophone/1.jpg",
+          ],
+          description:
+            "Revive the Romance of Classic Eras: Our Vintage Gramophone with Bioscope – A Melody for Your Ears, a Cinematic Journey for Your Soul.",
           story: null,
           details: [
             "Use : Indoor use only",
             "Suitable for Medium Traffic Areas",
             "Made in India",
           ],
-          color: ['Gold', 'Brown'],
+          color: ["Gold", "Brown"],
           weavingTechnique: null,
-          material: ['Metal', 'Wood'],
+          material: ["Metal", "Wood"],
           manufacturer: "Vintage Crafts",
           tags: ["abstract", "Modern"],
           SKU: "2025070203",
@@ -664,18 +706,18 @@ export const rawProductData = {
             "../assets/products/home_decor/vintage_crafts/ramayan_theme_elephant_showpiece/4.jpg",
             "../assets/products/home_decor/vintage_crafts/ramayan_theme_elephant_showpiece/5.jpg",
             "../assets/products/home_decor/vintage_crafts/ramayan_theme_elephant_showpiece/6.jpg",
-
           ],
-          description: "Bring the essence of ancient mythology into your home or gift a piece of cultural heritage to a loved one. With this Ramayana-themed elephant showpiece, you're not just acquiring a decor item but a tangible connection to the timeless narratives that have shaped generations. Elevate your space with the spirit of the Ramayana, embodied in this exquisite handcrafted showpiece.",
+          description:
+            "Bring the essence of ancient mythology into your home or gift a piece of cultural heritage to a loved one. With this Ramayana-themed elephant showpiece, you're not just acquiring a decor item but a tangible connection to the timeless narratives that have shaped generations. Elevate your space with the spirit of the Ramayana, embodied in this exquisite handcrafted showpiece.",
           story: null,
           details: [
             "Use : Indoor use only",
             "Suitable for Medium Traffic Areas",
             "Made in India",
           ],
-          color: ['Gold'],
+          color: ["Gold"],
           weavingTechnique: null,
-          material: ['Resin'],
+          material: ["Resin"],
           manufacturer: "Vintage Crafts",
           tags: ["abstract", "Modern"],
           SKU: "2025070204",
@@ -684,17 +726,20 @@ export const rawProductData = {
           id: 30005,
           name: "Brass Tripod Telescope",
           price: [{ size: "Height: 12 inches", amount: 1400 }],
-          image: ["../assets/products/home_decor/vintage_crafts/brass_tripod_telescope/1.jpg"],
-          description: "This handcrafted brass tripod telescope is a stunning blend of vintage charm and intricate craftsmanship. The telescope features a beautifully engraved leather-wrapped body and is mounted on a functional brass tripod. It's a perfect decorative piece for a study or office, adding a touch of classic elegance and old-world exploration.",
+          image: [
+            "../assets/products/home_decor/vintage_crafts/brass_tripod_telescope/1.jpg",
+          ],
+          description:
+            "This handcrafted brass tripod telescope is a stunning blend of vintage charm and intricate craftsmanship. The telescope features a beautifully engraved leather-wrapped body and is mounted on a functional brass tripod. It's a perfect decorative piece for a study or office, adding a touch of classic elegance and old-world exploration.",
           story: null,
           details: [
             "Use : Indoor use only",
             "Suitable for Medium Traffic Areas",
             "Made in India",
           ],
-          color: ['Brown'],
+          color: ["Brown"],
           weavingTechnique: null,
-          material: ['Brass'],
+          material: ["Brass"],
           manufacturer: "Vintage Crafts",
           tags: ["abstract", "Modern"],
           SKU: "2025070205",
@@ -703,17 +748,20 @@ export const rawProductData = {
           id: 30006,
           name: "Vintage Tripod Camera",
           price: [{ size: "Height: 11 inches", amount: 750 }],
-          image: ["../assets/products/home_decor/vintage_crafts/vintage_tripod_camera/1.jpg"],
-          description: "This Vintage Tripod Camera is a beautifully crafted dummy showpiece, perfect for adding a retro touch to any room. Made to resemble a classic camera, it features intricate detailing and a stylish tripod stand. This 11-inch decorative piece is ideal for collectors or anyone seeking a unique, vintage-inspired accent.",
+          image: [
+            "../assets/products/home_decor/vintage_crafts/vintage_tripod_camera/1.jpg",
+          ],
+          description:
+            "This Vintage Tripod Camera is a beautifully crafted dummy showpiece, perfect for adding a retro touch to any room. Made to resemble a classic camera, it features intricate detailing and a stylish tripod stand. This 11-inch decorative piece is ideal for collectors or anyone seeking a unique, vintage-inspired accent.",
           story: null,
           details: [
             "Use : Indoor use only",
             "Suitable for Medium Traffic Areas",
             "Made in India",
           ],
-          color: ['Black'],
+          color: ["Black"],
           weavingTechnique: null,
-          material: ['Resin'],
+          material: ["Resin"],
           manufacturer: "Vintage Crafts",
           tags: ["abstract", "Modern"],
           SKU: "2025070206",
@@ -722,17 +770,21 @@ export const rawProductData = {
           id: 30007,
           name: "Walking Panther Showpiece",
           price: [{ size: "Height: 16 inches", amount: 1499 }],
-          image: ["../assets/products/home_decor/vintage_crafts/walking_panther_showpiece/1.jpg", "../assets/products/home_decor/vintage_crafts/walking_panther_showpiece/2.jpg"],
-          description: "Elevate your decor with our stunning Panther Showpiece. Crafted from high-quality resin, it features intricate details that capture the power and elegance of the panther. This eye-catching sculpture adds a touch of wild beauty to any space, making it an ideal gift or a bold centerpiece for your home. Standing 16 inches tall, it's a timeless statement piece that exudes both strength and grace.",
+          image: [
+            "../assets/products/home_decor/vintage_crafts/walking_panther_showpiece/1.jpg",
+            "../assets/products/home_decor/vintage_crafts/walking_panther_showpiece/2.jpg",
+          ],
+          description:
+            "Elevate your decor with our stunning Panther Showpiece. Crafted from high-quality resin, it features intricate details that capture the power and elegance of the panther. This eye-catching sculpture adds a touch of wild beauty to any space, making it an ideal gift or a bold centerpiece for your home. Standing 16 inches tall, it's a timeless statement piece that exudes both strength and grace.",
           story: null,
           details: [
             "Use : Indoor use only",
             "Suitable for Medium Traffic Areas",
             "Made in India",
           ],
-          color: ['Black'],
+          color: ["Black"],
           weavingTechnique: null,
-          material: ['Resin'],
+          material: ["Resin"],
           manufacturer: "Vintage Crafts",
           tags: ["abstract", "Modern"],
           SKU: "2025070207",
@@ -741,17 +793,20 @@ export const rawProductData = {
           id: 30008,
           name: "Vintage Typewriter Showpiece",
           price: [{ size: "10x10x10 inches", amount: 1950 }],
-          image: ["../assets/products/home_decor/vintage_crafts/vintage_typewriter_showpiece/1.jpg"],
-          description: "Revive the past and adorn your space with our Vintage Typewriter Showpiece, a true masterpiece of decor. Crafted from iron and measuring 10x10x10 inches, it exudes an authentic antique charm that effortlessly enhances any room. Immerse yourself in the elegance of a bygone era with this unique typewriter showpiece.",
+          image: [
+            "../assets/products/home_decor/vintage_crafts/vintage_typewriter_showpiece/1.jpg",
+          ],
+          description:
+            "Revive the past and adorn your space with our Vintage Typewriter Showpiece, a true masterpiece of decor. Crafted from iron and measuring 10x10x10 inches, it exudes an authentic antique charm that effortlessly enhances any room. Immerse yourself in the elegance of a bygone era with this unique typewriter showpiece.",
           story: null,
           details: [
             "Use : Indoor use only",
             "Suitable for Medium Traffic Areas",
             "Made in India",
           ],
-          color: ['Brown'],
+          color: ["Brown"],
           weavingTechnique: null,
-          material: ['Iron'],
+          material: ["Iron"],
           manufacturer: "Vintage Crafts",
           tags: ["abstract", "Modern"],
           SKU: "2025070208",
@@ -760,15 +815,18 @@ export const rawProductData = {
           id: 30009,
           name: "Wooden Telephone",
           price: [{ size: "Height: 12 inches", amount: 2400 }],
-          image: ["../assets/products/home_decor/vintage_crafts/wooden_telephone/1.jpg"],
-          description: "This 12-inch Wooden Telephone is a striking blend of vintage aesthetics and fine craftsmanship. Made from wood and brass, it features a classic rotary dial design and a substantial handset. This decorative piece adds a touch of historical elegance and nostalgia to any home or office decor.",
+          image: [
+            "../assets/products/home_decor/vintage_crafts/wooden_telephone/1.jpg",
+          ],
+          description:
+            "This 12-inch Wooden Telephone is a striking blend of vintage aesthetics and fine craftsmanship. Made from wood and brass, it features a classic rotary dial design and a substantial handset. This decorative piece adds a touch of historical elegance and nostalgia to any home or office decor.",
           story: null,
           details: [
             "Use : Indoor use only",
             "Suitable for Medium Traffic Areas",
             "Made in India",
           ],
-          color: ['Brown'],
+          color: ["Brown"],
           weavingTechnique: null,
           material: ["Brass", "Wood"],
           manufacturer: "Vintage Crafts",
@@ -779,17 +837,20 @@ export const rawProductData = {
           id: 30010,
           name: "Brass Chess set",
           price: [{ size: "16 x 16 inches", amount: 3499 }],
-          image: ["../assets/products/home_decor/vintage_crafts/brass_chess_set/1.jpg"],
-          description: "This exquisite 16x16 inch Brass Chess set is a blend of artistry and classic game play. It features a finely crafted wooden box that serves as the chessboard, complete with detailed brass coins. Each piece showcases intricate detail, making this not just a game, but a statement piece for any collector or enthusiast.",
+          image: [
+            "../assets/products/home_decor/vintage_crafts/brass_chess_set/1.jpg",
+          ],
+          description:
+            "This exquisite 16x16 inch Brass Chess set is a blend of artistry and classic game play. It features a finely crafted wooden box that serves as the chessboard, complete with detailed brass coins. Each piece showcases intricate detail, making this not just a game, but a statement piece for any collector or enthusiast.",
           story: null,
           details: [
             "Use : Indoor use only",
             "Suitable for Medium Traffic Areas",
             "Made in India",
           ],
-          color: ['Brown'],
+          color: ["Brown"],
           weavingTechnique: null,
-          material: ['Brass', 'Wood'],
+          material: ["Brass", "Wood"],
           manufacturer: "Vintage Crafts",
           tags: ["abstract", "Modern"],
           SKU: "2025070210",
@@ -797,19 +858,20 @@ export const rawProductData = {
         {
           id: 30011,
           name: "Metal Wall Hanging Bullet Motorcycle",
-          price: [{size: "60cm x 3cm x 35cm", amount: 2950}],
+          price: [{ size: "60cm x 3cm x 35cm", amount: 2950 }],
           image: [
-            "../assets/products/wall_hanging/vintage_crafts/bullet_motorcycle/1.jpg", 
-            "../assets/products/wall_hanging/vintage_crafts/bullet_motorcycle/2.jpg"
+            "../assets/products/wall_hanging/vintage_crafts/bullet_motorcycle/1.jpg",
+            "../assets/products/wall_hanging/vintage_crafts/bullet_motorcycle/2.jpg",
           ],
-          description: "Enhance your living space with this unique Metal Wall Hanging Bullet Motorcycle. This handcrafted piece adds a rustic, vintage charm to any room. The vibrant blue and detailed design make it a captivating focal point, perfect for a bedroom, garage, or man cave. Made from durable metal, it's a stylish statement piece that reflects your passion for classic bikes.",
+          description:
+            "Enhance your living space with this unique Metal Wall Hanging Bullet Motorcycle. This handcrafted piece adds a rustic, vintage charm to any room. The vibrant blue and detailed design make it a captivating focal point, perfect for a bedroom, garage, or man cave. Made from durable metal, it's a stylish statement piece that reflects your passion for classic bikes.",
           story: null,
           details: [
             "Use : Indoor use only",
             "Suitable for Medium Traffic Areas",
             "Made in India",
           ],
-          color: ['multi'],
+          color: ["multi"],
           weavingTechnique: null,
           material: "Metal",
           manufacturer: "Vintage Crafts",
@@ -819,18 +881,21 @@ export const rawProductData = {
         {
           id: 30012,
           name: "Metal Wall Hanging Vintage Car",
-          price: [{size: "Length: 23cm, Width: 5cm, Height: 50cm", amount: 2950}],
-          image: [
-            '../assets/products/wall_hanging/vintage_crafts/vintage_car/1.jpg'
+          price: [
+            { size: "Length: 23cm, Width: 5cm, Height: 50cm", amount: 2950 },
           ],
-          description: "Enhance your living space with this unique Metal Wall Hanging Vintage Car. This handcrafted piece adds a rustic, vintage charm to any room. The vibrant blue and detailed design make it a captivating focal point, perfect for a bedroom, garage, or man cave. Made from durable metal, it's a stylish statement piece that reflects your passion for classic cars.",
+          image: [
+            "../assets/products/wall_hanging/vintage_crafts/vintage_car/1.jpg",
+          ],
+          description:
+            "Enhance your living space with this unique Metal Wall Hanging Vintage Car. This handcrafted piece adds a rustic, vintage charm to any room. The vibrant blue and detailed design make it a captivating focal point, perfect for a bedroom, garage, or man cave. Made from durable metal, it's a stylish statement piece that reflects your passion for classic cars.",
           story: null,
           details: [
             "Use : Indoor use only",
             "Suitable for Medium Traffic Areas",
             "Made in India",
           ],
-          color: ['Brown', 'Black'],
+          color: ["Brown", "Black"],
           weavingTechnique: null,
           material: "Metal",
           manufacturer: "Vintage Crafts",
@@ -840,16 +905,19 @@ export const rawProductData = {
         {
           id: 30013,
           name: "Metal Wall Hanging Cycle",
-          price: [{size: "Length: 48 x Width: 9 x Height: 33 cm", amount: 2950}],
-          image: ['../assets/products/wall_hanging/vintage_crafts/cycle/1.jpg'],
-          description: "Enhance your living space with this unique Metal Wall Hanging Cycle. This handcrafted piece adds a rustic, vintage charm to any room. The vibrant blue and detailed design make it a captivating focal point, perfect for a bedroom, garage, or man cave. Made from durable metal, it's a stylish statement piece that reflects your passion for classic cycles.",
+          price: [
+            { size: "Length: 48 x Width: 9 x Height: 33 cm", amount: 2950 },
+          ],
+          image: ["../assets/products/wall_hanging/vintage_crafts/cycle/1.jpg"],
+          description:
+            "Enhance your living space with this unique Metal Wall Hanging Cycle. This handcrafted piece adds a rustic, vintage charm to any room. The vibrant blue and detailed design make it a captivating focal point, perfect for a bedroom, garage, or man cave. Made from durable metal, it's a stylish statement piece that reflects your passion for classic cycles.",
           story: null,
           details: [
             "Use : Indoor use only",
             "Suitable for Medium Traffic Areas",
             "Made in India",
           ],
-          color: ['Golden'],
+          color: ["Golden"],
           weavingTechnique: null,
           material: "Metal",
           manufacturer: "Vintage Crafts",
@@ -859,16 +927,22 @@ export const rawProductData = {
         {
           id: 30014,
           name: "Metal Wall Mounted Motor Bike",
-          price: [{size: "Length: 60 inches, Height: 34 inches", amount: 4500}],
-          image: ["../assets/products/wall_hanging/vintage_crafts/motorcycle_american/1.jpg", "../assets/products/wall_hanging/vintage_crafts/motorcycle_american/2.jpg"],
-          description: "Enhance your living space with this unique Metal Wall Mounted Motor Bike. This handcrafted piece adds a rustic, vintage charm to any room. The vibrant blue and detailed design make it a captivating focal point, perfect for a bedroom, garage, or man cave. Made from durable metal, it's a stylish statement piece that reflects your passion for classic bikes.",
+          price: [
+            { size: "Length: 60 inches, Height: 34 inches", amount: 4500 },
+          ],
+          image: [
+            "../assets/products/wall_hanging/vintage_crafts/motorcycle_american/1.jpg",
+            "../assets/products/wall_hanging/vintage_crafts/motorcycle_american/2.jpg",
+          ],
+          description:
+            "Enhance your living space with this unique Metal Wall Mounted Motor Bike. This handcrafted piece adds a rustic, vintage charm to any room. The vibrant blue and detailed design make it a captivating focal point, perfect for a bedroom, garage, or man cave. Made from durable metal, it's a stylish statement piece that reflects your passion for classic bikes.",
           story: null,
           details: [
             "Use : Indoor use only",
             "Suitable for Medium Traffic Areas",
             "Made in India",
           ],
-          color: ['Multi'],
+          color: ["Multi"],
           weavingTechnique: null,
           material: "Metal",
           manufacturer: "Vintage Crafts",
@@ -878,16 +952,20 @@ export const rawProductData = {
         {
           id: 30015,
           name: "Wooden wall clock",
-          price: [{size: "24x24 inches", amount: 2500}],
-          image: ["../assets/products/wall_hanging/vintage_crafts/wall_clock/1.jpg", "../assets/products/wall_hanging/vintage_crafts/wall_clock/2.jpg"],
-          description: "Adorn your space with this captivating Wooden Wall Clock, blending classic Roman numerals with exposed industrial gears for a truly unique aesthetic. Crafted from high-quality wood, this 24x24 inch timepiece is more than just a clock; it's a statement piece. Its intricate design and rustic charm make it a perfect addition to any living room, office, or hallway, adding a touch of vintage elegance and mechanical intrigue to your décor.",
+          price: [{ size: "24x24 inches", amount: 2500 }],
+          image: [
+            "../assets/products/wall_hanging/vintage_crafts/wall_clock/1.jpg",
+            "../assets/products/wall_hanging/vintage_crafts/wall_clock/2.jpg",
+          ],
+          description:
+            "Adorn your space with this captivating Wooden Wall Clock, blending classic Roman numerals with exposed industrial gears for a truly unique aesthetic. Crafted from high-quality wood, this 24x24 inch timepiece is more than just a clock; it's a statement piece. Its intricate design and rustic charm make it a perfect addition to any living room, office, or hallway, adding a touch of vintage elegance and mechanical intrigue to your décor.",
           story: null,
           details: [
             "Use : Indoor use only",
             "Suitable for Medium Traffic Areas",
             "Made in India",
           ],
-          color: ['Black'],
+          color: ["Black"],
           weavingTechnique: null,
           material: ["Wood"],
           manufacturer: "Vintage Crafts",
@@ -897,16 +975,19 @@ export const rawProductData = {
         {
           id: 30016,
           name: "Wall Mounted Elephant Head",
-          price: [{size: "16 inches", amount: 1600}],
-          image: ["../assets/products/wall_hanging/vintage_crafts/elephant_head/1.jpg"],
-          description: "Elephant Majesty for Every Space: Unwrap the allure of our exquisite elephant head showpiece. Perfect for gifting sophistication or adorning walls with a touch of majestic charm. Elevate your decor game!",
+          price: [{ size: "16 inches", amount: 1600 }],
+          image: [
+            "../assets/products/wall_hanging/vintage_crafts/elephant_head/1.jpg",
+          ],
+          description:
+            "Elephant Majesty for Every Space: Unwrap the allure of our exquisite elephant head showpiece. Perfect for gifting sophistication or adorning walls with a touch of majestic charm. Elevate your decor game!",
           story: null,
           details: [
             "Use : Indoor use only",
             "Suitable for Medium Traffic Areas",
             "Made in India",
           ],
-          color: ['White'],
+          color: ["White"],
           weavingTechnique: null,
           material: ["Resin"],
           manufacturer: "Vintage Crafts",
@@ -916,16 +997,19 @@ export const rawProductData = {
         {
           id: 30017,
           name: "Wooden Wall clock",
-          price: [{size: "14 inches", amount: 1300}],
-          image: ["../assets/products/wall_hanging/vintage_crafts/wooden_wall_clock/1.jpg"],
-          description: "Elevate your space with our 14-inch Vintage Wooden Wall Clock, a charming blend of timeless design and practical functionality. Crafted with care, this exquisite clock boasts a warm wooden finish that exudes elegance and nostalgia. The generous 14-inch size ensures it catches the eye, while the classic Roman numerals and ornate clock hands lend a touch of vintage sophistication to any room. Whether it graces your living room, kitchen, or office, this wall clock adds a distinctive character to your decor, evoking the beauty of days gone by. Bring the allure of vintage charm into your life with this stunning timepiece, a true conversation starter that keeps you on schedule in style.",
+          price: [{ size: "14 inches", amount: 1300 }],
+          image: [
+            "../assets/products/wall_hanging/vintage_crafts/wooden_wall_clock/1.jpg",
+          ],
+          description:
+            "Elevate your space with our 14-inch Vintage Wooden Wall Clock, a charming blend of timeless design and practical functionality. Crafted with care, this exquisite clock boasts a warm wooden finish that exudes elegance and nostalgia. The generous 14-inch size ensures it catches the eye, while the classic Roman numerals and ornate clock hands lend a touch of vintage sophistication to any room. Whether it graces your living room, kitchen, or office, this wall clock adds a distinctive character to your decor, evoking the beauty of days gone by. Bring the allure of vintage charm into your life with this stunning timepiece, a true conversation starter that keeps you on schedule in style.",
           story: null,
           details: [
             "Use : Indoor use only",
             "Suitable for Medium Traffic Areas",
             "Made in India",
           ],
-          color: ['Multi'],
+          color: ["Multi"],
           weavingTechnique: null,
           material: ["Wood"],
           manufacturer: "Vintage Crafts",
@@ -935,16 +1019,19 @@ export const rawProductData = {
         {
           id: 30018,
           name: "Train Engine Wall Clock",
-          price: [{size: "12 inches", amount: 1400}],
-          image: ["../assets/products/wall_hanging/vintage_crafts/wall_clock_train_engine/1.jpg"],
-          description: "Elevate your space with the timeless charm of our Vintage Metal Train Engine Design Wall Clock. This exquisite timepiece boasts a beautifully handcrafted design inspired by the majestic trains of yesteryears. Measuring 12 inches in diameter, the clock’s dial showcases intricate detailing, capturing the essence of a bygone era.",
+          price: [{ size: "12 inches", amount: 1400 }],
+          image: [
+            "../assets/products/wall_hanging/vintage_crafts/wall_clock_train_engine/1.jpg",
+          ],
+          description:
+            "Elevate your space with the timeless charm of our Vintage Metal Train Engine Design Wall Clock. This exquisite timepiece boasts a beautifully handcrafted design inspired by the majestic trains of yesteryears. Measuring 12 inches in diameter, the clock’s dial showcases intricate detailing, capturing the essence of a bygone era.",
           story: null,
           details: [
             "Use : Indoor use only",
             "Suitable for Medium Traffic Areas",
             "Made in India",
           ],
-          color: ['Multi'],
+          color: ["Multi"],
           weavingTechnique: null,
           material: ["Wood"],
           manufacturer: "Vintage Crafts",
@@ -954,21 +1041,22 @@ export const rawProductData = {
         {
           id: 30019,
           name: "Vintage Wooden Wall Clock",
-          price: [{size: "14 inches", amount: 1300}],
+          price: [{ size: "14 inches", amount: 1300 }],
           image: [
             "../assets/products/wall_hanging/vintage_crafts/wall_clock_vintage_wood/1.jpg",
             "../assets/products/wall_hanging/vintage_crafts/wall_clock_vintage_wood/2.jpg",
             "../assets/products/wall_hanging/vintage_crafts/wall_clock_vintage_wood/3.jpg",
-            "../assets/products/wall_hanging/vintage_crafts/wall_clock_vintage_wood/4.jpg"
+            "../assets/products/wall_hanging/vintage_crafts/wall_clock_vintage_wood/4.jpg",
           ],
-          description: "Introducing our exquisite Vintage Wooden Wall Clock, a timeless piece that adds a touch of elegance to any living space. Crafted with care and attention to detail, this hand-crafted clock measures 14 inches, making it the perfect statement piece for your home or office.",
+          description:
+            "Introducing our exquisite Vintage Wooden Wall Clock, a timeless piece that adds a touch of elegance to any living space. Crafted with care and attention to detail, this hand-crafted clock measures 14 inches, making it the perfect statement piece for your home or office.",
           story: null,
           details: [
             "Use : Indoor use only",
             "Suitable for Medium Traffic Areas",
             "Made in India",
           ],
-          color: ['Golden'],
+          color: ["Golden"],
           weavingTechnique: null,
           material: ["Wood"],
           manufacturer: "Vintage Crafts",
@@ -978,18 +1066,19 @@ export const rawProductData = {
         {
           id: 30020,
           name: "Metal Big size Wall Clock",
-          price: [{size: "24 inches", amount: 1300}],
+          price: [{ size: "24 inches", amount: 1300 }],
           image: [
             "../assets/products/wall_hanging/vintage_crafts/wall_clock_metal_big_size/1.jpg",
           ],
-          description: "Introducing our stunning 24-inch Big Size Metal Wall Clock, the perfect centerpiece for any room! Crafted with precision and designed to make a statement, this impressive timepiece combines functionality with elegance.",
+          description:
+            "Introducing our stunning 24-inch Big Size Metal Wall Clock, the perfect centerpiece for any room! Crafted with precision and designed to make a statement, this impressive timepiece combines functionality with elegance.",
           story: null,
           details: [
             "Use : Indoor use only",
             "Suitable for Medium Traffic Areas",
             "Made in India",
           ],
-          color: ['Golden'],
+          color: ["Golden"],
           weavingTechnique: null,
           material: ["Metal"],
           manufacturer: "Vintage Crafts",

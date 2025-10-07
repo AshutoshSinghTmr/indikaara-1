@@ -42,28 +42,6 @@ const CartPage = () => {
     [items]
   );
 
-  // Build enquiry email body
-  const buildEnquiryMailto = () => {
-    if (!items.length) return "mailto:enquiries@indikaara.com";
-    const subject = encodeURIComponent(
-      "Product Enquiry - Indikaara Cart Items"
-    );
-    const lines = items.map(
-      (item, idx) =>
-        `${idx + 1}. ${item.title} | Category: ${
-          item.category || "N/A"
-        } | Size: ${item.dimensions || "N/A"} | Qty: ${
-          item.quantity
-        } | Unit Price: ${item.price}`
-    );
-    const totalLine = `Total Line Items: ${items.length}\nSubtotal (approx): ${subtotal}`;
-    const guidance = `\n\nPlease provide pricing, lead time and shipping details for the above items.\n`;
-    const body = encodeURIComponent(
-      lines.join("\n") + "\n" + totalLine + guidance
-    );
-    return `mailto:enquiries@indikaara.com?subject=${subject}&body=${body}`;
-  };
-
   if (items.length === 0) {
     return (
       <main className="container mx-auto my-20 max-w-7xl px-4 py-32 text-center">
@@ -399,15 +377,15 @@ const CartPage = () => {
             <div className="mt-8 space-y-4">
               {/* Enquiry + Payment Actions */}
               <div className="flex flex-col gap-3">
-                <a
-                  href={buildEnquiryMailto()}
+                <Link
+                  to="/enquiry"
                   className="block"
-                  aria-label="Create an enquiry email for the items in your cart"
+                  aria-label="Review items and create an enquiry"
                 >
                   <Button variant="secondary" size="lg" className="w-full">
                     Enquire Now
                   </Button>
-                </a>
+                </Link>
                 {!hasRugs && (
                   <>
                     <div className="flex items-center gap-3 justify-center text-xs uppercase tracking-wider text-text-secondary/70">

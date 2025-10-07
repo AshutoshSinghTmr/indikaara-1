@@ -124,43 +124,77 @@ export default function Header() {
         <div className="absolute inset-0 border-t border-white/5/30 pointer-events-none" />
         {/* Burger extreme left; stable vertical alignment using flex instead of translate */}
         <div className="absolute inset-y-0 left-0 flex items-center">
-          <button
-            onClick={() => setIsOpen(true)}
-            aria-label="Open navigation menu"
-            aria-expanded={isOpen}
-            className="pl-3 pr-4 py-3 text-white hover:text-[#ac1f3] focus:outline-none focus:ring-2 focus:ring-[#ac1f23]/40 rounded-r-md z-50 relative"
-          >
-            <span
-              className="block leading-none text-[2rem] md:text-[2.2rem] lg:text-[2.8rem] w-[2rem] md:w-[2.2rem] lg:w-[2.8rem] h-[1.92rem] md:h-[2.4rem] lg:h-[3.2rem] transition-transform duration-300 ease-out"
-              aria-hidden="true"
+          <div className="flex items-center gap-1 pl-2 pr-2">
+            <button
+              onClick={() => setIsOpen(true)}
+              aria-label="Open navigation menu"
+              aria-expanded={isOpen}
+              className="p-2 text-white hover:text-[#ac1f3] focus:outline-none focus:ring-2 focus:ring-[#ac1f23]/40 rounded-md z-50 relative"
             >
-              <MenuIcon fontSize="inherit" className="w-full h-full" />
-            </span>
-          </button>
+              <span
+                className="block leading-none text-[1.9rem] md:text-[2.1rem] lg:text-[2.6rem] w-[2rem] md:w-[2.2rem] lg:w-[2.8rem] h-[1.9rem] md:h-[2.3rem] lg:h-[3rem] transition-transform duration-300 ease-out"
+                aria-hidden="true"
+              >
+                <MenuIcon fontSize="inherit" className="w-full h-full" />
+              </span>
+            </button>
+            {/* Search icon (moved left, visible all sizes) */}
+            <button
+              type="button"
+              aria-label="Open search"
+              onClick={() => setMobileSearchOpen((o) => !o)}
+              className="p-2 rounded-md text-white/80 hover:text-white hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-white/30"
+            >
+              <SearchIcon fontSize="medium" />
+            </button>
+          </div>
         </div>
         <div className="relative w-full h-full flex items-center justify-center px-4 md:px-8">
           {/* Centered Logo */}
           <div className="flex items-center select-none">
-            <Link to="/" className="block h-12 md:h-16 lg:h-20">
+            <Link
+              to="/"
+              className="block h-10 md:h-12 lg:h-20 transition-all duration-300"
+            >
               <CombinedLogo className="h-full" />
             </Link>
           </div>
 
           {/* Right side actions (full-bleed) */}
           <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center gap-4 text-white pr-2 md:pr-4">
-            {/* Large screens: full search bar + icons */}
-            <div className="hidden lg:flex items-center gap-3">
-              <form
-                onSubmit={(e) => e.preventDefault()}
-                className="flex items-center gap-2 bg-white/10 hover:bg-white/15 transition-colors rounded-full pl-3 pr-4 py-2 backdrop-blur-sm border border-white/10"
+            {/* Small / Medium screens: essential icons */}
+            <div className="flex items-center gap-4 lg:hidden pr-1">
+              <Link
+                to="/wishlist"
+                aria-label="Wishlist"
+                className="relative text-white/70 hover:text-white transition-colors"
               >
-                <SearchIcon className="text-white" fontSize="medium" />
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  className="bg-transparent text-sm text-white placeholder:text-white/50 w-40 lg:w-56"
-                />
-              </form>
+                <FavoriteBorderIcon fontSize="medium" className="text-white" />
+                {wishlistCount > 0 && (
+                  <span className="icon-badge wishlist-badge">
+                    {wishlistCount > 999 ? "999+" : wishlistCount}
+                  </span>
+                )}
+              </Link>
+              <Link
+                to="/cart"
+                aria-label="Cart"
+                className="relative text-white/70 hover:text-white transition-colors"
+              >
+                <ShoppingCartIcon fontSize="medium" className="text-white" />
+                {cartCount > 0 && (
+                  <span
+                    className={`icon-badge cart-badge ${
+                      cartPulse ? "icon-badge-pulse" : ""
+                    }`}
+                  >
+                    {cartCount > 999 ? "999+" : cartCount}
+                  </span>
+                )}
+              </Link>
+            </div>
+            {/* Right-side icons (wishlist, cart, profile) */}
+            <div className="hidden lg:flex items-center gap-4">
               {/* Wishlist */}
               <Link
                 to="/wishlist"
@@ -216,7 +250,7 @@ export default function Header() {
         <div
           id="mobile-search-bar"
           role="search"
-          className="lg:hidden fixed left-0 right-0 top-20 md:top-24 z-40 bg-[#1a1a1a]/95 backdrop-blur-md border-b border-white/10 px-4 py-3 flex items-center gap-3 animate-fade-in"
+          className="fixed left-0 right-0 top-20 md:top-24 z-40 bg-[#1a1a1a]/95 backdrop-blur-md border-b border-white/10 px-4 py-3 flex items-center gap-3 animate-fade-in"
         >
           <SearchIcon className="text-[#ac1f23]" />
           <form

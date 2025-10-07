@@ -3,62 +3,65 @@
  */
 
 // Import category images from assets
-import rugsImage from '../assets/category-select-rugs.png';
-import homeDecorImage from '../assets/category-select-home-decor.png';
-import vintageImage from '../assets/cateogy-select-vintage.png';
+import rugsImage from "../assets/rugs-category-card-image.png";
+import handicraft_items from "../assets/handicraft-items-category-image.png";
+import vintageImage from "../assets/cateogy-select-vintage.png";
 
 // Category image mapping
 export const categoryImages = {
-  'Rugs': rugsImage,
-  'Home Decor': homeDecorImage, // Merged category now includes wall hangings
-  'Vintage Collections': vintageImage, // Use dedicated vintage image
+  Rugs: rugsImage,
+  "Home Decor": handicraft_items, // Merged category now includes wall hangings
+  "Vintage Collections": vintageImage, // Use dedicated vintage image
   // Legacy mappings for backward compatibility
-  'Wall_Hanging': homeDecorImage, // Redirect to Home Decor
-  'Home_Decor': homeDecorImage,
-  'Wall Hanging': homeDecorImage, // Redirect to Home Decor
+  handicraft_items: handicraft_items, // Redirect to Home Decor
+  Home_Decor: handicraft_items,
+  "Wall Hanging": handicraft_items, // Redirect to Home Decor
   // Case variants
-  'rugs': rugsImage,
-  'home decor': homeDecorImage,
-  'vintage collections': vintageImage
+  rugs: rugsImage,
+  "home decor": handicraft_items,
+  "vintage collections": vintageImage,
 };
 
 // Function to get category image by name
 export const getCategoryImage = (categoryName) => {
   if (!categoryName) return null;
-  
+
   // Try exact match first
   if (categoryImages[categoryName]) {
     return categoryImages[categoryName];
   }
-  
+
   // Try case-insensitive match
   const normalizedName = categoryName.toLowerCase();
   const exactMatch = Object.keys(categoryImages).find(
-    key => key.toLowerCase() === normalizedName
+    (key) => key.toLowerCase() === normalizedName
   );
-  
+
   if (exactMatch) {
     return categoryImages[exactMatch];
   }
-  
+
   // Try partial match for common variations
-  if (normalizedName.includes('rug')) {
-    return categoryImages['Rugs'];
+  if (normalizedName.includes("rug")) {
+    return categoryImages["Rugs"];
   }
-  if (normalizedName.includes('wall') || normalizedName.includes('hanging')) {
-    return categoryImages['Home Decor']; // Redirect wall hangings to Home Decor
+  if (normalizedName.includes("wall") || normalizedName.includes("hanging")) {
+    return categoryImages["Home Decor"]; // Redirect wall hangings to Home Decor
   }
-  if (normalizedName.includes('home') || normalizedName.includes('decor')) {
-    return categoryImages['Home Decor'];
+  if (normalizedName.includes("home") || normalizedName.includes("decor")) {
+    return categoryImages["Home Decor"];
   }
-  if (normalizedName.includes('vintage') || normalizedName.includes('collection')) {
-    return categoryImages['Vintage Collections'];
+  if (
+    normalizedName.includes("vintage") ||
+    normalizedName.includes("collection")
+  ) {
+    return categoryImages["Vintage Collections"];
   }
-  
+
   return null;
 };
 
 // Default fallback image
 export const getDefaultCategoryImage = () => {
-  return 'https://images.unsplash.com/photo-1583391733956-6c78276477e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+  return "https://images.unsplash.com/photo-1583391733956-6c78276477e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80";
 };
