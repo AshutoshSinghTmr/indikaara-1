@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
-import CloseIcon from "@mui/icons-material/Close";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
@@ -14,8 +12,6 @@ export default function Header() {
   const [wishlistCount, setWishlistCount] = useState(0);
   const [cartCount, setCartCount] = useState(0); // total quantity
   const [cartPulse, setCartPulse] = useState(false);
-  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
-  const mobileSearchInputRef = React.useRef(null);
   const [scrolled, setScrolled] = useState(false);
 
   // Track scroll position to deepen glass effect after slight scroll
@@ -78,22 +74,7 @@ export default function Header() {
     };
   }, []);
 
-  // Focus input when mobile search opens & handle ESC close
-  useEffect(() => {
-    if (mobileSearchOpen && mobileSearchInputRef.current) {
-      mobileSearchInputRef.current.focus();
-    }
-  }, [mobileSearchOpen]);
-
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === "Escape" && mobileSearchOpen) {
-        setMobileSearchOpen(false);
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [mobileSearchOpen]);
+  // (Search removed) Keyboard shortcut previously opening search now unused.
 
   return (
     <>
@@ -138,15 +119,7 @@ export default function Header() {
                 <MenuIcon fontSize="inherit" className="w-full h-full" />
               </span>
             </button>
-            {/* Search icon (moved left, visible all sizes) */}
-            <button
-              type="button"
-              aria-label="Open search"
-              onClick={() => setMobileSearchOpen((o) => !o)}
-              className="p-2 rounded-md text-white/80 hover:text-white hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-white/30"
-            >
-              <SearchIcon fontSize="medium" />
-            </button>
+            {/* Search icon removed as requested */}
           </div>
         </div>
         <div className="relative w-full h-full flex items-center justify-center px-4 md:px-8">
@@ -246,38 +219,7 @@ export default function Header() {
           </div>
         </div>
       </header>
-      {mobileSearchOpen && (
-        <div
-          id="mobile-search-bar"
-          role="search"
-          className="fixed left-0 right-0 top-20 md:top-24 z-40 bg-[#1a1a1a]/95 backdrop-blur-md border-b border-white/10 px-4 py-3 flex items-center gap-3 animate-fade-in"
-        >
-          <SearchIcon className="text-[#ac1f23]" />
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              // Future: navigate to search results page
-              setMobileSearchOpen(false);
-            }}
-            className="flex-1"
-          >
-            <input
-              ref={mobileSearchInputRef}
-              type="text"
-              placeholder="Search products, artisans..."
-              className="w-full bg-transparent border-none outline-none text-white placeholder:text-white/50 text-base"
-            />
-          </form>
-          <button
-            type="button"
-            aria-label="Close search"
-            onClick={() => setMobileSearchOpen(false)}
-            className="p-2 rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors"
-          >
-            <CloseIcon fontSize="medium" />
-          </button>
-        </div>
-      )}
+      {/* Search overlay removed */}
     </>
   );
 }

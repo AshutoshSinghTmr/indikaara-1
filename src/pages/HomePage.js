@@ -271,7 +271,7 @@ const HandicraftShowcase = () => {
     autoplay: true,
     autoplaySpeed: 4800,
     pauseOnHover: true,
-    slidesToShow: 5,
+    slidesToShow: 3,
     swipeToSlide: true,
     arrows: true,
     prevArrow: <ArrowBtn dir="prev" />,
@@ -408,7 +408,7 @@ const HomePage = () => {
         {/*ARTISAN STORY section */}
         <section
           className="artisan-story-section w-full"
-          style={{ marginTop: "4rem" }}
+          // style={{ marginTop: "4rem" }}
         >
           <ArtisanStorySection />
         </section>
@@ -419,7 +419,7 @@ const HomePage = () => {
         </section>
 
         {/*QUALITY & SUSTAINABILITY section */}
-        <section className="my-10 w-full">
+        <section className="my-4 w-full">
           <div className="bg-[#111827] rounded-none sm:rounded-xl p-6 sm:p-8 md:p-12 w-full">
             <div className="text-center mb-10 sm:mb-12">
               <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-3 sm:mb-4">
