@@ -156,7 +156,7 @@ const RugsShowcase = () => {
       { breakpoint: 900, settings: { slidesToShow: 5 } },
       { breakpoint: 820, settings: { slidesToShow: 5 } },
       { breakpoint: 768, settings: { slidesToShow: 3 } },
-      { breakpoint: 640, settings: { slidesToShow: 3 } },
+      { breakpoint: 640, settings: { slidesToShow: 1 } },
       { breakpoint: 520, settings: { slidesToShow: 1 } },
       { breakpoint: 460, settings: { slidesToShow: 1 } },
       { breakpoint: 400, settings: { slidesToShow: 1 } },
@@ -214,7 +214,7 @@ const RugsShowcase = () => {
             onClick={() => (window.location.href = "/catalogue?category=rugs")}
             className="mt-4 inline-block text-[11px] tracking-wide font-semibold uppercase text-gray-200 border-b-2 border-gray-400/60 hover:border-white transition-colors"
           >
-            Shop Collection
+            Explore Collection
           </button>
         </div>
       </div>
@@ -283,7 +283,7 @@ const HandicraftShowcase = () => {
       { breakpoint: 900, settings: { slidesToShow: 5 } },
       { breakpoint: 820, settings: { slidesToShow: 5 } },
       { breakpoint: 768, settings: { slidesToShow: 3 } },
-      { breakpoint: 640, settings: { slidesToShow: 3 } },
+      { breakpoint: 640, settings: { slidesToShow: 1 } },
       { breakpoint: 520, settings: { slidesToShow: 1 } },
       { breakpoint: 460, settings: { slidesToShow: 1 } },
       { breakpoint: 400, settings: { slidesToShow: 1 } },
@@ -346,11 +346,11 @@ const HandicraftShowcase = () => {
           </p>
           <button
             onClick={() =>
-              (window.location.href = "/catalogue?category=Handicraft%20Items")
+              (window.location.href = "/catalogue?category=handicraftproducts")
             }
             className="mt-4 inline-block text-[11px] tracking-wide font-semibold uppercase text-gray-200 border-b-2 border-gray-400/60 hover:border-white transition-colors"
           >
-            Browse Collection
+            Shop Collection
           </button>
         </div>
       </div>

@@ -19,7 +19,7 @@ export default function SideNav({ isOpen, setIsOpen, toggleDrawer }) {
       to: "/businesses",
       items: [
         { id: 1, name: "Rugs" },
-        { id: 2, name: "Handicrafted Products" },
+        { id: 2, name: "Handicraft Products" },
         { id: 3, name: "Biomass Pellets & Briquettes", comingSoon: true },
         { id: 4, name: "Clothing", comingSoon: true },
         { id: 5, name: "Millet Foods", comingSoon: true },
@@ -107,17 +107,12 @@ export default function SideNav({ isOpen, setIsOpen, toggleDrawer }) {
           >
             <ul className="py-2 space-y-1">
               {item.items.map((sub) => {
-                const makeSlug = (name) =>
-                  name
-                    .toLowerCase()
-                    .replace(/&|\//g, " ") // treat & and / as separators
-                    .replace(/[^a-z0-9\s-]/g, "") // remove other special chars
-                    .trim()
-                    .replace(/\s+/g, "-");
+                const makeSlug = (name) => name.toLowerCase().replace(" ", "");
+                // .replace(/\s+/g, "-");
                 const baseSlug = makeSlug(sub.name);
                 const target = sub.comingSoon
                   ? `/coming-soon/${baseSlug}`
-                  : `/catalogue/?category=${baseSlug}`;
+                  : `/catalogue?category=${baseSlug}`;
                 return (
                   <li key={sub.id} className="px-6">
                     <Link
