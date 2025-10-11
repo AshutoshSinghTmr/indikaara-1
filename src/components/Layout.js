@@ -21,7 +21,7 @@ const Layout = ({ children }) => {
         {/* Footer */}
         <Footer />
       </div>
-      
+
       {/* Sticky Enquiry Button */}
       <EnquiryButton />
     </div>

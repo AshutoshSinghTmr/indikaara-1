@@ -5,6 +5,7 @@ import {
   Handshake,
   Palette,
   Recycling,
+  SwapHoriz,
 } from "@mui/icons-material";
 
 export const WhyConnectCards = () => {
@@ -13,7 +14,6 @@ export const WhyConnectCards = () => {
       icon: CheckCircleOutline,
       title: "Curated Quality",
       description: "Every piece is artisan-made & authenticity verified.",
-      highlight: true,
     },
     {
       icon: Public,
@@ -34,6 +34,12 @@ export const WhyConnectCards = () => {
       icon: Recycling,
       title: "Sustainable",
       description: "Eco-conscious materials & mindful production.",
+    },
+    {
+      icon: SwapHoriz, // or Loop, Cached
+      title: "Easy Returns & Exchanges",
+      description:
+        "A straightforward and speedy process for any returns or exchanges.",
     },
   ];
   return (

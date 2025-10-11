@@ -1,0 +1,37 @@
+.offer-banner {
+  -webkit-backdrop-filter: saturate(160%) blur(6px);
+  backdrop-filter: saturate(160%) blur(6px);
+}
+
+.offer-marquee {
+  display: flex;
+  width: 200%;
+}
+
+.offer-marquee-track {
+  display: flex;
+  flex: 0 0 50%;
+  gap: 2rem;
+  white-space: nowrap;
+  align-items: center;
+  animation: offer-marquee 22s linear infinite;
+}
+
+@keyframes offer-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.offer-banner:hover .offer-marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .offer-marquee-track {
+    animation: none;
+  }
+}
