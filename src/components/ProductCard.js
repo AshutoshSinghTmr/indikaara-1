@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getFirstImage, getDefaultImage } from '../utils/imageUtils';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { getFirstImage, getDefaultImage } from "../utils/imageUtils";
 
 /**
  * ProductCard Component - Displays individual product with hover overlay
@@ -10,7 +10,7 @@ import { getFirstImage, getDefaultImage } from '../utils/imageUtils';
 const ProductCard = ({ product, onClick }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const navigate = useNavigate();
-
+  console.log("product", product);
   const handleClick = () => {
     if (onClick) {
       onClick(product);
@@ -22,15 +22,23 @@ const ProductCard = ({ product, onClick }) => {
   // Get the first available image from the product
   const getProductImage = () => {
     // Check for transformed data structure (images property)
-    if (product.images && Array.isArray(product.images) && product.images.length > 0) {
+    if (
+      product.images &&
+      Array.isArray(product.images) &&
+      product.images.length > 0
+    ) {
       return product.images[0]; // Already converted by dataService
     }
     // Check if product has image array (raw data structure)
-    if (product.image && Array.isArray(product.image) && product.image.length > 0) {
+    if (
+      product.image &&
+      Array.isArray(product.image) &&
+      product.image.length > 0
+    ) {
       return getFirstImage(product.image);
     }
     // Check for single image property
-    if (product.image && typeof product.image === 'string') {
+    if (product.image && typeof product.image === "string") {
       return getFirstImage([product.image]);
     }
     // Return default fallback
@@ -41,44 +49,31 @@ const ProductCard = ({ product, onClick }) => {
 
   // Format price with Indian Rupee symbol
   const formatPrice = (price) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      maximumFractionDigits: 0
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 0,
     }).format(price);
   };
 
   // Display price or price range
   const displayPrice = () => {
     // Handle new price structure with multiple sizes
-    if (product.priceOptions && Array.isArray(product.priceOptions) && product.priceOptions.length > 0) {
-      if (product.priceOptions.length === 1) {
-        // Single size option
-        return formatPrice(product.priceOptions[0].amount);
-      } else {
-        // Multiple size options - show range
-        const prices = product.priceOptions.map(option => option.amount);
-        const minPrice = Math.min(...prices);
-        const maxPrice = Math.max(...prices);
-        if (minPrice === maxPrice) {
-          return formatPrice(minPrice);
-        }
-        return `${formatPrice(minPrice)} - ${formatPrice(maxPrice)}`;
-      }
-    } else if (product.price) {
+    if (product.category === "Rugs") {
+      return "Price on Request";
+    } else {
       return formatPrice(product.price);
     }
-    return 'Price on request';
   };
 
   return (
-    <div 
+    <div
       className="flex flex-col gap-4 product-card rounded-[var(--border-radius-lg)] overflow-hidden group cursor-pointer hover:transform hover:scale-105 transition-all duration-300"
       onClick={handleClick}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
           handleClick();
         }
@@ -87,52 +82,65 @@ const ProductCard = ({ product, onClick }) => {
     >
       {/* Product Image with Story Overlay */}
       <div className="relative w-full aspect-square bg-cover bg-center rounded-t-[var(--border-radius-lg)] bg-gray-800">
-        <div 
-          className={`w-full h-full bg-cover bg-center transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+        <div
+          className={`w-full h-full bg-cover bg-center transition-opacity duration-300 ${
+            imageLoaded ? "opacity-100" : "opacity-0"
+          }`}
           style={{ backgroundImage: `url("${productImageSrc}")` }}
         />
-        
+
         {/* Loading placeholder */}
         {!imageLoaded && (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
           </div>
         )}
-        
+
         {/* Hidden image for loading detection */}
-        <img 
-          src={productImageSrc} 
+        <img
+          src={productImageSrc}
           alt={product.name}
           className="hidden"
           onLoad={() => setImageLoaded(true)}
           onError={() => setImageLoaded(true)}
         />
-        
+
         {/* Price badge if there's a discount */}
         {product.originalPrice && product.originalPrice > product.price && (
           <div className="absolute top-3 right-3 bg-accent text-white text-xs font-semibold px-2 py-1 rounded-full">
-            {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
+            {Math.round(
+              ((product.originalPrice - product.price) /
+                product.originalPrice) *
+                100
+            )}
+            % OFF
           </div>
         )}
-        
+
         {/* Featured badge */}
         {product.featured && (
           <div className="absolute top-3 left-3 bg-primary text-white text-xs font-semibold px-2 py-1 rounded-full">
             Featured
           </div>
         )}
-        
+
         {/* Story Overlay */}
         <div className="story-overlay absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white p-4 transform translate-y-full transition-transform duration-300 ease-in-out opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
-          <h3 className="font-bold text-sm mb-1">{product.storyTitle || product.name}</h3>
-          <p className="text-xs leading-relaxed">{product.storyDescription || product.description}</p>
+          <h3 className="font-bold text-sm mb-1">
+            {product.storyTitle || product.name}
+          </h3>
+          <p className="text-xs leading-relaxed">
+            {product.storyDescription || product.description}
+          </p>
         </div>
       </div>
-      
+
       {/* Product Info */}
       <div className="p-2 space-y-2">
-        <p className="text-primary text-base font-semibold mb-1 line-clamp-2">{product.name}</p>
-        
+        <p className="text-primary text-base font-semibold mb-1 line-clamp-2">
+          {product.name}
+        </p>
+
         {/* Price */}
         <div className="flex items-center gap-2">
           <span className="text-primary text-lg font-bold">

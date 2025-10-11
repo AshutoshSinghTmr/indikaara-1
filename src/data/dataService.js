@@ -71,10 +71,6 @@ class DataService {
           id: item.id,
           name: item.name,
           price: basePrice, // Use first price option as base price
-          priceOptions: Array.isArray(item.price)
-            ? item.price
-            : [{ size: "Standard", amount: basePrice }], // Store all price options
-          originalPrice: basePrice * 1.2, // Simulate original price
           category: normalizedCategoryName,
           region: item.manufacturer || "India", // Use manufacturer as region fallback
           artisan: item.manufacturer,
@@ -334,11 +330,6 @@ class DataService {
 
   getCategoryNames() {
     return this.transformedData.categories.map((category) => category.name);
-  }
-
-  // Region Methods
-  getAllRegions() {
-    return this.transformedData.regions;
   }
 
   getRegionById(id) {
