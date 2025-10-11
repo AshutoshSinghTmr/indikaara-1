@@ -4,7 +4,7 @@ import "./OfferBanner.css";
 // Fixed top announcement bar with continuous scrolling text (marquee-style)
 const messages = [
   "Diwali Offer!! 10% Off on First Order",
-  "· Easy returns",
+  "Easy returns",
   "Handcrafted • Authentic • Ethical",
 ];
 

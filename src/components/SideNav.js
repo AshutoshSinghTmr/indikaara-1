@@ -5,11 +5,13 @@ import { Link } from "react-router-dom";
 import PersonIcon from "@mui/icons-material/Person";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useAuth } from "../context/AuthContext";
 // Simple icon placeholders (replace with themed icons later if needed)
 
 export default function SideNav({ isOpen, setIsOpen, toggleDrawer }) {
   const handleClose = () => setIsOpen(false);
   const [openBusinesses, setOpenBusinesses] = React.useState(false);
+  const { user, isAuthenticated } = useAuth();
 
   // Navigation link config
   const primaryLinks = [
@@ -31,8 +33,8 @@ export default function SideNav({ isOpen, setIsOpen, toggleDrawer }) {
   ];
   const secondaryLinks = [
     {
-      label: "Profile",
-      to: "/login",
+      label: isAuthenticated ? "Profile" : "Login",
+      to: isAuthenticated ? "/dashboard" : "/login",
       icon: <PersonIcon fontSize="large" />,
     },
     { label: "Cart", to: "/cart", icon: <ShoppingCartIcon fontSize="large" /> },
@@ -180,10 +182,11 @@ export default function SideNav({ isOpen, setIsOpen, toggleDrawer }) {
               <LinkBlock key={item.label} item={item} />
             ))}
           </nav>
-
           <div className="my-4 mx-12 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-          <span className="flex justify-center text-white/40 text-2xl md:text-xl lg:text-2xl font-semibold tracking-wide text-white">
-            My Account
+          <span className="flex justify-center text-white/60 text-2xl md:text-xl lg:text-2xl font-semibold tracking-wide">
+            {isAuthenticated
+              ? `Welcome, ${user?.name || "User"}`
+              : "My Account"}
           </span>
           <nav aria-label="Secondary" className="pb-4 m-2">
             {secondaryLinks.map((item) => (
