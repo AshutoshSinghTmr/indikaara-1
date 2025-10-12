@@ -14,9 +14,10 @@ const Layout = ({ children }) => {
       <div className="flex h-full grow flex-col">
         {/* Header */}
         <Header />
-
-        {/* Main Content */}
-        {children}
+        {/* Main Content; pad top to clear fixed OfferBanner (50px) + Header (80/96/112px) */}
+        <main className="pt-[130px] md:pt-[146px] lg:pt-[162px]">
+          {children}
+        </main>
 
         {/* Footer */}
         <Footer />

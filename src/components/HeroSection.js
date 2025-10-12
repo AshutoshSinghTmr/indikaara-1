@@ -78,34 +78,33 @@ const HeroSection = () => {
   //   console.log("e", e);
   // };
   return (
-    <div className="pt-6 mt-12 md:mt-12 lg:mt-16 xl:mt-18">
-      <section className="relative w-screen bg-[#1a1a1a] overflow-hidden hero-carousel">
-        {/* NEW ARRIVALS Header */}
-        <div className="absolute top-6 md:top-8 left-0 right-0 z-30 text-center"></div>
+    <section className="relative pt-1 w-screen bg-[#1a1a1a] overflow-hidden hero-carousel">
+      {/* NEW ARRIVALS Header */}
+      <div className="absolute top-6 md:top-8 left-0 right-0 z-30 text-center"></div>
 
-        {/* Carousel Container */}
-        <div className="relative h-[400px] sm:h-[460px] md:h-[500px] lg:h-[600px] xl:h-[700px] overflow-hidden w-full">
-          {/* Slides */}
-          <div
-            className="flex transition-transform duration-700 ease-in-out h-full hero-slide"
-            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-          >
-            {slides.map((slide, index) => (
+      {/* Carousel Container */}
+      <div className="relative h-[400px] sm:h-[460px] md:h-[500px] lg:h-[600px] xl:h-[700px] overflow-hidden w-full">
+        {/* Slides */}
+        <div
+          className="flex transition-transform duration-700 ease-in-out h-full hero-slide"
+          style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+        >
+          {slides.map((slide, index) => (
+            <div
+              key={slide.id}
+              className="w-screen h-full flex-shrink-0 relative"
+            >
+              {/* Background Image */}
               <div
-                key={slide.id}
-                className="w-screen h-full flex-shrink-0 relative"
-              >
-                {/* Background Image */}
-                <div
-                  className="absolute inset-0 bg-cover bg-center w-full h-full"
-                  style={{ backgroundImage: `url("${slide.image}")` }}
-                />
+                className="absolute inset-0 bg-cover bg-center w-full h-full"
+                style={{ backgroundImage: `url("${slide.image}")` }}
+              />
 
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
 
-                {/* Content */}
-                {/* <div className="relative z-20 h-full flex flex-col justify-end pb-20 md:pb-24 lg:pb-32 text-center px-4">
+              {/* Content */}
+              {/* <div className="relative z-20 h-full flex flex-col justify-end pb-20 md:pb-24 lg:pb-32 text-center px-4">
                   <div className="max-w-4xl mx-auto">
                     <Button
                       variant="primary"
@@ -117,81 +116,80 @@ const HeroSection = () => {
                     </Button>
                   </div>
                 </div> */}
-              </div>
-            ))}
-          </div>
-
-          {/* Navigation Arrows */}
-          <button
-            onClick={goToPrevious}
-            className="absolute left-2 md:left-4 lg:left-8 top-1/2 -translate-y-1/2 z-30 w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-black/30 hover:bg-black/50 rounded-full flex items-center justify-center text-white transition-all duration-200 backdrop-blur-sm hero-nav-arrow"
-            aria-label="Previous slide"
-          >
-            <svg
-              className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-          </button>
-
-          <button
-            onClick={goToNext}
-            className="absolute right-2 md:right-4 lg:right-8 top-1/2 -translate-y-1/2 z-30 w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-black/30 hover:bg-black/50 rounded-full flex items-center justify-center text-white transition-all duration-200 backdrop-blur-sm hero-nav-arrow"
-            aria-label="Next slide"
-          >
-            <svg
-              className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </button>
-
-          {/* Navigation Dots */}
-          <div className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-2 md:gap-3">
-            {slides.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={`w-2 h-2 md:w-3 md:h-3 rounded-full transition-all duration-300 hero-nav-dot ${
-                  index === currentSlide
-                    ? "bg-white scale-110 active"
-                    : "bg-white/50 hover:bg-white/75"
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div>
-
-          {/* Progress Bar */}
-          <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-black/20">
-            <div
-              className="h-full bg-white/40 transition-all duration-100 ease-out"
-              style={{
-                width: isAutoPlaying
-                  ? `${((currentSlide + 1) / slides.length) * 100}%`
-                  : "0%",
-              }}
-            />
-          </div>
+            </div>
+          ))}
         </div>
-      </section>
-    </div>
+
+        {/* Navigation Arrows */}
+        <button
+          onClick={goToPrevious}
+          className="absolute left-2 md:left-4 lg:left-8 top-1/2 -translate-y-1/2 z-30 w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-black/30 hover:bg-black/50 rounded-full flex items-center justify-center text-white transition-all duration-200 backdrop-blur-sm hero-nav-arrow"
+          aria-label="Previous slide"
+        >
+          <svg
+            className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
+
+        <button
+          onClick={goToNext}
+          className="absolute right-2 md:right-4 lg:right-8 top-1/2 -translate-y-1/2 z-30 w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-black/30 hover:bg-black/50 rounded-full flex items-center justify-center text-white transition-all duration-200 backdrop-blur-sm hero-nav-arrow"
+          aria-label="Next slide"
+        >
+          <svg
+            className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </button>
+
+        {/* Navigation Dots */}
+        <div className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-2 md:gap-3">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`w-2 h-2 md:w-3 md:h-3 rounded-full transition-all duration-300 hero-nav-dot ${
+                index === currentSlide
+                  ? "bg-white scale-110 active"
+                  : "bg-white/50 hover:bg-white/75"
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
+
+        {/* Progress Bar */}
+        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-black/20">
+          <div
+            className="h-full bg-white/40 transition-all duration-100 ease-out"
+            style={{
+              width: isAutoPlaying
+                ? `${((currentSlide + 1) / slides.length) * 100}%`
+                : "0%",
+            }}
+          />
+        </div>
+      </div>
+    </section>
   );
 };
 
