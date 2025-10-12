@@ -63,13 +63,13 @@ const FeaturedArtisan = () => {
               {featuredArtisan.craft}
             </span>
           </div>
-          <h3 className="text-3xl font-bold text-primary mb-2">
+          <h3 className="text-3xl md:text-xl sm:text-lg font-bold text-primary mb-2">
             {featuredArtisan.name}
           </h3>
-          <p className="text-[var(--secondary-color)] font-medium mb-4">
+          <p className="text-[var(--secondary-color)] md:text-sm sm:text-sm font-medium mb-4">
             {featuredArtisan.title} • {featuredArtisan.location}
           </p>
-          <p className="text-lg text-secondary leading-relaxed mb-6">
+          <p className="lg:text-lg md:text-lg sm:text-sm text-secondary leading-relaxed mb-6">
             {featuredArtisan.story}
           </p>
 
