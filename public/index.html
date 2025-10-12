@@ -2,19 +2,34 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#1a1a1a" />
+
     <meta
       name="description"
       content="Indikaara - Discover handcrafted treasures from India's finest artisans"
     />
+
+    <!-- 🔹 Favicon and App Icons -->
+    <link rel="icon" type="image/png" href="%PUBLIC_URL%/favicon.png" />
+    <link
+      rel="apple-touch-icon"
+      sizes="192x192"
+      href="%PUBLIC_URL%/logo192.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="512x512"
+      href="%PUBLIC_URL%/logo512.png"
+    />
+
+    <!-- 🔹 Manifest for PWA -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
-    <!-- Tailwind CSS CDN as fallback -->
+    <!-- 🔹 Tailwind CSS (CDN fallback - recommended to install locally for production) -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
-    <!-- Google Fonts -->
+    <!-- 🔹 Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -25,21 +40,32 @@
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
-
-    <link
-      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap"
-      rel="stylesheet"
-    />
     <link
       href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
       rel="stylesheet"
     />
-    <!-- Google Identity Services -->
+
+    <!-- 🔹 Google Identity Services -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
+    <!-- 🔹 Title -->
     <title>Indikaara</title>
+
+    <!-- 🔹 Optional: Basic SEO Open Graph Tags -->
+    <meta
+      property="og:title"
+      content="Indikaara - Handcrafted Treasures from India"
+    />
+    <meta
+      property="og:description"
+      content="Explore unique handmade treasures from India's finest artisans."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="%PUBLIC_URL%/logo512.png" />
+    <meta property="og:url" content="https://www.indikaara.com" />
   </head>
-  <body>
+
+  <body class="font-[Manrope] bg-[#1a1a1a] text-white">
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
   </body>

@@ -83,7 +83,7 @@ export default function Header() {
       <header
         className={`header-contrast ${
           scrolled ? "scrolled" : ""
-        } fixed top-[50px] left-0 right-0 z-50 h-20 md:h-24 lg:h-28 transition-all duration-300 border-b overflow-hidden
+        } fixed top-[50px] left-0 right-0 z-50 h-200 md:h-24 lg:h-100 transition-all duration-300 border-b overflow-hidden
         ${
           scrolled
             ? "backdrop-blur-2xl bg-[#0b0b0f]/72 border-white/15 shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_4px_24px_-4px_rgba(255,255,255,0.12),0_8px_40px_-8px_rgba(172,31,35,0.35)]"
