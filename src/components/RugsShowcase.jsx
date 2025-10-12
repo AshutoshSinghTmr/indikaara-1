@@ -42,9 +42,9 @@ const RugsShowcase = () => {
     className: "rugs-center-slider",
     centerMode: true,
     centerPadding: "0px",
-    dots: false,
+    dots: true,
     infinite: true,
-    speed: 600,
+    speed: 800,
     autoplay: true,
     autoplaySpeed: 4500,
     pauseOnHover: true,
@@ -60,7 +60,7 @@ const RugsShowcase = () => {
       { breakpoint: 900, settings: { slidesToShow: 5 } },
       { breakpoint: 820, settings: { slidesToShow: 5 } },
       { breakpoint: 768, settings: { slidesToShow: 3 } },
-      { breakpoint: 640, settings: { slidesToShow: 1 } },
+      { breakpoint: 640, settings: { slidesToShow: 3 } },
       { breakpoint: 520, settings: { slidesToShow: 1 } },
       { breakpoint: 460, settings: { slidesToShow: 1 } },
       { breakpoint: 400, settings: { slidesToShow: 1 } },
@@ -100,6 +100,9 @@ const RugsShowcase = () => {
                 <div className="relative flex items-end justify-center h-[340px] sm:h-[400px]">
                   <img
                     src={item.images && item.images[0]}
+                    onClick={() =>
+                      (window.location.href = `/product/${item.id}`)
+                    }
                     alt={item.name}
                     loading="lazy"
                     className="rug-stack-image transition-all duration-500 ease-out object-cover rounded shadow-lg"

@@ -104,6 +104,9 @@ const HandicraftShowcase = () => {
                     src={item.images && item.images[0]}
                     alt={item.name}
                     loading="lazy"
+                    onClick={() =>
+                      (window.location.href = `/product/${item.id}`)
+                    }
                     className="rug-stack-image transition-all duration-500 ease-out object-cover rounded shadow-lg"
                     style={{
                       height:
