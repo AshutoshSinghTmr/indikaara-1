@@ -2,9 +2,15 @@ import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
-// Set base URL for axios from environment variable
-axios.defaults.baseURL =
-  process.env.REACT_APP_API_URL || "https://backend-wei5.onrender.com";
+// Use relative URLs to work with proxy in development
+// In production, this will be set via environment variables
+if (process.env.NODE_ENV === "production") {
+  axios.defaults.baseURL =
+    process.env.REACT_APP_API_URL || "https://backend-wei5.onrender.com";
+} else {
+  // In development, use proxy - no baseURL needed
+  axios.defaults.baseURL = "";
+}
 
 const SECONDS_TO_MILLISECONDS = 1000;
 
@@ -22,6 +28,21 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(localStorage.getItem("token"));
+
+  // Set up axios interceptor to include auth token
+  useEffect(() => {
+    const interceptor = axios.interceptors.request.use(
+      (config) => {
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => Promise.reject(error)
+    );
+
+    return () => axios.interceptors.request.eject(interceptor);
+  }, [token]);
 
   useEffect(() => {
     if (token) {
@@ -60,11 +81,32 @@ export const AuthProvider = ({ children }) => {
         email,
         password,
       });
-      const { token } = response.data;
-      localStorage.setItem("token", token);
-      setToken(token);
-      const decoded = jwtDecode(token);
-      setUser(decoded);
+      const { token, accessToken, user: userPayload } = response.data || {};
+      const jwt = token || accessToken;
+
+      if (!jwt) {
+        return {
+          success: false,
+          error: "Login failed: missing token in response",
+        };
+      }
+
+      localStorage.setItem("token", jwt);
+      setToken(jwt);
+
+      // Prefer decoded JWT for expiry/claims; merge with user payload if present
+      const decoded = jwtDecode(jwt);
+      const mergedUser = userPayload ? { ...decoded, ...userPayload } : decoded;
+      setUser(mergedUser);
+
+      // Persist profile if provided (optional)
+      if (userPayload) {
+        localStorage.setItem("userProfile", JSON.stringify(userPayload));
+      }
+
+      // Fetch full profile after login
+      await fetchUserProfile(jwt);
+
       return { success: true };
     } catch (error) {
       return {
@@ -81,11 +123,24 @@ export const AuthProvider = ({ children }) => {
         email,
         password,
       });
-      const { token } = response.data;
-      localStorage.setItem("token", token);
-      setToken(token);
-      const decoded = jwtDecode(token);
-      setUser(decoded);
+      const { token, accessToken, user: userPayload } = response.data || {};
+      const jwt = token || accessToken;
+      if (!jwt) {
+        return {
+          success: false,
+          error: "Registration failed: missing token in response",
+        };
+      }
+      localStorage.setItem("token", jwt);
+      setToken(jwt);
+      const decoded = jwtDecode(jwt);
+      const mergedUser = userPayload ? { ...decoded, ...userPayload } : decoded;
+      setUser(mergedUser);
+      if (userPayload) {
+        localStorage.setItem("userProfile", JSON.stringify(userPayload));
+      }
+      // Fetch full profile after registration
+      await fetchUserProfile(jwt);
       return { success: true };
     } catch (error) {
       return {
@@ -136,6 +191,64 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Fetch current user profile from backend (optionally using a provided token)
+  const fetchUserProfile = async (overrideToken) => {
+    const authToken = overrideToken || token;
+    if (!authToken) {
+      return { success: false, error: "Missing auth token" };
+    }
+    try {
+      const response = await axios.get("/api/users/me", {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+      const profile = response.data;
+      try {
+        localStorage.setItem("userProfile", JSON.stringify(profile));
+      } catch {}
+      setUser((prev) => ({ ...prev, ...profile }));
+      return { success: true, data: profile };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.response?.data?.message || "Failed to fetch profile",
+      };
+    }
+  };
+
+  // Update user profile
+  const updateProfile = async (profileData) => {
+    try {
+      const response = await axios.put("/api/users/me", profileData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setUser((prev) => ({ ...prev, ...response.data }));
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.response?.data?.message || "Failed to update profile",
+      };
+    }
+  };
+
+  // Demo login for development/testing
+  const demoLogin = async () => {
+    try {
+      const response = await axios.post("/api/auth/demo-login");
+      const { token } = response.data;
+      localStorage.setItem("token", token);
+      setToken(token);
+      const decoded = jwtDecode(token);
+      setUser(decoded);
+      return { success: true };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.response?.data?.message || "Demo login failed",
+      };
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userProfile");
@@ -151,6 +264,9 @@ export const AuthProvider = ({ children }) => {
     register,
     googleLogin,
     logout,
+    fetchUserProfile,
+    updateProfile,
+    demoLogin,
     isAuthenticated: !!user,
   };
 
