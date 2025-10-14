@@ -90,9 +90,6 @@ const LoginPage = () => {
       setLoading(false);
       return;
     }
-    if (password !== confirmPassword) {
-      return alert("Passwords do not match");
-    }
     const result = isLogin
       ? await login(email, password)
       : await register(userName, email, password);

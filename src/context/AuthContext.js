@@ -4,14 +4,16 @@ import { jwtDecode } from "jwt-decode";
 
 // Use relative URLs to work with proxy in development
 // In production, this will be set via environment variables
-if (process.env.NODE_ENV === "production") {
-  axios.defaults.baseURL =
-    process.env.REACT_APP_API_URL || "https://backend-wei5.onrender.com";
-} else {
-  // In development, use proxy - no baseURL needed
-  axios.defaults.baseURL = "";
-}
-
+// if (process.env.NODE_ENV === "production") {
+//   axios.defaults.baseURL =
+//     process.env.REACT_APP_API_URL || "https://backend-wei5.onrender.com";
+//   // process.env.REACT_APP_API_URL || "https://backend-wei5.onrender.com";
+// } else {
+//   // In development, use proxy - no baseURL needed
+//   axios.defaults.baseURL = "https://backend-wei5.onrender.com";
+// }
+axios.defaults.baseURL =
+  process.env.REACT_APP_API_URL || "http://localhost:5000";
 const SECONDS_TO_MILLISECONDS = 1000;
 
 const AuthContext = createContext();

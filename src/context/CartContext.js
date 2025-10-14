@@ -16,6 +16,7 @@ const CART_ACTIONS = {
 const cartReducer = (state, action) => {
   switch (action.type) {
     case CART_ACTIONS.ADD_ITEM: {
+      const requestedQty = Math.max(25, action.payload.quantity || 1);
       const existingItem = state.items.find(
         (item) => item.id === action.payload.id
       );
@@ -27,7 +28,7 @@ const cartReducer = (state, action) => {
             item.id === action.payload.id
               ? {
                   ...item,
-                  quantity: item.quantity + (action.payload.quantity || 1),
+                  quantity: Math.max(25, item.quantity + requestedQty),
                 }
               : item
           ),
@@ -36,10 +37,7 @@ const cartReducer = (state, action) => {
 
       return {
         ...state,
-        items: [
-          ...state.items,
-          { ...action.payload, quantity: action.payload.quantity || 1 },
-        ],
+        items: [...state.items, { ...action.payload, quantity: requestedQty }],
       };
     }
 
@@ -55,9 +53,10 @@ const cartReducer = (state, action) => {
         items: state.items
           .map((item) =>
             item.id === action.payload.id
-              ? { ...item, quantity: Math.max(0, action.payload.quantity) }
+              ? { ...item, quantity: Math.max(25, action.payload.quantity) }
               : item
           )
+          // do not drop items when enforcing min quantity; keep the item with min 25
           .filter((item) => item.quantity > 0),
       };
 
@@ -119,9 +118,10 @@ export const CartProvider = ({ children }) => {
     (total, item) => total + item.price * item.quantity,
     0
   );
-  const shipping = subtotal > 0 ? 250 : 0; // Free shipping over certain amount could be added
-  const tax = subtotal * 0.05; // 5% tax
-  const total = subtotal + shipping + tax;
+  // Shipping and tax are not applied; order total equals items subtotal
+  const shipping = 0;
+  const tax = 0;
+  const total = subtotal;
 
   const itemCount = state.items.reduce(
     (count, item) => count + item.quantity,

@@ -6,24 +6,13 @@ import Button from "../components/Button";
  * CartPage Component - Shopping cart page with items and summary
  */
 const CartPage = () => {
-  const {
-    items,
-    itemCount,
-    subtotal,
-    shipping,
-    tax,
-    total,
-    updateQuantity,
-    removeFromCart,
-  } = useCart();
+  const { items, itemCount, total, updateQuantity, removeFromCart } = useCart();
 
   // Handle quantity change
+  const MIN_QTY = 25;
   const handleQuantityChange = (productId, newQuantity) => {
-    if (newQuantity <= 0) {
-      removeFromCart(productId);
-    } else {
-      updateQuantity(productId, newQuantity);
-    }
+    const clamped = Math.max(MIN_QTY, newQuantity);
+    updateQuantity(productId, clamped);
   };
 
   // Format currency
@@ -236,7 +225,12 @@ const CartPage = () => {
                           onClick={() =>
                             handleQuantityChange(item.id, item.quantity - 1)
                           }
-                          className="w-8 h-8 rounded-full bg-border-color text-primary hover:bg-text-secondary hover:text-background transition-colors flex items-center justify-center"
+                          disabled={item.quantity <= MIN_QTY}
+                          className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                            item.quantity <= MIN_QTY
+                              ? "bg-border-color text-text-secondary/50 cursor-not-allowed"
+                              : "bg-border-color text-primary hover:bg-text-secondary hover:text-background"
+                          }`}
                           aria-label="Decrease quantity"
                         >
                           <svg
@@ -253,8 +247,8 @@ const CartPage = () => {
                             />
                           </svg>
                         </button>
-                        <span className="w-8 text-center text-primary font-medium">
-                          {item.quantity}
+                        <span className="w-10 text-center text-primary font-medium">
+                          {Math.max(item.quantity, MIN_QTY)}
                         </span>
                         <button
                           onClick={() =>
@@ -318,60 +312,22 @@ const CartPage = () => {
 
             <div className="space-y-4">
               <div className="flex justify-between text-sm">
-                <span className="text-text-secondary">Subtotal</span>
-                <span className="text-primary font-medium">
+                <span className="text-text-secondary">Order Total</span>
+                <span className="text-primary font-semibold">
                   {hasRugs ? (
                     <span className="text-text-secondary/70 italic">—</span>
                   ) : (
-                    formatCurrency(subtotal)
-                  )}
-                </span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-text-secondary">Shipping</span>
-                <span className="text-primary font-medium">
-                  {hasRugs ? (
-                    <span className="text-text-secondary/70 italic">
-                      On enquiry
-                    </span>
-                  ) : (
-                    formatCurrency(shipping)
-                  )}
-                </span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-text-secondary">Tax</span>
-                <span className="text-primary font-medium">
-                  {hasRugs ? (
-                    <span className="text-text-secondary/70 italic">
-                      On enquiry
-                    </span>
-                  ) : (
-                    formatCurrency(tax)
+                    formatCurrency(total)
                   )}
                 </span>
               </div>
 
-              <div className="border-t border-border-color pt-4">
-                <div className="flex justify-between font-bold text-lg">
-                  <span className="text-primary">Total</span>
-                  <span className="text-primary">
-                    {hasRugs ? (
-                      <span className="text-text-secondary font-normal text-sm italic">
-                        Provided after quotation
-                      </span>
-                    ) : (
-                      formatCurrency(total)
-                    )}
-                  </span>
+              {hasRugs && (
+                <div className="text-[11px] leading-relaxed text-text-secondary/80 bg-background/60 border border-border-color rounded-md p-3">
+                  One or more Rug items require a custom quotation. Order total
+                  will be provided after enquiry.
                 </div>
-                {hasRugs && (
-                  <p className="mt-3 text-[11px] leading-relaxed text-text-secondary/80 bg-background/60 border border-border-color rounded-md p-3">
-                    One or more Rug items require a custom quotation. Pricing,
-                    shipping and tax will be shared once you submit an enquiry.
-                  </p>
-                )}
-              </div>
+              )}
             </div>
 
             <div className="mt-8 space-y-4">

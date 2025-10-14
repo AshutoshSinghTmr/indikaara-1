@@ -26,7 +26,7 @@
   "homepage": "https://www.indikaara.com",
   "proxy": "https://backend-wei5.onrender.com",
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set PORT=5173 && react-scripts start",
     "build": "react-scripts build",
     "build:prod": "env-cmd -f .env.production react-scripts build",
     "dev": "react-scripts build && react-scripts start",
