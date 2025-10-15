@@ -504,23 +504,23 @@ const ProductDetailPage = () => {
             </p>
             {/* Price Display: Rugs => Price on request; others => normal pricing logic */}
             {product.category && product.category.toLowerCase() === "rugs" ? (
-              <div className="inline-block text-white text-xl md:text-2xl font-bold px-6 py-3 rounded-[var(--border-radius-lg)] shadow-lg border-2 border-[var(--accent-color)]">
+              <div className="inline-block text-white text-xl md:text-2xl font-bold px-6 py-3 rounded-[var(--border-radius-lg)] shadow-lg border-2 border-[#ac1f23]">
                 Price on request
               </div>
             ) : currentPrice ? (
-              <div className="inline-block text-white text-xl md:text-2xl font-bold px-6 py-3 rounded-[var(--border-radius-lg)] shadow-lg border-2 border-[var(--accent-color)]">
+              <div className="inline-block text-white text-xl md:text-2xl font-bold px-6 py-3 rounded-[var(--border-radius-lg)] shadow-lg border-2 border-[#ac1f23]">
                 ₹ {currentPrice.toLocaleString()}
               </div>
             ) : product.priceRange && product.priceRange !== null ? (
-              <div className="inline-block text-white text-xl md:text-2xl font-bold px-6 py-3 rounded-[var(--border-radius-lg)] shadow-lg border-2 border-[var(--accent-color)]">
+              <div className="inline-block text-white text-xl md:text-2xl font-bold px-6 py-3 rounded-[var(--border-radius-lg)] shadow-lg border-2 border-[#ac1f23]">
                 {product.priceRange}
               </div>
             ) : product.price ? (
-              <div className="inline-block text-white text-xl md:text-2xl font-bold px-6 py-3 rounded-[var(--border-radius-lg)] shadow-lg border-2 border-[var(--accent-color)]">
+              <div className="inline-block text-white text-xl md:text-2xl font-bold px-6 py-3 rounded-[var(--border-radius-lg)] shadow-lg border-2 border-[#ac1f23]">
                 ₹ {product.price.toLocaleString()}
               </div>
             ) : (
-              <div className="inline-block text-white text-xl md:text-2xl font-bold px-6 py-3 rounded-[var(--border-radius-lg)] shadow-lg border-2 border-[var(--accent-color)]">
+              <div className="inline-block text-white text-xl md:text-2xl font-bold px-6 py-3 rounded-[var(--border-radius-lg)] shadow-lg border-2 border-[var(--accent-color]">
                 Price on request
               </div>
             )}
@@ -534,14 +534,15 @@ const ProductDetailPage = () => {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="w-4 h-4 text-[var(--accent-color)]"
+                className="w-4 h-4 text-[#ac1f23]"
                 aria-hidden="true"
               >
+                )
                 <circle cx="12" cy="12" r="10" />
                 <line x1="12" y1="16" x2="12" y2="12" />
                 <line x1="12" y1="8" x2="12" y2="8" />
               </svg>
-              <span className="text-[var(--accent-color)] font-semibold">
+              <span className="text-[#ac1f23] font-semibold">
                 Minimum Order Quantity:
               </span>
               <span className="text-primary font-medium">25 units</span>
@@ -549,7 +550,7 @@ const ProductDetailPage = () => {
           </div>
           {product.specifications && (
             <div className="space-y-3">
-              <h2 className="text-2xl font-bold text-[var(--accent-color)]">
+              <h2 className="text-2xl font-bold text-[#ac1f23]">
                 Specifications
               </h2>
               <div className="bg-gray-800 rounded-lg p-4 space-y-2">
@@ -643,7 +644,6 @@ const ProductDetailPage = () => {
             </div>
             <div className="mt-8 flex justify-center">
               <Button
-                variant={addedToCart ? "success" : "secondary"}
                 size="lg"
                 onClick={handleAddToCart}
                 className="min-w-[260px] sm:min-w-[320px]"
