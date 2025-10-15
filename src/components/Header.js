@@ -169,7 +169,7 @@ export default function Header() {
               </Link>
             </div>
             {/* Right-side icons (wishlist, cart, profile) */}
-            <div className="hidden lg:flex items-center gap-4">
+            <div className="hidden lg:flex items-center gap-10 pr-10">
               {/* Wishlist */}
               <Link
                 to="/wishlist"
@@ -202,7 +202,7 @@ export default function Header() {
               </Link>
               {/* Profile */}
               <Link
-                to="/login"
+                to="/dashboard"
                 aria-label="Profile / Login"
                 className="text-white/70 hover:text-white transition-colors"
               >
