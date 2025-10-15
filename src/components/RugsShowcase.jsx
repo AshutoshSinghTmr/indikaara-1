@@ -42,7 +42,7 @@ const RugsShowcase = () => {
     className: "rugs-center-slider",
     centerMode: true,
     centerPadding: "0px",
-    dots: true,
+    dots: false,
     infinite: true,
     speed: 800,
     autoplay: true,

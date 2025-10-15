@@ -19,22 +19,17 @@ const EnquiryPage = () => {
   );
 
   const buildMailto = () => {
-    if (!items.length) return "mailto:enquiries@indikaara.com";
+    if (!items.length) return "mailto:info@indikaara.com";
     const subject = encodeURIComponent("Product Enquiry - Indikaara");
     const lines = items.map((item, idx) => {
-      const linePrice =
-        (item.category || "").toLowerCase() === "rugs"
-          ? "(price on enquiry)"
-          : item.price;
+      console.log("item", item);
       return `${idx + 1}. ${item.title} | Category: ${
         item.category || "N/A"
       } | Size: ${item.dimensions || "N/A"} | Qty: ${
         item.quantity
-      } | Unit: ${linePrice}`;
+      } | Product ID : ${item.id} `;
     });
-    const totalLine = hasRugs
-      ? `Subtotal (non-rug items only, if any): ${subtotal}`
-      : `Subtotal: ${subtotal}`;
+    const totalLine = hasRugs ? `` : `Subtotal: ${subtotal}`;
     const userNotes = notes.trim()
       ? `\n\nCustomer Notes:\n${notes.trim()}`
       : "";
@@ -45,7 +40,7 @@ const EnquiryPage = () => {
         userNotes +
         "\n\nPlease provide pricing (if rug), shipping, lead time and payment instructions."
     );
-    return `mailto:enquiries@indikaara.com?subject=${subject}&body=${body}`;
+    return `mailto:info@indikaara.com?subject=${subject}&body=${body}`;
   };
 
   const handleSend = (e) => {

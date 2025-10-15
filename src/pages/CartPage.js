@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import Button from "../components/Button";
@@ -7,7 +7,7 @@ import Button from "../components/Button";
  */
 const CartPage = () => {
   const { items, itemCount, total, updateQuantity, removeFromCart } = useCart();
-
+  const [paymentButtonClicked, setPaymentButtonClicked] = useState(false);
   // Handle quantity change
   const MIN_QTY = 25;
   const handleQuantityChange = (productId, newQuantity) => {
@@ -356,7 +356,15 @@ const CartPage = () => {
                       />
                     </div>
                     <Link to="/checkout" className="block">
-                      <Button variant="primary" size="lg" className="w-full">
+                      <Button
+                        disabled={true}
+                        onClick={() =>
+                          setPaymentButtonClicked(!paymentButtonClicked)
+                        }
+                        variant="primary"
+                        size="lg"
+                        className="w-full"
+                      >
                         Make Payment
                       </Button>
                     </Link>

@@ -128,7 +128,7 @@ export default function SideNav({ isOpen, setIsOpen, toggleDrawer }) {
                       <span>{sub.name}</span>
                       {sub.comingSoon && (
                         <span className="text-[10px] uppercase tracking-wider font-semibold text-[#ac1f23] bg-[#ac1f23]/10 px-2 py-0.5 rounded-full">
-                          Soon
+                          Coming Soon
                         </span>
                       )}
                     </Link>
