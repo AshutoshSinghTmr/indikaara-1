@@ -10,7 +10,6 @@ import { getFirstImage, getDefaultImage } from "../utils/imageUtils";
 const ProductCard = ({ product, onClick }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const navigate = useNavigate();
-  console.log("product", product);
   const handleClick = () => {
     if (onClick) {
       onClick(product);

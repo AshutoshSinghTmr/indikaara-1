@@ -26,6 +26,7 @@ import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./styles/globals.css";
 import ScrollToTop from "./utils/scrollToTop";
+import BiomassPage from "./pages/BiomassPage";
 /**
  * App Component - Main application component with routing
  * Features: React Router setup, cart context provider, layout wrapper, and page routing
@@ -46,7 +47,7 @@ function App() {
 
               {/* Product Detail Route */}
               <Route path="/product/:id" element={<ProductDetailPage />} />
-
+              <Route path="/biomass" element={<BiomassPage />} />
               {/* Cart Route */}
               <Route path="/cart" element={<CartPage />} />
 
