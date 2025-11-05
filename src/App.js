@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
@@ -27,11 +27,20 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import "./styles/globals.css";
 import ScrollToTop from "./utils/scrollToTop";
 import BiomassPage from "./pages/BiomassPage";
+import axios from "axios";
 /**
  * App Component - Main application component with routing
  * Features: React Router setup, cart context provider, layout wrapper, and page routing
  */
 function App() {
+  useEffect(() => {
+    if (process.env.NODE_ENV === "production") {
+      axios
+        .get("/health")
+        .catch((err) => console.error("Health check failed:", err));
+    }
+  }, []);
+
   return (
     <AuthProvider>
       <CartProvider>

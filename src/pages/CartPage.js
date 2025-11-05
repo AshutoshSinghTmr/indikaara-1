@@ -2,11 +2,13 @@ import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import Button from "../components/Button";
+import { useAuth } from "../context/AuthContext";
 /**
  * CartPage Component - Shopping cart page with items and summary
  */
 const CartPage = () => {
   const { items, itemCount, total, updateQuantity, removeFromCart } = useCart();
+  const { user, isAuthenticated } = useAuth();
   const [paymentButtonClicked, setPaymentButtonClicked] = useState(false);
   // Handle quantity change
   const MIN_QTY = 25;
@@ -357,7 +359,7 @@ const CartPage = () => {
                     </div>
                     <Link to="/checkout" className="block">
                       <Button
-                        disabled={true}
+                        disabled={false}
                         onClick={() =>
                           setPaymentButtonClicked(!paymentButtonClicked)
                         }
@@ -365,7 +367,7 @@ const CartPage = () => {
                         size="lg"
                         className="w-full"
                       >
-                        Make Payment
+                        Checkout & Pay
                       </Button>
                     </Link>
                   </>

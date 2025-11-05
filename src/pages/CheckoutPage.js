@@ -265,11 +265,7 @@ const CheckoutPage = () => {
                 Payment Method
               </h2>
               <div className="space-y-3 mb-6">
-                {[
-                  { id: "credit-card", label: "Credit Card" },
-                  { id: "net-banking", label: "Net Banking" },
-                  { id: "upi", label: "UPI" },
-                ].map((method) => (
+                {[{ id: "payU", label: "PayU" }].map((method) => (
                   <label
                     key={method.id}
                     className={`flex items-center gap-4 p-4 border rounded-lg cursor-pointer transition-all ${
