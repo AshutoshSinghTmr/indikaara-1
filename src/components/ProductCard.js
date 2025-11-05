@@ -59,9 +59,9 @@ const ProductCard = ({ product, onClick }) => {
   const displayPrice = () => {
     // Handle new price structure with multiple sizes
     if (product.category === "Rugs") {
-      return "Price on Request";
+      return <span className="border-5">Price on Request</span>;
     } else {
-      return formatPrice(product.price);
+      return formatPrice(product.price[0].amount);
     }
   };
 

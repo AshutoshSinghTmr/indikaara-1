@@ -34,11 +34,9 @@ import axios from "axios";
  */
 function App() {
   useEffect(() => {
-    if (process.env.NODE_ENV === "production") {
-      axios
-        .get("/api/health")
-        .catch((err) => console.error("Health check failed:", err));
-    }
+    axios
+      .get("/api/health")
+      .catch((err) => console.error("Health check failed:", err));
   }, []);
 
   return (
