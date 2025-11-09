@@ -8,6 +8,7 @@ import CataloguePage from "./pages/CataloguePage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
+import AddressPage from "./pages/AddressPage";
 import ArtisansPage from "./pages/ArtisansPage";
 import WishlistPage from "./pages/WishlistPage";
 import BlogPage from "./pages/BlogPage";
@@ -64,7 +65,8 @@ function App() {
               {/* Wishlist Route */}
               <Route path="/wishlist" element={<WishlistPage />} />
 
-              {/* Checkout Route */}
+              {/* Address and Checkout Routes */}
+              <Route path="/address" element={<AddressPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
 
               {/* Artisan Routes */}

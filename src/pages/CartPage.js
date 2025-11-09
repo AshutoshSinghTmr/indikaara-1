@@ -357,17 +357,9 @@ const CartPage = () => {
                         aria-hidden="true"
                       />
                     </div>
-                    <Link to="/checkout" className="block">
-                      <Button
-                        disabled={false}
-                        onClick={() =>
-                          setPaymentButtonClicked(!paymentButtonClicked)
-                        }
-                        variant="primary"
-                        size="lg"
-                        className="w-full"
-                      >
-                        Checkout & Pay
+                    <Link to="/address" className="block">
+                      <Button variant="primary" size="lg" className="w-full">
+                        Proceed to Checkout
                       </Button>
                     </Link>
                   </>

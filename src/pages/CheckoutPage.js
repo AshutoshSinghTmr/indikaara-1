@@ -1,67 +1,112 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import Button from "../components/Button";
+import PaymentModal from "../components/PaymentModal";
 
 /**
  * CheckoutPage Component - Checkout page with shipping and payment details
  */
 const CheckoutPage = () => {
-  const { items, total, clearCart } = useCart();
+  const { items, clearCart } = useCart();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [orderDetails, setOrderDetails] = useState(null);
 
-  // Form state
-  const [formData, setFormData] = useState({
-    // Shipping Information
-    fullName: "",
-    address: "",
-    city: "",
-    state: "",
-    postalCode: "",
-    phoneNumber: "",
+  useEffect(() => {
+    // Get order details from location state or localStorage
+    const orderFromState = location.state;
+    const orderFromStorage = JSON.parse(localStorage.getItem("pendingOrder"));
 
-    // Payment Information
-    paymentMethod: "credit-card",
-    cardNumber: "",
-    expiryDate: "",
-    cvv: "",
-  });
+    if (orderFromState) {
+      setOrderDetails(orderFromState);
+    } else if (orderFromStorage) {
+      setOrderDetails(orderFromStorage);
+    } else {
+      // If no order details found, redirect to cart
+      navigate("/cart");
+    }
+  }, [location, navigate]);
 
   const [isProcessing, setIsProcessing] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState(null); // 'success' | 'failure' | null
 
-  // Handle form input changes
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+  // Check for payment status in URL parameters
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const status = params.get("status");
+    const payuStatus = params.get("payuStatus");
+
+    // Clear the URL parameters without reloading the page
+    window.history.replaceState({}, "", window.location.pathname);
+
+    if (status === "success" || payuStatus === "success") {
+      setPaymentStatus("success");
+      // Clear cart on successful payment
+      clearCart();
+    } else if (status === "failure" || payuStatus === "failure") {
+      setPaymentStatus("failure");
+    }
+  }, [clearCart]);
+
+  // Reset payment status
+  const handleCloseModal = () => {
+    setPaymentStatus(null);
+    setIsProcessing(false);
   };
 
-  // Handle payment method change
-  const handlePaymentMethodChange = (method) => {
-    setFormData((prev) => ({
-      ...prev,
-      paymentMethod: method,
-    }));
-  };
-
-  // Handle form submission
+  // Handle form submission and PayU payment
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsProcessing(true);
 
-    // Simulate payment processing
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      if (!orderDetails) {
+        throw new Error("No order details found");
+      }
 
-      // Clear cart and redirect to success page
-      clearCart();
-      alert("Order placed successfully! Thank you for your purchase.");
-      navigate("/");
+      const API_BASE = "https://backend-wei5.onrender.com";
+      const jwt = localStorage.getItem("token");
+
+      // Initiate payment on server
+      const initResp = await fetch(`${API_BASE}/api/payu/initiate`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          ...(jwt ? { Authorization: `Bearer ${jwt}` } : {}),
+        },
+        body: JSON.stringify({
+          orderId: orderDetails._id,
+          txnid: orderDetails.txnid,
+        }),
+      });
+
+      if (!initResp.ok) {
+        throw new Error("Failed to initiate payment");
+      }
+
+      const { formData, paymentUrl } = await initResp.json();
+
+      // Create and submit form to PayU
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = paymentUrl;
+
+      // Add form fields
+      Object.entries(formData || {}).forEach(([key, value]) => {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = key;
+        input.value = value;
+        form.appendChild(input);
+      });
+
+      document.body.appendChild(form);
+      form.submit();
     } catch (error) {
-      alert("Payment failed. Please try again.");
-    } finally {
+      console.error("Payment initiation failed:", error);
+      alert("Failed to initiate payment. Please try again.");
       setIsProcessing(false);
     }
   };
@@ -133,225 +178,79 @@ const CheckoutPage = () => {
 
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
-          {/* Checkout Form */}
+          {/* Payment and Transaction Details */}
           <div className="space-y-8">
-            {/* Shipping Address */}
-            <section>
+            <section className="bg-card-bg border border-border-color rounded-xl p-6">
               <h2 className="text-2xl font-bold text-primary mb-6">
-                Shipping Address
+                Transaction Details
               </h2>
               <div className="space-y-4">
-                <div>
-                  <label
-                    htmlFor="fullName"
-                    className="block text-sm font-medium text-text-secondary mb-2"
-                  >
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    id="fullName"
-                    name="fullName"
-                    value={formData.fullName}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-card-bg border border-border-color rounded-lg text-primary placeholder-text-secondary focus:outline-none focus:border-accent transition-colors"
-                    placeholder="Enter your full name"
-                    required
-                  />
+                <div className="flex items-center justify-between p-4 bg-background/50 rounded-lg border border-border-color">
+                  <span className="text-text-secondary font-medium">
+                    Transaction ID
+                  </span>
+                  <span className="font-mono text-primary bg-background px-3 py-1 rounded-md border border-border-color">
+                    {orderDetails?.txnid || "Loading..."}
+                  </span>
                 </div>
-
-                <div>
-                  <label
-                    htmlFor="address"
-                    className="block text-sm font-medium text-text-secondary mb-2"
-                  >
-                    Address
-                  </label>
-                  <input
-                    type="text"
-                    id="address"
-                    name="address"
-                    value={formData.address}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-card-bg border border-border-color rounded-lg text-primary placeholder-text-secondary focus:outline-none focus:border-accent transition-colors"
-                    placeholder="Street address"
-                    required
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label
-                      htmlFor="city"
-                      className="block text-sm font-medium text-text-secondary mb-2"
-                    >
-                      City
-                    </label>
-                    <input
-                      type="text"
-                      id="city"
-                      name="city"
-                      value={formData.city}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-card-bg border border-border-color rounded-lg text-primary placeholder-text-secondary focus:outline-none focus:border-accent transition-colors"
-                      placeholder="City"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="state"
-                      className="block text-sm font-medium text-text-secondary mb-2"
-                    >
-                      State
-                    </label>
-                    <input
-                      type="text"
-                      id="state"
-                      name="state"
-                      value={formData.state}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-card-bg border border-border-color rounded-lg text-primary placeholder-text-secondary focus:outline-none focus:border-accent transition-colors"
-                      placeholder="State"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label
-                      htmlFor="postalCode"
-                      className="block text-sm font-medium text-text-secondary mb-2"
-                    >
-                      Postal Code
-                    </label>
-                    <input
-                      type="text"
-                      id="postalCode"
-                      name="postalCode"
-                      value={formData.postalCode}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-card-bg border border-border-color rounded-lg text-primary placeholder-text-secondary focus:outline-none focus:border-accent transition-colors"
-                      placeholder="Postal code"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="phoneNumber"
-                      className="block text-sm font-medium text-text-secondary mb-2"
-                    >
-                      Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      id="phoneNumber"
-                      name="phoneNumber"
-                      value={formData.phoneNumber}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-card-bg border border-border-color rounded-lg text-primary placeholder-text-secondary focus:outline-none focus:border-accent transition-colors"
-                      placeholder="+91 9876543210"
-                      required
-                    />
-                  </div>
+                <div className="flex items-center justify-between p-4 bg-background/50 rounded-lg border border-border-color">
+                  <span className="text-text-secondary font-medium">
+                    Order Total
+                  </span>
+                  <span className="text-lg font-bold text-primary">
+                    {formatCurrency(orderDetails?.totalPrice || 0)}
+                  </span>
                 </div>
               </div>
             </section>
 
-            {/* Payment Method */}
-            <section>
+            {/* Payment Method - Only PayU */}
+            <section className="bg-card-bg border border-border-color rounded-xl p-6">
               <h2 className="text-2xl font-bold text-primary mb-6">
                 Payment Method
               </h2>
-              <div className="space-y-3 mb-6">
-                {[{ id: "payU", label: "PayU" }].map((method) => (
-                  <label
-                    key={method.id}
-                    className={`flex items-center gap-4 p-4 border rounded-lg cursor-pointer transition-all ${
-                      formData.paymentMethod === method.id
-                        ? "border-accent bg-card-bg"
-                        : "border-border-color hover:border-text-secondary"
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value={method.id}
-                      checked={formData.paymentMethod === method.id}
-                      onChange={(e) =>
-                        handlePaymentMethodChange(e.target.value)
-                      }
-                      className="w-5 h-5 text-accent border-border-color focus:ring-accent"
-                    />
-                    <span className="text-primary font-medium">
-                      {method.label}
-                    </span>
-                  </label>
-                ))}
-              </div>
-
-              {/* Credit Card Fields */}
-              {formData.paymentMethod === "credit-card" && (
-                <div className="space-y-4">
-                  <div>
-                    <label
-                      htmlFor="cardNumber"
-                      className="block text-sm font-medium text-text-secondary mb-2"
+              <div className="p-4 border rounded-lg bg-background/50 border-accent">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <svg
+                      className="w-8 h-8 text-accent"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
                     >
-                      Card Number
-                    </label>
-                    <input
-                      type="text"
-                      id="cardNumber"
-                      name="cardNumber"
-                      value={formData.cardNumber}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-card-bg border border-border-color rounded-lg text-primary placeholder-text-secondary focus:outline-none focus:border-accent transition-colors"
-                      placeholder="1234 5678 9101 1121"
-                      required={formData.paymentMethod === "credit-card"}
+                      <rect
+                        x="3"
+                        y="5"
+                        width="18"
+                        height="14"
+                        rx="2"
+                        strokeWidth="2"
+                      />
+                      <path d="M3 10H21" strokeWidth="2" />
+                    </svg>
+                    <span className="text-primary font-medium">
+                      PayU Payment Gateway
+                    </span>
+                  </div>
+                  <svg
+                    className="w-6 h-6 text-accent"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M9 12l2 2 4-4"
                     />
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label
-                        htmlFor="expiryDate"
-                        className="block text-sm font-medium text-text-secondary mb-2"
-                      >
-                        Expiry Date
-                      </label>
-                      <input
-                        type="text"
-                        id="expiryDate"
-                        name="expiryDate"
-                        value={formData.expiryDate}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 bg-card-bg border border-border-color rounded-lg text-primary placeholder-text-secondary focus:outline-none focus:border-accent transition-colors"
-                        placeholder="MM/YY"
-                        required={formData.paymentMethod === "credit-card"}
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="cvv"
-                        className="block text-sm font-medium text-text-secondary mb-2"
-                      >
-                        CVV
-                      </label>
-                      <input
-                        type="text"
-                        id="cvv"
-                        name="cvv"
-                        value={formData.cvv}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 bg-card-bg border border-border-color rounded-lg text-primary placeholder-text-secondary focus:outline-none focus:border-accent transition-colors"
-                        placeholder="123"
-                        required={formData.paymentMethod === "credit-card"}
-                      />
-                    </div>
-                  </div>
+                  </svg>
                 </div>
-              )}
+                <p className="mt-2 text-sm text-text-secondary">
+                  You'll be redirected to PayU's secure payment gateway to
+                  complete your purchase.
+                </p>
+              </div>
             </section>
           </div>
 
@@ -387,11 +286,19 @@ const CheckoutPage = () => {
                 ))}
               </div>
 
-              {/* Order Total only */}
-              <div className="border-t border-border-color pt-4">
+              {/* Transaction Details */}
+              <div className="border-t border-border-color pt-4 space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-text-secondary">Transaction ID</span>
+                  <span className="text-primary font-mono bg-background/50 px-3 py-1 rounded-md border border-border-color">
+                    {orderDetails?.txnid || "Loading..."}
+                  </span>
+                </div>
                 <div className="flex justify-between font-bold text-lg">
                   <span className="text-primary">Order Total</span>
-                  <span className="text-primary">{formatCurrency(total)}</span>
+                  <span className="text-primary">
+                    {formatCurrency(orderDetails?.totalPrice || 0)}
+                  </span>
                 </div>
               </div>
 
@@ -409,6 +316,11 @@ const CheckoutPage = () => {
           </div>
         </div>
       </form>
+
+      {/* Payment Status Modal */}
+      {paymentStatus && (
+        <PaymentModal status={paymentStatus} onClose={handleCloseModal} />
+      )}
     </main>
   );
 };

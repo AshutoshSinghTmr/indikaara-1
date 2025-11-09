@@ -1,19 +1,58 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import LoyaltyIcon from "@mui/icons-material/Loyalty";
+import OrderDetailsModal from "../components/OrderDetailsModal";
+
+// Utility functions for order display
+const formatCurrency = (amount) => {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount);
+};
+
+const formatDate = (dateString) => {
+  return new Date(dateString).toLocaleDateString("en-IN", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+};
+
+const getTotalItems = (products) => {
+  return products.reduce((sum, item) => sum + (item.quantity || 0), 0);
+};
 
 const DashboardPage = () => {
   const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
-
   const [activeTab, setActiveTab] = useState("orders"); // 'orders' | 'addresses'
   const [orders, setOrders] = useState([]);
   const [ordersLoading, setOrdersLoading] = useState(false);
   const [addresses, setAddresses] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const ordersPerPage = 10;
+
+  const handleViewDetails = (order) => {
+    setSelectedOrder(order);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedOrder(null);
+  };
+
+  const handleRetryPayment = (txnid) => {
+    window.open(`/checkout?txnid=${txnid}`, "_blank");
+    handleCloseModal();
+  };
 
   // Derived caption for breadcrumb
   const breadcrumb = useMemo(
@@ -32,7 +71,14 @@ const DashboardPage = () => {
       try {
         setOrdersLoading(true);
         const res = await axios.get("/api/orders/my");
-        setOrders(Array.isArray(res.data) ? res.data : res.data?.orders || []);
+        const ordersData = Array.isArray(res.data)
+          ? res.data
+          : res.data?.orders || [];
+        // Sort orders by date in descending order before setting state
+        const sortedOrders = ordersData.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+        setOrders(sortedOrders);
       } catch (e) {
         setOrders([]);
       } finally {
@@ -57,7 +103,12 @@ const DashboardPage = () => {
         ];
       });
     }
-  }, [user, addresses.length]);
+  }, [user, addresses.length, orders]);
+
+  useEffect(() => {
+    console.log("user", user);
+    console.log("orders", orders);
+  }, [user]);
 
   const addAddress = () => {
     const name = window.prompt("Full Name", user?.name || "");
@@ -171,39 +222,216 @@ const DashboardPage = () => {
         {/* Content */}
         <div className="mt-10">
           {activeTab === "orders" && (
-            <div className="flex flex-col items-center justify-center py-20">
-              {/* Box icon */}
-              <div className="relative mb-12">
-                <span className="absolute -top-2 -right-3 text-xs bg-black text-white rounded-full px-2 py-0.5">
-                  {orders?.length || 0}
-                </span>
-                <svg
-                  width="46"
-                  height="46"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  className="text-black/80"
-                >
-                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4a2 2 0 0 0 1-1.73z" />
-                  <path d="m7.5 4.21 9 5.19" />
-                  <polyline points="3.29 7 12 12 20.71 7" />
-                  <line x1="12" y1="22" x2="12" y2="12" />
-                </svg>
+            <div className="max-w-4xl mx-auto">
+              {/* Welcome Card */}
+              <div className="bg-white rounded-lg p-6 mb-8 shadow-sm border border-gray-200">
+                <h2 className="text-2xl font-semibold">
+                  Welcome, {user?.name || "Guest"}
+                </h2>
+                <p className="text-gray-600 mt-1">{user?.email}</p>
               </div>
-              <p className="text-lg md:text-xl text-black mb-4">
-                {ordersLoading
-                  ? "Loading your orders..."
-                  : orders?.length
-                  ? `You have ${orders.length} orders.`
-                  : "You haven't placed any orders yet."}
-              </p>
-              <button
-                onClick={() => navigate("/catalogue")}
-                className="mt-2 bg-[#ac1f23] hover:bg-[#a46840] text-white font-semibold px-6 py-3 rounded"
-              >
-                Continue shopping
-              </button>
+
+              {/* Orders Section */}
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-gray-50 rounded-lg">
+                    <svg
+                      className="w-6 h-6 text-gray-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold">
+                      You have {orders?.length || 0} orders
+                    </h3>
+                  </div>
+                </div>
+                <button
+                  onClick={() => navigate("/catalogue")}
+                  className="bg-[#ac1f23] hover:bg-[#a46840] text-white text-sm font-medium px-4 py-2 rounded"
+                >
+                  Continue shopping
+                </button>
+              </div>
+
+              {/* Orders Section */}
+              {ordersLoading ? (
+                <div className="flex flex-col items-center justify-center py-12">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#ac1f23]"></div>
+                  <p className="mt-4 text-gray-600">Loading your orders...</p>
+                </div>
+              ) : orders?.length > 0 ? (
+                <div className="mt-6">
+                  <div className="space-y-4">
+                    {orders
+                      // Sort orders by date in descending order (most recent first)
+                      .sort(
+                        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+                      )
+                      .slice(
+                        (currentPage - 1) * ordersPerPage,
+                        currentPage * ordersPerPage
+                      )
+                      .map((order) => (
+                        <div
+                          key={order._id}
+                          className="bg-white border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
+                        >
+                          <div className="p-4">
+                            <div className="flex justify-between items-start">
+                              {/* Order info */}
+                              <div>
+                                <p className="text-sm text-gray-500">
+                                  Order placed on {formatDate(order.createdAt)}
+                                </p>
+                                <p className="text-sm font-medium text-gray-900 mt-1">
+                                  {getTotalItems(order.products)} items
+                                </p>
+                              </div>
+
+                              {/* Price */}
+                              <div className="text-right">
+                                <p className="text-sm text-gray-500">
+                                  Total Amount
+                                </p>
+                                <p className="text-lg font-semibold text-gray-900">
+                                  {formatCurrency(order.totalPrice)}
+                                </p>
+                              </div>
+                            </div>
+
+                            {/* Status and Actions */}
+                            <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-200">
+                              <div className="flex items-center space-x-2">
+                                <span className="flex-shrink-0">
+                                  <span
+                                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                      order.isPaid
+                                        ? "bg-green-100 text-green-800"
+                                        : "bg-yellow-100 text-yellow-800"
+                                    }`}
+                                  >
+                                    {order.isPaid ? "Paid" : "Pending"}
+                                  </span>
+                                </span>
+                                <span className="text-sm text-gray-500">
+                                  Order #{order._id.slice(-8)}
+                                </span>
+                              </div>
+
+                              <div className="flex items-center space-x-4">
+                                <button
+                                  onClick={() => handleViewDetails(order)}
+                                  className="text-sm font-medium text-[#ac1f23] hover:text-[#a46840]"
+                                >
+                                  View Details
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+
+                  {/* Pagination */}
+                  {orders.length > ordersPerPage && (
+                    <div className="mt-8 flex items-center justify-center gap-2">
+                      <button
+                        onClick={() =>
+                          setCurrentPage((prev) => Math.max(prev - 1, 1))
+                        }
+                        disabled={currentPage === 1}
+                        className={`px-3 py-1 rounded ${
+                          currentPage === 1
+                            ? "bg-gray-100 text-gray-400"
+                            : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200"
+                        }`}
+                      >
+                        Previous
+                      </button>
+
+                      {Array.from(
+                        { length: Math.ceil(orders.length / ordersPerPage) },
+                        (_, i) => i + 1
+                      ).map((pageNum) => (
+                        <button
+                          key={pageNum}
+                          onClick={() => setCurrentPage(pageNum)}
+                          className={`px-3 py-1 rounded ${
+                            currentPage === pageNum
+                              ? "bg-[#ac1f23] text-white"
+                              : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200"
+                          }`}
+                        >
+                          {pageNum}
+                        </button>
+                      ))}
+
+                      <button
+                        onClick={() =>
+                          setCurrentPage((prev) =>
+                            Math.min(
+                              prev + 1,
+                              Math.ceil(orders.length / ordersPerPage)
+                            )
+                          )
+                        }
+                        disabled={
+                          currentPage ===
+                          Math.ceil(orders.length / ordersPerPage)
+                        }
+                        className={`px-3 py-1 rounded ${
+                          currentPage ===
+                          Math.ceil(orders.length / ordersPerPage)
+                            ? "bg-gray-100 text-gray-400"
+                            : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200"
+                        }`}
+                      >
+                        Next
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="text-center py-12 bg-gray-50 border border-gray-200 rounded-xl">
+                  <div className="mb-4">
+                    <svg
+                      className="mx-auto h-12 w-12 text-gray-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M20 12H4m8-8v16m9-8l-3 3m0 0l-3-3m3 3V8m0 8l-3-3m3 3l3-3"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    No Orders Yet
+                  </h3>
+                  <p className="text-gray-500 mb-6">
+                    Start shopping to see your orders here.
+                  </p>
+                  <button
+                    onClick={() => navigate("/catalogue")}
+                    className="bg-[#ac1f23] hover:bg-[#a46840] text-white font-semibold px-6 py-3 rounded"
+                  >
+                    Browse Products
+                  </button>
+                </div>
+              )}
 
               {/* Benefits row */}
               <div className="flex flex-col sm:flex-row gap-10 mt-20 text-center text-black/80">
@@ -347,6 +575,15 @@ const DashboardPage = () => {
           )}
         </div>
       </div>
+
+      {/* Order Details Modal */}
+      {selectedOrder && (
+        <OrderDetailsModal
+          order={selectedOrder}
+          onClose={handleCloseModal}
+          onRetryPayment={handleRetryPayment}
+        />
+      )}
     </div>
   );
 };

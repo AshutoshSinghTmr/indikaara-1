@@ -9,13 +9,14 @@ import { getFirstImage, getDefaultImage } from "../utils/imageUtils";
  */
 const ProductCard = ({ product, onClick }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
+
   const navigate = useNavigate();
   const handleClick = () => {
     if (onClick) {
       onClick(product);
     }
     // Navigate to product detail page
-    navigate(`/product/${product.id}`);
+    navigate(`/product/${product._id}`);
   };
 
   // Get the first available image from the product
@@ -122,16 +123,6 @@ const ProductCard = ({ product, onClick }) => {
             Featured
           </div>
         )}
-
-        {/* Story Overlay */}
-        <div className="story-overlay absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white p-4 transform translate-y-full transition-transform duration-300 ease-in-out opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
-          <h3 className="font-bold text-sm mb-1">
-            {product.storyTitle || product.name}
-          </h3>
-          <p className="text-xs leading-relaxed">
-            {product.storyDescription || product.description}
-          </p>
-        </div>
       </div>
 
       {/* Product Info */}
@@ -152,35 +143,12 @@ const ProductCard = ({ product, onClick }) => {
           )}
         </div>
 
-        {/* Category and Region */}
+        {/* Category*/}
         <div className="flex flex-wrap gap-1 text-xs">
           <span className="px-2 py-1 bg-primary/10 text-primary rounded-md">
             {product.category}
           </span>
-          {/* Region tag hidden to avoid showing manufacturer names */}
-          {/* {(product.region || product.state) && (
-            <span className="px-2 py-1 bg-gray-700 text-gray-300 rounded-md">
-              {product.region || product.state}
-            </span>
-          )} */}
         </div>
-
-        {/* Rating - Hidden as requested */}
-        {/* {product.rating && (
-          <div className="flex items-center gap-1 text-xs">
-            <span className="text-yellow-400">★</span>
-            <span className="text-gray-400">
-              {product.rating} ({product.reviews || 0})
-            </span>
-          </div>
-        )} */}
-
-        {/* Artisan/Manufacturer - Hidden as requested */}
-        {/* {product.artisan && (
-          <p className="text-gray-400 text-xs">
-            By {product.artisan}
-          </p>
-        )} */}
       </div>
     </div>
   );

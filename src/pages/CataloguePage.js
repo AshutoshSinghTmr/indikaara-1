@@ -96,9 +96,7 @@ const CataloguePage = () => {
   const handleSortChange = (value) => setSelectedSort(value);
 
   // ✅ Handle product click (for navigation or modal)
-  const handleProductClick = (product) => {
-    console.log("Product clicked:", product);
-  };
+  const handleProductClick = (product) => {};
 
   // ✅ Loading / Error states
   if (isLoading) {

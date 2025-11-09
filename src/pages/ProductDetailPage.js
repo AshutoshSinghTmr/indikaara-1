@@ -6,7 +6,7 @@ import Breadcrumb from "../components/Breadcrumb";
 import ProductInfoSection from "../components/ProductInfoSection";
 import SizeSelector from "../components/SizeSelector";
 import Button from "../components/Button";
-import dataService from "../data/dataService";
+import axios from "axios";
 // Removed unused MUI icon imports to clean up warnings
 /**;
  * ProductDetailPage Component - Detailed product view with images, description, and purchase option
@@ -137,58 +137,59 @@ const ProductDetailPage = () => {
 
   // Load product data
   useEffect(() => {
-    const loadProduct = () => {
+    const loadProduct = async () => {
       setLoading(true);
 
       try {
-        // Get product from dataService
-        const productData = dataService.getProductById(parseInt(id));
+        // Get product from API
+        const productData = await axios
+          .get(`/api/products/${id}`)
+          .then((res) => res.data);
 
         if (productData) {
-          // Get raw product data to access dimensions
-          const rawProduct = dataService.getRawProductById(parseInt(id));
-
           // Transform product data to match component expectations
           const transformedProduct = {
             id: productData.id,
+            _id: productData._id,
             name: productData.name,
             description: productData.description,
-            price: productData.price,
-            priceOptions: productData.priceOptions, // Add this line to include price options
-            priceRange: productData.priceRange,
-            originalPrice: productData.originalPrice,
-            images: productData.images,
+            price: productData.price[0]?.amount || null,
+            priceOptions: productData.price.map((p) => ({
+              size: p.size,
+              amount: p.amount,
+            })),
+            SKU: productData.SKU,
+            images: productData.image || [],
             category: productData.category,
-            subcategory: productData.category,
-            region: productData.region,
-            rating: productData.rating,
-            reviews: productData.reviews,
-            inStock: productData.inStock,
-            features: productData.features,
+            subcategory: productData.manufacturer,
+            region: "India", // From details: "Made in India"
+            rating: null,
+            reviews: [],
+            inStock: true,
+            features: productData.tags || [],
             tags: productData.tags,
-            dimensions: rawProduct?.dimensionsAvailable || [],
+            dimensions: [productData.price[0]?.size || ""],
             artisan: {
-              name: productData.artisan,
-              location: productData.region,
-              experience: "20+ years",
-              story: `Meet ${
-                productData.artisan.split(" ")[0]
-              }, a master artisan from ${
-                productData.region
-              }. With over 20 years of experience in ${productData.category.toLowerCase()}, they bring exceptional skill and passion to every piece they create.`,
+              name: productData.manufacturer,
+              location: "India",
+              experience: "Expert Craftsmen",
+              story: `Crafted by ${productData.manufacturer}, this piece exemplifies the finest in Indian craftsmanship. Each product is meticulously created using traditional techniques and premium materials.`,
             },
-            culturalContext: `This ${productData.name.toLowerCase()} represents the rich cultural heritage of ${
-              productData.region
-            }. Each piece is crafted using traditional techniques passed down through generations, embodying the artistic traditions of the region.`,
-            craftingTechnique: `The creation of this masterpiece involves traditional techniques specific to ${productData.region}. Master artisans carefully select the finest materials and employ time-honored methods to ensure authenticity and quality.`,
-            specifications: productData.specifications || {
-              material: "Traditional materials",
+            culturalContext: `This ${productData.name.toLowerCase()} showcases the rich heritage of Indian craftsmanship. Made with ${
+              productData.material?.[0]?.toLowerCase() || "premium materials"
+            }, it represents the perfect blend of traditional artistry and contemporary design.`,
+            craftingTechnique: `Created by skilled artisans at ${productData.manufacturer}, this piece is crafted using traditional metalworking techniques. Each detail is carefully considered to ensure both aesthetic appeal and durability.`,
+            specifications: {
+              material: productData.material?.[0] || "Traditional materials",
+              color: productData.color?.[0] || "Standard",
               careInstructions: "Handle with care",
+              dimensions: productData.price[0]?.size || "Standard size",
+              SKU: productData.SKU,
             },
           };
 
           setProduct(transformedProduct);
-          setRawProductData(rawProduct);
+          setRawProductData(productData);
 
           // Set initial size and price from new priceOptions structure
           if (
@@ -267,23 +268,17 @@ const ProductDetailPage = () => {
 
       addToCart(
         {
+          _id: product._id,
           id: product.id,
           title: product.name,
           price: priceToUse,
           image: product.images[0],
           category: product.category,
-          size:
-            selectedSize ||
-            (product.dimensions && product.dimensions.length > 0
-              ? product.dimensions[0]
-              : "Standard"),
-          color: rawProductData?.color?.[0] || "Standard",
-          material: rawProductData?.material || "Handcrafted",
-          dimensions:
-            selectedSize ||
-            (product.dimensions && product.dimensions.length > 0
-              ? product.dimensions[0]
-              : null),
+          size: selectedSize || product.dimensions[0] || "Standard",
+          color: product.specifications.color || "Standard",
+          material: product.specifications.material || "Handcrafted",
+          dimensions: selectedSize || product.dimensions[0] || null,
+          SKU: product.SKU,
         },
         quantity
       );
@@ -312,13 +307,13 @@ const ProductDetailPage = () => {
 
       // Check if product is already in wishlist
       const isAlreadyInWishlist = existingWishlist.some(
-        (item) => item.id === product.id
+        (item) => item._id === product._id
       );
 
       if (isAlreadyInWishlist) {
         // Remove from wishlist
         const updatedWishlist = existingWishlist.filter(
-          (item) => item.id !== product.id
+          (item) => item._id !== product._id
         );
         localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
         setIsInWishlist(false);
@@ -329,12 +324,13 @@ const ProductDetailPage = () => {
       } else {
         // Add to wishlist
         const wishlistItem = {
+          _id: product._id,
           id: product.id,
           name: product.name,
           price: currentPrice || product.price,
-          priceRange: product.priceRange,
           image: product.images?.[0] || "",
           category: product.category,
+          SKU: product.SKU,
           addedAt: new Date().toISOString(),
         };
 
