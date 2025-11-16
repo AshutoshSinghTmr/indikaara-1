@@ -6,9 +6,26 @@ import "slick-carousel/slick/slick-theme.css";
 import { WhyConnectCards } from "../components/WhyConnectCards";
 import RugsShowcase from "../components/RugsShowcase";
 import HandicraftShowcase from "../components/HandicraftShowcase";
+import { SplitText } from "gsap/all";
+import gsap from "gsap";
+import { useEffect } from "react";
+gsap.registerPlugin(SplitText);
 
 // Main Home Page
 const HomePage = () => {
+  useEffect(() => {
+    let split = SplitText.create(".split", { type: "words, chars" });
+    
+    // now animate the characters in a staggered fashion
+    gsap.from(split.chars, {
+      duration: 2,
+      x: 100, // animate from 100px to the right
+      autoAlpha: 0, // fade in from opacity: 0 and visibility: hidden
+      stagger: 0.05, // 0.05 seconds between each
+    });
+  }, []);
+  // split elements with the class "split" into words and characters
+
   return (
     <main role="main">
       {/*HERO section */}
@@ -20,7 +37,7 @@ const HomePage = () => {
           <div className="w-full bg-white p-4 sm:p-7 lg:p-12 rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl text-center max-w-6xl mx-auto">
             <h1 className="text-2xl xs:text-3xl sm:text-4xl font-extrabold text-gray-800 mb-3 leading-tight">
               Why Connect with{" "}
-              <span className="text-[#ac1f23]">Indikaara?</span>
+              <span className="text-[#ac1f23] split">Indikaara?</span>
             </h1>
             <p className="text-sm xs:text-base sm:text-lg text-gray-600 leading-relaxed mb-6 sm:mb-8">
               We bridge the world and India's finest artisans—built on

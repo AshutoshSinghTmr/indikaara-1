@@ -69,6 +69,9 @@ const CheckoutPage = () => {
       const jwt = localStorage.getItem("token");
 
       // Initiate payment on server
+      const successUrl = `${window.location.origin}/payment-success`;
+      const failureUrl = `${window.location.origin}/payment-failure`;
+
       const initResp = await fetch(`${API_BASE}/api/payu/initiate`, {
         method: "POST",
         headers: {
@@ -79,6 +82,9 @@ const CheckoutPage = () => {
         body: JSON.stringify({
           orderId: orderDetails._id,
           txnid: orderDetails.txnid,
+          // Request server to set PayU return URLs to these frontend routes
+          successUrl,
+          failureUrl,
         }),
       });
 
