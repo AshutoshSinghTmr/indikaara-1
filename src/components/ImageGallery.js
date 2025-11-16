@@ -47,7 +47,7 @@ const ImageGallery = ({ images, productName }) => {
   const showArrows = processedImages.length > 1;
 
   const settings = {
-    dots: true,
+    dots: false,
     arrows: showArrows,
     infinite: processedImages.length > 1,
     speed: 600,

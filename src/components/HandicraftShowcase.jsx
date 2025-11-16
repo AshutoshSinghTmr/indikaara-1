@@ -1,31 +1,38 @@
 import React, { useState, useMemo } from "react";
 import Slider from "react-slick";
-import dataService from "../data/dataService";
+import { useNavigate } from "react-router-dom";
+import useProducts from "../hooks/useProduct";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const HandicraftShowcase = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const navigate = useNavigate();
+  const { data: products = [], isLoading } = useProducts();
 
+  // Filter products for handicrafts
   const items = useMemo(() => {
-    const all = dataService.getAllProducts();
-    // unified name in normalization: "Handicraft Items" plus legacy categories merged into it
-    const primary = all.filter(
+    if (!products || products.length === 0) return [];
+
+    const primary = products.filter(
       (p) => p.category && p.category.toLowerCase() === "handicraft items"
     );
-    // Add any product whose category or tags hint at decor / wall / vintage
-    const extended = all.filter(
+    const extended = products.filter(
       (p) =>
         /decor|wall|vintage|craft|handicraft/i.test(p.category || "") ||
         (p.tags || []).some((t) =>
           /decor|wall|vintage|craft|handicraft/i.test(t)
         )
     );
+
     const merged = [...primary, ...extended];
-    const unique = Array.from(new Map(merged.map((m) => [m.id, m])).values());
-    if (unique.length) return unique.slice(0, 6);
-    return all.slice(0, 6); // fallback
-  }, []);
+    const unique = Array.from(new Map(merged.map((m) => [m._id, m])).values());
+
+    return unique.length > 0 ? unique.slice(0, 6) : [];
+  }, [products]);
+
+  // Return null while loading or no items
+  if (isLoading || items.length === 0) return null;
 
   if (!items.length) return null;
 
@@ -101,13 +108,11 @@ const HandicraftShowcase = () => {
               <div key={item.id || idx} className="px-2 select-none">
                 <div className="relative flex items-end justify-center h-[320px] sm:h-[380px]">
                   <img
-                    src={item.images && item.images[0]}
+                    src={item.image && item.image[0]}
                     alt={item.name}
                     loading="lazy"
-                    onClick={() =>
-                      (window.location.href = `/product/${item.id}`)
-                    }
-                    className="rug-stack-image transition-all duration-500 ease-out object-cover rounded shadow-lg"
+                    onClick={() => navigate(`/product/${item._id}`)}
+                    className="rug-stack-image transition-all duration-500 ease-out object-cover rounded shadow-lg cursor-pointer"
                     style={{
                       height:
                         idx === activeIndex % items.length ? "90%" : "80%",

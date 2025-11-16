@@ -24,7 +24,7 @@ export default function SideNav({ isOpen, setIsOpen, toggleDrawer }) {
         {
           id: 2,
           name: "Handicraft Products",
-          to: "/catalogue?category=handicraftproducts",
+          to: "/catalogue?category=homedecor",
         },
         { id: 3, name: "Biomass Pellets & Briquettes", to: "/biomass" },
         { id: 4, name: "Clothing", comingSoon: true },

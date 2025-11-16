@@ -128,7 +128,7 @@ const AddressPage = () => {
         // Transform cart items to required format
         const orderProducts = items.map((item) => ({
           product: item._id, // MongoDB _id of the product
-          quantity: 1, //item.quantity,
+          quantity: item.quantity,
         }));
 
         // Create order payload

@@ -21,8 +21,8 @@ const ProductDetailPage = () => {
   // const [relatedProducts, setRelatedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // Enforce Minimum Order Quantity (MOQ) of 25
-  const [quantity, setQuantity] = useState(25);
+  // Quantity (will be adjusted to category minimum when product loads)
+  const [quantity, setQuantity] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
   const [selectedSize, setSelectedSize] = useState("");
   const [currentPrice, setCurrentPrice] = useState(null);
@@ -240,6 +240,28 @@ const ProductDetailPage = () => {
         { label: "Home", path: "/" },
         { label: "Catalogue", path: "/catalogue" },
       ];
+
+  // Determine minimum quantity based on product category
+  const getMinQty = (prod) => {
+    if (!prod || !prod.category) return 1;
+    const cat = String(prod.category).toLowerCase();
+    // Rugs require bulk minimum
+    if (/\brug\b|\brugs\b/.test(cat)) return 25;
+    // Treat handicraft / handcrafted / handmade as bulk as well
+    if (/handicraft|handcrafted|handmade/.test(cat)) return 25;
+    return 1;
+  };
+
+  // Compute minQty for rendering
+  const minQty = getMinQty(product);
+
+  // When product loads, ensure quantity meets min requirement
+  useEffect(() => {
+    if (product) {
+      const min = getMinQty(product);
+      setQuantity((q) => Math.max(min, q));
+    }
+  }, [product]);
 
   // Handle size selection
   const handleSizeChange = (size) => {
@@ -541,7 +563,7 @@ const ProductDetailPage = () => {
               <span className="text-[#ac1f23] font-semibold">
                 Minimum Order Quantity:
               </span>
-              <span className="text-primary font-medium">25 units</span>
+              <span className="text-primary font-medium">{minQty} units</span>
             </div>
           </div>
           {product.specifications && (
@@ -584,22 +606,21 @@ const ProductDetailPage = () => {
                 htmlFor="quantity"
                 className="block text-sm font-medium text-secondary mb-1 tracking-wide"
               >
-                Quantity (Min 25)
+                Quantity (Min {minQty})
               </label>
               <p className="text-[11px] sm:text-xs text-secondary/70 mb-4 max-w-xs">
-                This handcrafted product has a minimum order quantity of 25
-                units.
+                This product has a minimum order quantity of {minQty} units.
               </p>
               <div className="flex items-center gap-4 sm:gap-6">
                 <button
-                  onClick={() => setQuantity(Math.max(25, quantity - 1))}
-                  disabled={quantity <= 25}
+                  onClick={() => setQuantity((q) => Math.max(minQty, q - 1))}
+                  disabled={quantity <= minQty}
                   className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-card-bg border border-border-color text-primary transition-colors flex items-center justify-center text-xl font-semibold ${
-                    quantity > 25
+                    quantity > minQty
                       ? "hover:bg-border-color cursor-pointer"
                       : "opacity-40 cursor-not-allowed"
                   }`}
-                  aria-label="Decrease quantity (minimum 25)"
+                  aria-label={`Decrease quantity (minimum ${minQty})`}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

@@ -28,6 +28,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import "./styles/globals.css";
 import ScrollToTop from "./utils/scrollToTop";
 import BiomassPage from "./pages/BiomassPage";
+import PaymentSuccessPage from "./pages/PaymentSuccessPage";
+import PaymentFailurePage from "./pages/PaymentFailurePage";
 import axios from "axios";
 /**
  * App Component - Main application component with routing
@@ -68,6 +70,8 @@ function App() {
               {/* Address and Checkout Routes */}
               <Route path="/address" element={<AddressPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/payment-success" element={<PaymentSuccessPage />} />
+              <Route path="/payment-failure" element={<PaymentFailurePage />} />
 
               {/* Artisan Routes */}
               <Route path="/artisans" element={<ArtisansPage />} />

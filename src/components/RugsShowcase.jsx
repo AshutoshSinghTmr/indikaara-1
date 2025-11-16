@@ -1,29 +1,37 @@
-import { useMemo, useState } from "react";
-import dataService from "../data/dataService";
+import { useState, useMemo } from "react";
 import Slider from "react-slick";
+import { useNavigate } from "react-router-dom";
+import useProducts from "../hooks/useProduct";
 
 const RugsShowcase = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const navigate = useNavigate();
+  const { data: products = [], isLoading } = useProducts();
 
-  // Unified rug selection logic
+  // Filter products for rugs
   const rugs = useMemo(() => {
-    const all = dataService.getAllProducts();
-    const primary = all.filter(
+    if (!products || products.length === 0) return [];
+
+    const primary = products.filter(
       (p) => p.category && p.category.toLowerCase() === "rugs"
     );
-    const categoryContains = all.filter(
+    const categoryContains = products.filter(
       (p) => p.category && /rug/i.test(p.category)
     );
-    const nameContains = all.filter((p) =>
+    const nameContains = products.filter((p) =>
       /rug|knotted|tibetan|weave|carpet/i.test(p.name)
     );
+
     const merged = [...primary, ...categoryContains, ...nameContains];
-    const unique = Array.from(new Map(merged.map((m) => [m.id, m])).values());
-    if (unique.length) return unique.slice(0, 6);
-    return all.slice(0, 6); // absolute fallback
-  }, []);
+    const unique = Array.from(new Map(merged.map((m) => [m._id, m])).values());
+
+    return unique.length > 0 ? unique.slice(0, 6) : [];
+  }, [products]);
 
   const hasTrueRugs = rugs.some((r) => r.category && /rug/i.test(r.category));
+
+  // Return null while loading
+  if (isLoading || rugs.length === 0) return null;
 
   const ArrowBtn = ({ onClick, dir }) => (
     <button
@@ -99,13 +107,11 @@ const RugsShowcase = () => {
               <div key={item.id || idx} className="px-2 select-none">
                 <div className="relative flex items-end justify-center h-[340px] sm:h-[400px]">
                   <img
-                    src={item.images && item.images[0]}
-                    onClick={() =>
-                      (window.location.href = `/product/${item.id}`)
-                    }
+                    src={item.image && item.image[0]}
+                    onClick={() => navigate(`/product/${item._id}`)}
                     alt={item.name}
                     loading="lazy"
-                    className="rug-stack-image transition-all duration-500 ease-out object-cover rounded shadow-lg"
+                    className="rug-stack-image transition-all duration-500 ease-out object-cover rounded shadow-lg cursor-pointer"
                     style={{ height: "88%", width: "auto" }}
                   />
                 </div>
