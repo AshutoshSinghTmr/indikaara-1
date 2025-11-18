@@ -248,7 +248,8 @@ const ProductDetailPage = () => {
     // Rugs require bulk minimum
     if (/\brug\b|\brugs\b/.test(cat)) return 25;
     // Treat handicraft / handcrafted / handmade as bulk as well
-    if (/handicraft|handcrafted|handmade/.test(cat)) return 25;
+    if (/handicraft|handcrafted|homedecor|home|decor|handmade/.test(cat))
+      return 1;
     return 1;
   };
 

@@ -12,11 +12,22 @@ const CART_ACTIONS = {
   LOAD_CART: "LOAD_CART",
 };
 
+// Helper: compute minimum quantity based on product category
+const getMinQtyFromCategory = (category) => {
+  if (!category) return 1;
+  const cat = String(category).toLowerCase();
+  if (/\brug\b|\brugs\b/.test(cat)) return 25;
+  // Home Decor, handicraft, and most others default to 1
+  return 1;
+};
+
 // Cart reducer
 const cartReducer = (state, action) => {
   switch (action.type) {
     case CART_ACTIONS.ADD_ITEM: {
-      const requestedQty = Math.max(25, action.payload.quantity || 1);
+      const min = getMinQtyFromCategory(action.payload.category);
+      const addQty = Math.max(1, action.payload.quantity || 1);
+      const requestedQty = Math.max(min, addQty);
       const existingItem = state.items.find(
         (item) => item.id === action.payload.id
       );
@@ -28,7 +39,7 @@ const cartReducer = (state, action) => {
             item.id === action.payload.id
               ? {
                   ...item,
-                  quantity: Math.max(25, item.quantity + requestedQty),
+                  quantity: item.quantity,
                 }
               : item
           ),
@@ -51,12 +62,14 @@ const cartReducer = (state, action) => {
       return {
         ...state,
         items: state.items
-          .map((item) =>
-            item.id === action.payload.id
-              ? { ...item, quantity: Math.max(25, action.payload.quantity) }
-              : item
-          )
-          // do not drop items when enforcing min quantity; keep the item with min 25
+          .map((item) => {
+            if (item.id !== action.payload.id) return item;
+            const min = getMinQtyFromCategory(item.category);
+            return {
+              ...item,
+              quantity: Math.max(min, action.payload.quantity),
+            };
+          })
           .filter((item) => item.quantity > 0),
       };
 
@@ -112,6 +125,27 @@ export const CartProvider = ({ children }) => {
       // no-op in non-browser environments
     }
   }, [state.items]);
+
+  // Listen for a global event when a user logs in so we can clear cart
+  useEffect(() => {
+    const handleUserLoggedIn = () => {
+      dispatch({ type: CART_ACTIONS.CLEAR_CART });
+    };
+
+    try {
+      window.addEventListener("userLoggedIn", handleUserLoggedIn);
+    } catch (e) {
+      return () => {};
+    }
+
+    return () => {
+      try {
+        window.removeEventListener("userLoggedIn", handleUserLoggedIn);
+      } catch (e) {
+        // no-op
+      }
+    };
+  }, []);
 
   // Calculate totals
   const subtotal = state.items.reduce(

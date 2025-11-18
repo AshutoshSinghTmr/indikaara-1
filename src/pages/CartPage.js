@@ -1,17 +1,15 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import Button from "../components/Button";
-import { useAuth } from "../context/AuthContext";
 /**
  * CartPage Component - Shopping cart page with items and summary
  */
 const CartPage = () => {
   const { items, itemCount, total, updateQuantity, removeFromCart } = useCart();
-  const { user, isAuthenticated } = useAuth();
-  const [paymentButtonClicked, setPaymentButtonClicked] = useState(false);
+  console.log(useCart());
   // Handle quantity change
-  const MIN_QTY = 25;
+  const MIN_QTY = 1;
   const handleQuantityChange = (productId, newQuantity) => {
     const clamped = Math.max(MIN_QTY, newQuantity);
     updateQuantity(productId, clamped);
@@ -35,13 +33,13 @@ const CartPage = () => {
 
   if (items.length === 0) {
     return (
-      <main className="container mx-auto my-20 max-w-7xl px-4 py-32 text-center">
+      <main className="container mx-auto my-20 max-w-7xl px-4 py-32 text-center bg-white min-h-screen">
         <div className="max-w-md mx-auto">
           <div className="mb-8">
-            <h2 className="text-3xl font-bold text-primary mb-3">
+            <h2 className="text-3xl font-bold text-gray-900 mb-3 tracking-tight">
               Your Cart is Empty
             </h2>
-            <p className="text-text-secondary text-lg">
+            <p className="text-gray-600 text-lg">
               Discover beautiful handcrafted items from talented Indian artisans
             </p>
           </div>
@@ -56,22 +54,24 @@ const CartPage = () => {
   }
 
   return (
-    <main className="container mx-auto max-w-7xl px-4 py-8 my-20 pt-24">
+    <main className="container mx-auto max-w-7xl px-4 py-8 my-20 pt-24 bg-white min-h-screen">
       {/* Breadcrumb */}
       <nav className="mb-8" aria-label="Breadcrumb">
-        <div className="flex items-center gap-2 text-sm text-text-secondary">
-          <Link to="/" className="text-primary hover:underline">
+        <div className="flex items-center gap-2 text-sm text-gray-600">
+          <Link to="/" className="text-gray-900 hover:underline font-medium">
             Home
           </Link>
           <span>/</span>
-          <span className="text-primary font-medium">Cart</span>
+          <span className="text-gray-900 font-semibold">Cart</span>
         </div>
       </nav>
 
       {/* Page Header */}
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-primary mb-2">Shopping Cart</h1>
-        <p className="text-text-secondary">
+        <h1 className="text-4xl font-bold text-gray-900 mb-2 tracking-tight">
+          Shopping Cart
+        </h1>
+        <p className="text-gray-600">
           {itemCount} {itemCount === 1 ? "item" : "items"} in your cart
         </p>
       </div>
@@ -79,12 +79,12 @@ const CartPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Cart Items */}
         <div className="lg:col-span-2">
-          <div className="bg-card-bg border border-border-color rounded-xl p-6">
+          <div className="bg-white border border-black rounded-lg p-6 shadow-sm">
             <div className="space-y-6">
               {items.map((item) => (
                 <div
                   key={item.id}
-                  className="pb-6 border-b border-border-color last:border-b-0 last:pb-0"
+                  className="pb-6 border-b border-black last:border-b-0 last:pb-0"
                 >
                   {/* Mobile-optimized layout */}
                   <div className="flex flex-col sm:flex-row sm:items-center gap-4">
@@ -102,12 +102,12 @@ const CartPage = () => {
                       {/* Product Info - takes remaining space */}
                       <div className="flex-1 min-w-0">
                         {/* Product Name - Larger and more prominent */}
-                        <h3 className="text-primary font-semibold text-lg sm:text-xl leading-tight mb-2">
+                        <h3 className="text-gray-900 font-bold text-lg sm:text-xl leading-tight mb-2 tracking-tight">
                           {item.title}
                         </h3>
 
                         {/* Category */}
-                        <p className="text-text-secondary text-sm mb-3">
+                        <p className="text-gray-600 text-sm mb-3">
                           {item.category || "Handcrafted Item"}
                         </p>
 
@@ -116,7 +116,7 @@ const CartPage = () => {
                           {item.dimensions && (
                             <div className="flex items-center gap-2">
                               <svg
-                                className="w-4 h-4 text-accent flex-shrink-0"
+                                className="w-4 h-4 text-gray-600 flex-shrink-0"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -128,9 +128,9 @@ const CartPage = () => {
                                   d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
                                 />
                               </svg>
-                              <span className="text-primary font-medium text-sm">
+                              <span className="text-gray-900 font-medium text-sm">
                                 Size:{" "}
-                                <span className="text-accent">
+                                <span className="text-gray-700">
                                   {item.dimensions}
                                 </span>
                               </span>
@@ -139,7 +139,7 @@ const CartPage = () => {
                           {item.color && item.color !== "Standard" && (
                             <div className="flex items-center gap-2">
                               <svg
-                                className="w-4 h-4 text-accent flex-shrink-0"
+                                className="w-4 h-4 text-gray-600 flex-shrink-0"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -151,9 +151,9 @@ const CartPage = () => {
                                   d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a4 4 0 004-4V5z"
                                 />
                               </svg>
-                              <span className="text-primary font-medium text-sm">
+                              <span className="text-gray-900 font-medium text-sm">
                                 Color:{" "}
-                                <span className="text-accent">
+                                <span className="text-gray-700">
                                   {item.color}
                                 </span>
                               </span>
@@ -162,7 +162,7 @@ const CartPage = () => {
                           {item.material && item.material !== "Handcrafted" && (
                             <div className="flex items-center gap-2">
                               <svg
-                                className="w-4 h-4 text-accent flex-shrink-0"
+                                className="w-4 h-4 text-gray-600 flex-shrink-0"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -174,9 +174,9 @@ const CartPage = () => {
                                   d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
                                 />
                               </svg>
-                              <span className="text-primary font-medium text-sm">
+                              <span className="text-gray-900 font-medium text-sm">
                                 Material:{" "}
-                                <span className="text-accent">
+                                <span className="text-gray-700">
                                   {item.material}
                                 </span>
                               </span>
@@ -185,9 +185,9 @@ const CartPage = () => {
                         </div>
 
                         {/* Price - Hidden for Rugs */}
-                        <p className="text-primary font-bold text-lg">
+                        <p className="text-gray-900 font-bold text-lg">
                           {(item.category || "").toLowerCase() === "rugs" ? (
-                            <span className="text-text-secondary font-normal text-sm tracking-wide">
+                            <span className="text-gray-600 font-normal text-sm tracking-wide">
                               Price on enquiry
                             </span>
                           ) : (
@@ -200,7 +200,7 @@ const CartPage = () => {
                       <div className="flex-shrink-0 sm:hidden">
                         <button
                           onClick={() => removeFromCart(item.id)}
-                          className="p-2 text-text-secondary hover:text-red-400 transition-colors"
+                          className="p-2 text-gray-600 hover:text-red-600 transition-colors"
                           aria-label="Remove item"
                         >
                           <svg
@@ -222,7 +222,7 @@ const CartPage = () => {
 
                     {/* Quantity Controls Row - Better spacing on mobile */}
                     <div className="flex items-center justify-between sm:flex-col sm:items-end sm:gap-3 lg:flex-row lg:items-center lg:justify-end">
-                      <div className="flex items-center gap-3 bg-card-bg border border-border-color rounded-lg p-2">
+                      <div className="flex items-center gap-3 bg-white border border-gray-300 rounded-md p-2">
                         <button
                           onClick={() =>
                             handleQuantityChange(item.id, item.quantity - 1)
@@ -230,8 +230,8 @@ const CartPage = () => {
                           disabled={item.quantity <= MIN_QTY}
                           className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
                             item.quantity <= MIN_QTY
-                              ? "bg-border-color text-text-secondary/50 cursor-not-allowed"
-                              : "bg-border-color text-primary hover:bg-text-secondary hover:text-background"
+                              ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                              : "bg-gray-200 text-gray-900 hover:bg-gray-900 hover:text-white"
                           }`}
                           aria-label="Decrease quantity"
                         >
@@ -249,14 +249,14 @@ const CartPage = () => {
                             />
                           </svg>
                         </button>
-                        <span className="w-10 text-center text-primary font-medium">
+                        <span className="w-10 text-center text-gray-900 font-bold">
                           {Math.max(item.quantity, MIN_QTY)}
                         </span>
                         <button
                           onClick={() =>
                             handleQuantityChange(item.id, item.quantity + 1)
                           }
-                          className="w-8 h-8 rounded-full bg-border-color text-primary hover:bg-text-secondary hover:text-background transition-colors flex items-center justify-center"
+                          className="w-8 h-8 rounded-full bg-gray-200 text-gray-900 hover:bg-gray-900 hover:text-white transition-colors flex items-center justify-center"
                           aria-label="Increase quantity"
                         >
                           <svg
@@ -279,7 +279,7 @@ const CartPage = () => {
                       <div className="hidden sm:block">
                         <button
                           onClick={() => removeFromCart(item.id)}
-                          className="p-2 text-text-secondary hover:text-red-400 transition-colors"
+                          className="p-2 text-gray-600 hover:text-red-600 transition-colors"
                           aria-label="Remove item"
                         >
                           <svg
@@ -307,17 +307,17 @@ const CartPage = () => {
 
         {/* Order Summary */}
         <div className="lg:col-span-1">
-          <div className="bg-card-bg border border-border-color rounded-xl p-6 sticky top-8">
-            <h2 className="text-xl font-bold text-primary mb-6">
+          <div className="bg-white border border-gray-300 rounded-lg p-6 sticky top-8 shadow-sm">
+            <h2 className="text-xl font-bold text-gray-900 mb-6 tracking-tight">
               Order Summary
             </h2>
 
             <div className="space-y-4">
               <div className="flex justify-between text-sm">
-                <span className="text-text-secondary">Order Total</span>
-                <span className="text-primary font-semibold">
+                <span className="text-gray-600 font-medium">Order Total</span>
+                <span className="text-gray-900 font-bold">
                   {hasRugs ? (
-                    <span className="text-text-secondary/70 italic">—</span>
+                    <span className="text-gray-500 italic">—</span>
                   ) : (
                     formatCurrency(total)
                   )}
@@ -325,7 +325,7 @@ const CartPage = () => {
               </div>
 
               {hasRugs && (
-                <div className="text-[11px] leading-relaxed text-text-secondary/80 bg-background/60 border border-border-color rounded-md p-3">
+                <div className="text-[11px] leading-relaxed text-gray-600 bg-gray-50 border border-gray-300 rounded-md p-3 font-medium">
                   One or more Rug items require a custom quotation. Order total
                   will be provided after enquiry.
                 </div>
@@ -346,14 +346,14 @@ const CartPage = () => {
                 </Link>
                 {!hasRugs && (
                   <>
-                    <div className="flex items-center gap-3 justify-center text-xs uppercase tracking-wider text-text-secondary/70">
+                    <div className="flex items-center gap-3 justify-center text-xs uppercase tracking-wider text-gray-600 font-semibold">
                       <span
-                        className="flex-1 h-px bg-border-color"
+                        className="flex-1 h-px bg-gray-300"
                         aria-hidden="true"
                       />
                       <span>OR</span>
                       <span
-                        className="flex-1 h-px bg-border-color"
+                        className="flex-1 h-px bg-gray-300"
                         aria-hidden="true"
                       />
                     </div>
@@ -365,7 +365,7 @@ const CartPage = () => {
                   </>
                 )}
                 {hasRugs && (
-                  <div className="text-xs text-text-secondary bg-background/60 border border-border-color rounded-md p-3 leading-relaxed">
+                  <div className="text-xs text-gray-600 bg-gray-50 border border-gray-300 rounded-md p-3 leading-relaxed font-medium">
                     Checkout / direct payment is disabled because your cart
                     contains Rug items requiring a custom quotation. Please use
                     "Enquire Now" to request pricing & shipping details.
@@ -380,11 +380,11 @@ const CartPage = () => {
             </div>
 
             {/* Authenticity Badge */}
-            <div className="mt-6 p-4 bg-background rounded-lg border border-border-color">
+            <div className="mt-6 p-4 bg-gray-50 rounded-md border border-gray-300">
               <div className="flex items-center gap-3">
                 <div className="flex-shrink-0">
                   <svg
-                    className="w-6 h-6 text-accent"
+                    className="w-6 h-6 text-yellow-500"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -392,10 +392,10 @@ const CartPage = () => {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-primary text-sm font-medium">
+                  <p className="text-gray-900 text-sm font-semibold">
                     Authenticity Guaranteed
                   </p>
-                  <p className="text-text-secondary text-xs">
+                  <p className="text-gray-600 text-xs">
                     Fair Trade with Artisans
                   </p>
                 </div>

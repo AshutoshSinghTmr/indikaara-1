@@ -6,7 +6,7 @@ import axios from "axios";
 
 const AddressPage = () => {
   const navigate = useNavigate();
-  const { items } = useCart();
+  const { items, clearCart } = useCart();
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
   const [orderError, setOrderError] = useState("");
   const [formData, setFormData] = useState({
@@ -164,6 +164,13 @@ const AddressPage = () => {
           })
         );
 
+        // Clear the cart as we've created a new pending order
+        try {
+          clearCart();
+        } catch (e) {
+          // no-op if clearCart isn't available for some reason
+        }
+
         // Navigate to checkout page with transaction ID
         navigate("/checkout", {
           state: {
@@ -184,9 +191,9 @@ const AddressPage = () => {
   };
 
   return (
-    <main className="container mx-auto max-w-3xl px-4 py-8 my-20 pt-24">
-      <div className="bg-card-bg border border-border-color rounded-xl p-6 md:p-8">
-        <h1 className="text-3xl font-bold text-primary mb-6">
+    <main className="container mx-auto max-w-3xl px-4 py-8 my-20 pt-24 bg-white min-h-screen">
+      <div className="bg-white border border-gray-300 rounded-lg p-6 md:p-8 shadow-sm">
+        <h1 className="text-3xl font-bold text-gray-900 mb-6 tracking-tight">
           Shipping Address
         </h1>
 
@@ -195,7 +202,7 @@ const AddressPage = () => {
           <div>
             <label
               htmlFor="fullName"
-              className="block text-sm font-medium text-text-secondary mb-2"
+              className="block text-sm font-semibold text-gray-700 mb-2"
             >
               Full Name *
             </label>
@@ -205,11 +212,13 @@ const AddressPage = () => {
               name="fullName"
               value={formData.fullName}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-900 focus:border-gray-900 focus:outline-none font-medium text-gray-900"
               placeholder="Enter your full name"
             />
             {errors.fullName && (
-              <p className="mt-1 text-sm text-red-500">{errors.fullName}</p>
+              <p className="mt-1 text-sm text-red-600 font-medium">
+                {errors.fullName}
+              </p>
             )}
           </div>
 
@@ -217,7 +226,7 @@ const AddressPage = () => {
           <div>
             <label
               htmlFor="addressLine1"
-              className="block text-sm font-medium text-text-secondary mb-2"
+              className="block text-sm font-semibold text-gray-700 mb-2"
             >
               Address Line 1 *
             </label>
@@ -227,11 +236,13 @@ const AddressPage = () => {
               name="addressLine1"
               value={formData.addressLine1}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-900 focus:border-gray-900 focus:outline-none font-medium text-gray-900"
               placeholder="House/Flat number, Building name, Street"
             />
             {errors.addressLine1 && (
-              <p className="mt-1 text-sm text-red-500">{errors.addressLine1}</p>
+              <p className="mt-1 text-sm text-red-600 font-medium">
+                {errors.addressLine1}
+              </p>
             )}
           </div>
 
@@ -239,7 +250,7 @@ const AddressPage = () => {
           <div>
             <label
               htmlFor="addressLine2"
-              className="block text-sm font-medium text-text-secondary mb-2"
+              className="block text-sm font-semibold text-gray-700 mb-2"
             >
               Address Line 2
             </label>
@@ -249,7 +260,7 @@ const AddressPage = () => {
               name="addressLine2"
               value={formData.addressLine2}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-900 focus:border-gray-900 focus:outline-none font-medium text-gray-900"
               placeholder="Area, Locality (optional)"
             />
           </div>
@@ -259,7 +270,7 @@ const AddressPage = () => {
             <div>
               <label
                 htmlFor="city"
-                className="block text-sm font-medium text-text-secondary mb-2"
+                className="block text-sm font-semibold text-gray-700 mb-2"
               >
                 City *
               </label>
@@ -269,18 +280,20 @@ const AddressPage = () => {
                 name="city"
                 value={formData.city}
                 onChange={handleInputChange}
-                className="w-full px-4 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-900 focus:border-gray-900 focus:outline-none font-medium text-gray-900"
                 placeholder="Enter city name"
               />
               {errors.city && (
-                <p className="mt-1 text-sm text-red-500">{errors.city}</p>
+                <p className="mt-1 text-sm text-red-600 font-medium">
+                  {errors.city}
+                </p>
               )}
             </div>
 
             <div>
               <label
                 htmlFor="state"
-                className="block text-sm font-medium text-text-secondary mb-2"
+                className="block text-sm font-semibold text-gray-700 mb-2"
               >
                 State *
               </label>
@@ -289,7 +302,7 @@ const AddressPage = () => {
                 name="state"
                 value={formData.state}
                 onChange={handleInputChange}
-                className="w-full px-4 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-900 focus:border-gray-900 focus:outline-none font-medium text-gray-900"
               >
                 <option value="">Select State</option>
                 {indianStates.map((state) => (
@@ -299,7 +312,9 @@ const AddressPage = () => {
                 ))}
               </select>
               {errors.state && (
-                <p className="mt-1 text-sm text-red-500">{errors.state}</p>
+                <p className="mt-1 text-sm text-red-600 font-medium">
+                  {errors.state}
+                </p>
               )}
             </div>
           </div>
@@ -308,7 +323,7 @@ const AddressPage = () => {
           <div>
             <label
               htmlFor="pincode"
-              className="block text-sm font-medium text-text-secondary mb-2"
+              className="block text-sm font-semibold text-gray-700 mb-2"
             >
               PIN Code *
             </label>
@@ -318,12 +333,14 @@ const AddressPage = () => {
               name="pincode"
               value={formData.pincode}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-900 focus:border-gray-900 focus:outline-none font-medium text-gray-900"
               placeholder="6-digit PIN code"
               maxLength="6"
             />
             {errors.pincode && (
-              <p className="mt-1 text-sm text-red-500">{errors.pincode}</p>
+              <p className="mt-1 text-sm text-red-600 font-medium">
+                {errors.pincode}
+              </p>
             )}
           </div>
 
@@ -332,7 +349,7 @@ const AddressPage = () => {
             <div>
               <label
                 htmlFor="phone"
-                className="block text-sm font-medium text-text-secondary mb-2"
+                className="block text-sm font-semibold text-gray-700 mb-2"
               >
                 Phone Number *
               </label>
@@ -342,19 +359,21 @@ const AddressPage = () => {
                 name="phone"
                 value={formData.phone}
                 onChange={handleInputChange}
-                className="w-full px-4 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-900 focus:border-gray-900 focus:outline-none font-medium text-gray-900"
                 placeholder="10-digit mobile number"
                 maxLength="10"
               />
               {errors.phone && (
-                <p className="mt-1 text-sm text-red-500">{errors.phone}</p>
+                <p className="mt-1 text-sm text-red-600 font-medium">
+                  {errors.phone}
+                </p>
               )}
             </div>
 
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-text-secondary mb-2"
+                className="block text-sm font-semibold text-gray-700 mb-2"
               >
                 Email Address *
               </label>
@@ -364,11 +383,13 @@ const AddressPage = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className="w-full px-4 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-900 focus:border-gray-900 focus:outline-none font-medium text-gray-900"
                 placeholder="your@email.com"
               />
               {errors.email && (
-                <p className="mt-1 text-sm text-red-500">{errors.email}</p>
+                <p className="mt-1 text-sm text-red-600 font-medium">
+                  {errors.email}
+                </p>
               )}
             </div>
           </div>
@@ -377,7 +398,7 @@ const AddressPage = () => {
           <div>
             <label
               htmlFor="additionalInfo"
-              className="block text-sm font-medium text-text-secondary mb-2"
+              className="block text-sm font-semibold text-gray-700 mb-2"
             >
               Additional Information
             </label>
@@ -387,14 +408,14 @@ const AddressPage = () => {
               value={formData.additionalInfo}
               onChange={handleInputChange}
               rows="3"
-              className="w-full px-4 py-2 bg-background border border-border-color rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full px-4 py-2 bg-white border border-gray-300 rounded-md focus:ring-2 focus:ring-gray-900 focus:border-gray-900 focus:outline-none font-medium text-gray-900"
               placeholder="Any special instructions for delivery (optional)"
             ></textarea>
           </div>
 
           {/* Error Message */}
           {orderError && (
-            <div className="p-4 mb-6 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+            <div className="p-4 mb-6 bg-red-50 border border-red-300 text-red-700 rounded-md font-medium">
               {orderError}
             </div>
           )}

@@ -58,9 +58,11 @@ const EnquiryPage = () => {
 
   if (!items.length) {
     return (
-      <main className="container mx-auto max-w-4xl px-4 py-24 my-20 text-center">
-        <h1 className="text-3xl font-bold text-primary mb-4">Enquiry</h1>
-        <p className="text-text-secondary mb-8">
+      <main className="container mx-auto max-w-4xl px-4 py-24 mt-16 sm:mt-20 md:mt-24 mb-8 text-center bg-white min-h-screen">
+        <h1 className="text-3xl font-bold text-gray-900 mb-4 tracking-tight">
+          Enquiry
+        </h1>
+        <p className="text-gray-600 mb-8">
           Your cart is empty. Add items before creating an enquiry.
         </p>
         <Link to="/catalogue">
@@ -71,25 +73,30 @@ const EnquiryPage = () => {
   }
 
   return (
-    <main className="container mx-auto max-w-5xl px-4 py-8 my-20 pt-24">
+    <main className="container mx-auto max-w-5xl px-4 py-8 mt-16 sm:mt-20 md:mt-24 mb-8 bg-white min-h-full">
       {/* Breadcrumb */}
       <nav className="mb-8" aria-label="Breadcrumb">
-        <div className="flex items-center gap-2 text-sm text-text-secondary">
-          <Link to="/" className="text-primary hover:underline">
+        <div className="flex items-center gap-2 text-sm text-gray-600">
+          <Link to="/" className="text-gray-900 hover:underline font-medium">
             Home
           </Link>
           <span>/</span>
-          <Link to="/cart" className="text-primary hover:underline">
+          <Link
+            to="/cart"
+            className="text-gray-900 hover:underline font-medium"
+          >
             Cart
           </Link>
           <span>/</span>
-          <span className="text-primary font-medium">Enquiry</span>
+          <span className="text-gray-900 font-semibold">Enquiry</span>
         </div>
       </nav>
 
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-primary mb-2">Enquiry Review</h1>
-        <p className="text-text-secondary">
+        <h1 className="text-4xl font-bold text-gray-900 mb-2 tracking-tight">
+          Enquiry Review
+        </h1>
+        <p className="text-gray-600">
           Review your selected items and add any notes before sending your
           enquiry.
         </p>
@@ -98,11 +105,11 @@ const EnquiryPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Items */}
         <div className="lg:col-span-2">
-          <div className="bg-card-bg border border-border-color rounded-xl p-6 space-y-6">
+          <div className="bg-white border border-gray-300 rounded-lg p-6 space-y-6 shadow-sm">
             {items.map((item) => (
               <div
                 key={item.id}
-                className="pb-6 border-b border-border-color last:border-b-0 last:pb-0"
+                className="pb-6 border-b border-gray-200 last:border-b-0 last:pb-0"
               >
                 <div className="flex gap-4">
                   <div
@@ -110,39 +117,47 @@ const EnquiryPage = () => {
                     style={{ backgroundImage: `url(${item.image})` }}
                   />
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-primary font-semibold text-lg leading-tight mb-1">
+                    <h3 className="text-gray-900 font-semibold text-lg leading-tight mb-1 tracking-tight">
                       {item.title}
                     </h3>
-                    <p className="text-text-secondary text-xs mb-2">
+                    <p className="text-gray-600 text-xs mb-2">
                       {item.category || "Handcrafted Item"}
                     </p>
-                    <div className="flex flex-wrap gap-3 text-[11px] text-text-secondary mb-2">
+                    <div className="flex flex-wrap gap-3 text-[11px] text-gray-600 mb-2">
                       {item.dimensions && (
-                        <span className="bg-background/40 px-2 py-1 rounded-md border border-border-color">
+                        <span className="bg-gray-50 px-2 py-1 rounded-md border border-gray-200 text-gray-700">
                           Size:{" "}
-                          <span className="text-accent">{item.dimensions}</span>
+                          <span className="font-medium text-gray-700">
+                            {item.dimensions}
+                          </span>
                         </span>
                       )}
                       {item.color && item.color !== "Standard" && (
-                        <span className="bg-background/40 px-2 py-1 rounded-md border border-border-color">
+                        <span className="bg-gray-50 px-2 py-1 rounded-md border border-gray-200 text-gray-700">
                           Color:{" "}
-                          <span className="text-accent">{item.color}</span>
+                          <span className="font-medium text-gray-700">
+                            {item.color}
+                          </span>
                         </span>
                       )}
                       {item.material && item.material !== "Handcrafted" && (
-                        <span className="bg-background/40 px-2 py-1 rounded-md border border-border-color">
+                        <span className="bg-gray-50 px-2 py-1 rounded-md border border-gray-200 text-gray-700">
                           Material:{" "}
-                          <span className="text-accent">{item.material}</span>
+                          <span className="font-medium text-gray-700">
+                            {item.material}
+                          </span>
                         </span>
                       )}
-                      <span className="bg-background/40 px-2 py-1 rounded-md border border-border-color">
+                      <span className="bg-gray-50 px-2 py-1 rounded-md border border-gray-200 text-gray-700">
                         Qty:{" "}
-                        <span className="text-accent">{item.quantity}</span>
+                        <span className="font-medium text-gray-700">
+                          {item.quantity}
+                        </span>
                       </span>
                     </div>
-                    <p className="text-primary font-medium text-sm">
+                    <p className="text-gray-900 font-medium text-sm">
                       {(item.category || "").toLowerCase() === "rugs" ? (
-                        <span className="text-text-secondary italic">
+                        <span className="text-gray-600 italic">
                           Price on enquiry
                         </span>
                       ) : (
@@ -158,29 +173,29 @@ const EnquiryPage = () => {
 
         {/* Summary / Form */}
         <div className="lg:col-span-1">
-          <div className="bg-card-bg border border-border-color rounded-xl p-6 sticky top-8">
-            <h2 className="text-xl font-bold text-primary mb-4">
+          <div className="bg-white border border-gray-300 rounded-lg p-6 sticky top-8 shadow-sm">
+            <h2 className="text-xl font-bold text-gray-900 mb-4 tracking-tight">
               Send Enquiry
             </h2>
             {hasRugs && (
-              <div className="mb-4 text-[11px] leading-relaxed text-text-secondary bg-background/60 border border-border-color rounded-md p-3">
+              <div className="mb-4 text-[11px] leading-relaxed text-gray-600 bg-gray-50 border border-gray-200 rounded-md p-3 font-medium">
                 Rug pricing will be confirmed in our reply. Non-rug items (if
                 any) show indicative values.
               </div>
             )}
             <form onSubmit={handleSend} className="space-y-4">
               <div>
-                <label className="block text-xs font-medium text-text-secondary uppercase tracking-wider mb-1">
+                <label className="block text-xs font-semibold text-gray-700 uppercase tracking-tight mb-1">
                   Additional Notes (optional)
                 </label>
                 <textarea
-                  className="w-full h-28 resize-none bg-background/40 border border-border-color rounded-md p-3 text-sm text-primary focus:outline-none focus:ring-2 focus:ring-accent/40"
+                  className="w-full h-28 resize-none bg-white border border-gray-300 rounded-md p-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900"
                   placeholder="Share intended usage, interior style, delivery city, timeline, etc."
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                 />
               </div>
-              <div className="space-y-2 text-[11px] text-text-secondary/80">
+              <div className="space-y-2 text-[11px] text-gray-600/80">
                 <p>
                   Clicking Send opens your email client with a pre-filled
                   enquiry. You can review & send from there.

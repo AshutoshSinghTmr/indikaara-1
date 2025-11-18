@@ -108,6 +108,13 @@ export const AuthProvider = ({ children }) => {
       // Fetch full profile after login
       await fetchUserProfile(jwt);
 
+      // Notify other parts of the app (e.g., Cart) that a user logged in
+      try {
+        window.dispatchEvent(new Event("userLoggedIn"));
+      } catch (e) {
+        // no-op in non-browser environments
+      }
+
       return { success: true };
     } catch (error) {
       return {
@@ -142,6 +149,14 @@ export const AuthProvider = ({ children }) => {
       }
       // Fetch full profile after registration
       await fetchUserProfile(jwt);
+
+      // Notify other parts of the app (e.g., Cart) that a user registered/logged in
+      try {
+        window.dispatchEvent(new Event("userLoggedIn"));
+      } catch (e) {
+        // no-op in non-browser environments
+      }
+
       return { success: true };
     } catch (error) {
       return {
@@ -181,6 +196,13 @@ export const AuthProvider = ({ children }) => {
         // Fallback to JWT payload if no profile data
         const decoded = jwtDecode(token);
         setUser(decoded);
+      }
+
+      // Notify listeners that a user logged in via Google
+      try {
+        window.dispatchEvent(new Event("userLoggedIn"));
+      } catch (e) {
+        // no-op
       }
 
       return { success: true };
@@ -241,6 +263,11 @@ export const AuthProvider = ({ children }) => {
       setToken(token);
       const decoded = jwtDecode(token);
       setUser(decoded);
+      try {
+        window.dispatchEvent(new Event("userLoggedIn"));
+      } catch (e) {
+        // no-op
+      }
       return { success: true };
     } catch (error) {
       return {

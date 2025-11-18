@@ -30,14 +30,14 @@ import ScrollToTop from "./utils/scrollToTop";
 import BiomassPage from "./pages/BiomassPage";
 import PaymentSuccessPage from "./pages/PaymentSuccessPage";
 import PaymentFailurePage from "./pages/PaymentFailurePage";
-import axios from "axios";
+import axiosClient from "./api/axiosClient";
 /**
  * App Component - Main application component with routing
  * Features: React Router setup, cart context provider, layout wrapper, and page routing
  */
 function App() {
   useEffect(() => {
-    axios
+    axiosClient
       .get("/api/health")
       .catch((err) => console.error("Health check failed:", err));
   }, []);
@@ -70,8 +70,8 @@ function App() {
               {/* Address and Checkout Routes */}
               <Route path="/address" element={<AddressPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
-              <Route path="/payment-success" element={<PaymentSuccessPage />} />
-              <Route path="/payment-failure" element={<PaymentFailurePage />} />
+              <Route path="/payment/success" element={<PaymentSuccessPage />} />
+              <Route path="/payment/failure" element={<PaymentFailurePage />} />
 
               {/* Artisan Routes */}
               <Route path="/artisans" element={<ArtisansPage />} />
