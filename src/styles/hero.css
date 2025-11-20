@@ -9,6 +9,17 @@
   box-sizing: border-box;
 }
 
+/* General purpose full-bleed section utility (use on page wrappers) */
+.page-bleed {
+  position: relative;
+  overflow: hidden;
+  width: 100vw;
+  max-width: none !important;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  box-sizing: border-box;
+}
+
 /* Ensure full viewport width on all devices and environments */
 @media screen and (min-width: 1px) {
   .hero-carousel {

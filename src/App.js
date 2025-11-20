@@ -1,36 +1,41 @@
 import React, { useEffect } from "react";
+import { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
 import Layout from "./components/Layout";
-import HomePage from "./pages/HomePage";
-import CataloguePage from "./pages/CataloguePage";
-import ProductDetailPage from "./pages/ProductDetailPage";
-import CartPage from "./pages/CartPage";
-import CheckoutPage from "./pages/CheckoutPage";
-import AddressPage from "./pages/AddressPage";
-import ArtisansPage from "./pages/ArtisansPage";
-import WishlistPage from "./pages/WishlistPage";
-import BlogPage from "./pages/BlogPage";
-import BlogDetailPage from "./pages/BlogDetailPage";
-import CreateBlogPage from "./pages/CreateBlogPage";
-import LoginPage from "./pages/LoginPage";
-import DashboardPage from "./pages/DashboardPage";
-import FAQPage from "./pages/FAQPage";
-import ContactPage from "./pages/ContactPage";
-import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
-import TermsOfServicePage from "./pages/TermsOfServicePage";
-import FoundationPage from "./pages/FoundationPage";
-import ComingSoonPage from "./pages/ComingSoonPage";
-import EnquiryPage from "./pages/EnquiryPage";
-import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./styles/globals.css";
 import ScrollToTop from "./utils/scrollToTop";
-import BiomassPage from "./pages/BiomassPage";
-import PaymentSuccessPage from "./pages/PaymentSuccessPage";
-import PaymentFailurePage from "./pages/PaymentFailurePage";
 import axiosClient from "./api/axiosClient";
+import LogoLoader from "./components/LogoLoader";
+
+// Lazy import all pages for code-splitting
+const HomePage = lazy(() => import("./pages/HomePage"));
+const CataloguePage = lazy(() => import("./pages/CataloguePage"));
+const ProductDetailPage = lazy(() => import("./pages/ProductDetailPage"));
+const CartPage = lazy(() => import("./pages/CartPage"));
+const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
+const AddressPage = lazy(() => import("./pages/AddressPage"));
+const ArtisansPage = lazy(() => import("./pages/ArtisansPage"));
+const WishlistPage = lazy(() => import("./pages/WishlistPage"));
+const BlogPage = lazy(() => import("./pages/BlogPage"));
+const BlogDetailPage = lazy(() => import("./pages/BlogDetailPage"));
+const CreateBlogPage = lazy(() => import("./pages/CreateBlogPage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const DashboardPage = lazy(() => import("./pages/DashboardPage"));
+const FAQPage = lazy(() => import("./pages/FAQPage"));
+const ContactPage = lazy(() => import("./pages/ContactPage"));
+const PrivacyPolicyPage = lazy(() => import("./pages/PrivacyPolicyPage"));
+const TermsOfServicePage = lazy(() => import("./pages/TermsOfServicePage"));
+const FoundationPage = lazy(() => import("./pages/FoundationPage"));
+const ComingSoonPage = lazy(() => import("./pages/ComingSoonPage"));
+const EnquiryPage = lazy(() => import("./pages/EnquiryPage"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const BiomassPage = lazy(() => import("./pages/BiomassPage"));
+const PaymentSuccessPage = lazy(() => import("./pages/PaymentSuccessPage"));
+const PaymentFailurePage = lazy(() => import("./pages/PaymentFailurePage"));
+
 /**
  * App Component - Main application component with routing
  * Features: React Router setup, cart context provider, layout wrapper, and page routing
@@ -46,74 +51,82 @@ function App() {
     <AuthProvider>
       <CartProvider>
         <Router>
-          <ScrollToTop />
-          <Layout>
-            <Routes>
-              {/* Home Page Route */}
-              <Route path="/" element={<HomePage />} />
+          <Suspense fallback={<LogoLoader />}>
+            <ScrollToTop />
+            <Layout>
+              <Routes>
+                {/* Home Page Route */}
+                <Route path="/" element={<HomePage />} />
 
-              {/* Catalogue Route */}
-              <Route path="/catalogue" element={<CataloguePage />} />
+                {/* Catalogue Route */}
+                <Route path="/catalogue" element={<CataloguePage />} />
 
-              {/* Product Detail Route */}
-              <Route path="/product/:id" element={<ProductDetailPage />} />
-              <Route path="/biomass" element={<BiomassPage />} />
-              {/* Cart Route */}
-              <Route path="/cart" element={<CartPage />} />
+                {/* Product Detail Route */}
+                <Route path="/product/:id" element={<ProductDetailPage />} />
+                <Route path="/biomass" element={<BiomassPage />} />
+                {/* Cart Route */}
+                <Route path="/cart" element={<CartPage />} />
 
-              {/* Enquiry Route */}
-              <Route path="/enquiry" element={<EnquiryPage />} />
+                {/* Enquiry Route */}
+                <Route path="/enquiry" element={<EnquiryPage />} />
 
-              {/* Wishlist Route */}
-              <Route path="/wishlist" element={<WishlistPage />} />
+                {/* Wishlist Route */}
+                <Route path="/wishlist" element={<WishlistPage />} />
 
-              {/* Address and Checkout Routes */}
-              <Route path="/address" element={<AddressPage />} />
-              <Route path="/checkout" element={<CheckoutPage />} />
-              <Route path="/payment/success" element={<PaymentSuccessPage />} />
-              <Route path="/payment/failure" element={<PaymentFailurePage />} />
+                {/* Address and Checkout Routes */}
+                <Route path="/address" element={<AddressPage />} />
+                <Route path="/checkout" element={<CheckoutPage />} />
+                <Route
+                  path="/payment/success"
+                  element={<PaymentSuccessPage />}
+                />
+                <Route
+                  path="/payment/failure"
+                  element={<PaymentFailurePage />}
+                />
 
-              {/* Artisan Routes */}
-              <Route path="/artisans" element={<ArtisansPage />} />
+                {/* Artisan Routes */}
+                <Route path="/artisans" element={<ArtisansPage />} />
 
-              {/* Authentication Routes */}
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<LoginPage />} />
-              <Route path="/login/success" element={<LoginPage />} />
-              <Route
-                path="/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <DashboardPage />
-                  </ProtectedRoute>
-                }
-              />
-              {/* Blog Routes */}
-              <Route path="/blog" element={<BlogPage />} />
-              <Route path="/blog/:id" element={<BlogDetailPage />} />
-              <Route path="/blog/create" element={<CreateBlogPage />} />
+                {/* Authentication Routes */}
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<LoginPage />} />
+                <Route path="/login/success" element={<LoginPage />} />
+                <Route
+                  path="/dashboard"
+                  element={
+                    <ProtectedRoute>
+                      <DashboardPage />
+                    </ProtectedRoute>
+                  }
+                />
+                {/* Blog Routes */}
+                <Route path="/blog" element={<BlogPage />} />
+                <Route path="/blog/:id" element={<BlogDetailPage />} />
+                <Route path="/blog/create" element={<CreateBlogPage />} />
 
-              {/* Support & Legal Pages */}
-              <Route path="/faq" element={<FAQPage />} />
-              <Route path="/contact" element={<ContactPage />} />
-              <Route path="/foundation" element={<FoundationPage />} />
-              <Route path="/coming-soon/:slug" element={<ComingSoonPage />} />
-              <Route path="/privacy" element={<PrivacyPolicyPage />} />
-              <Route path="/terms" element={<TermsOfServicePage />} />
+                {/* Support & Legal Pages */}
+                <Route path="/faq" element={<FAQPage />} />
+                <Route path="/contact" element={<ContactPage />} />
+                <Route path="/foundation" element={<FoundationPage />} />
+                <Route path="/coming-soon/:slug" element={<ComingSoonPage />} />
+                <Route path="/privacy" element={<PrivacyPolicyPage />} />
+                <Route path="/terms" element={<TermsOfServicePage />} />
 
-              {/* Other Routes - Placeholder for future implementation */}
-              <Route
-                path="/about"
-                element={
-                  <div className="p-8 text-center text-primary">
-                    About Us page coming soon...
-                  </div>
-                }
-              />
-              {/* 404 Not Found Route */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Layout>
+                {/* Other Routes - Placeholder for future implementation */}
+                <Route
+                  path="/about"
+                  element={
+                    <div className="p-8 text-center text-primary">
+                      About Us page coming soon...
+                    </div>
+                  }
+                />
+                {/* 404 Not Found Route */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Layout>
+          </Suspense>
         </Router>
       </CartProvider>
     </AuthProvider>

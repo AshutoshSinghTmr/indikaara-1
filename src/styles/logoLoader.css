@@ -1,0 +1,29 @@
+.logo-loader {
+  position: fixed;
+  inset: 0; /* full-screen */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Blur overlay */
+  background: rgba(0, 0, 0, 0.15); /* slight dark/transparent overlay */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px); /* Safari support */
+
+  z-index: 9999;
+}
+
+.logo-loader__image {
+  width: 80px;
+  height: 80px;
+  animation: logo-spin 1.2s linear infinite;
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
