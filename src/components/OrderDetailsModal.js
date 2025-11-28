@@ -11,7 +11,7 @@ const OrderDetailsModal = ({ order, onClose, onRetryPayment }) => {
       minute: "2-digit",
     });
   };
-
+  console.log("price", order.products[0].product.price[0]);
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
@@ -90,13 +90,15 @@ const OrderDetailsModal = ({ order, onClose, onRetryPayment }) => {
                   />
                   <div className="flex-1">
                     <h4 className="text-gray-900 font-medium">
-                      {item.product.title}
+                      {item.product.name}
                     </h4>
                     <p className="text-gray-500">Quantity: {item.quantity}</p>
                   </div>
                   <div className="text-right">
                     <p className="text-gray-900 font-medium">
-                      {formatCurrency(item.product.price * item.quantity)}
+                      {formatCurrency(
+                        item.product.price[0].amount * item.quantity
+                      )}
                     </p>
                   </div>
                 </div>
