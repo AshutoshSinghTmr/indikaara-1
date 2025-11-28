@@ -68,10 +68,10 @@ const RugsShowcase = () => {
       { breakpoint: 900, settings: { slidesToShow: 3 } },
       { breakpoint: 820, settings: { slidesToShow: 3 } },
       { breakpoint: 768, settings: { slidesToShow: 3 } },
-      { breakpoint: 640, settings: { slidesToShow: 3 } },
-      { breakpoint: 520, settings: { slidesToShow: 1 } },
-      { breakpoint: 460, settings: { slidesToShow: 1 } },
-      { breakpoint: 400, settings: { slidesToShow: 1 } },
+      { breakpoint: 640, settings: { slidesToShow: 1, centerMode: false, autoplay: true, autoplaySpeed: 3500 } },
+      { breakpoint: 520, settings: { slidesToShow: 1, centerMode: false, autoplay: true, autoplaySpeed: 3500 } },
+      { breakpoint: 460, settings: { slidesToShow: 1, centerMode: false, autoplay: true, autoplaySpeed: 3500 } },
+      { breakpoint: 400, settings: { slidesToShow: 1, centerMode: false, autoplay: true, autoplaySpeed: 3500 } },
     ],
   };
 

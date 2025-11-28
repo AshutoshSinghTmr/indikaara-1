@@ -15,7 +15,7 @@ gsap.registerPlugin(SplitText);
 const HomePage = () => {
   useEffect(() => {
     let split = SplitText.create(".split", { type: "words, chars" });
-    
+
     // now animate the characters in a staggered fashion
     gsap.from(split.chars, {
       duration: 2,
@@ -32,30 +32,30 @@ const HomePage = () => {
       <HeroSection />
 
       {/*WHY CONNECT WITH INDIKAARA section */}
-      <section>
-        <div className="min-h-[580px] sm:min-h-[620px] lg:min-h-screen bg-gray-50 flex items-start sm:items-center justify-center p-3 sm:p-6 lg:p-8 font-sans">
-          <div className="w-full bg-white p-4 sm:p-7 lg:p-12 rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl text-center max-w-6xl mx-auto">
-            <h1 className="text-2xl xs:text-3xl sm:text-4xl font-extrabold text-gray-800 mb-3 leading-tight">
+      <section className="why-connect-section w-screen relative left-[calc(-50vw+50%)] bg-gray-50 py-[clamp(2rem,8vw,6rem)]">
+        <div className="w-full px-[clamp(0.75rem,4vw,2rem)]">
+          <div className="w-full bg-white p-[clamp(1.5rem,5vw,3rem)] rounded-[clamp(0.75rem,3vw,1.5rem)] shadow-[0_10px_40px_rgba(0,0,0,0.08)] text-center mx-auto">
+            <h1 className="text-[clamp(1.5rem,5vw,2.5rem)] font-extrabold text-gray-800 mb-[clamp(0.75rem,2vw,1rem)] leading-tight">
               Why Connect with{" "}
               <span className="text-[#ac1f23] split">Indikaara?</span>
             </h1>
-            <p className="text-sm xs:text-base sm:text-lg text-gray-600 leading-relaxed mb-6 sm:mb-8">
+            <p className="text-[clamp(0.875rem,2.5vw,1.125rem)] text-gray-600 leading-relaxed mb-[clamp(1.5rem,3vw,2rem)]">
               We bridge the world and India's finest artisans—built on
               authenticity, empowerment, and timeless craft.
             </p>
             <WhyConnectCards />
-            <div className="bg-orange-50 p-4 sm:p-6 rounded-xl sm:rounded-2xl mt-8 sm:mt-10">
-              <p className="italic text-gray-700 leading-relaxed text-xs sm:text-sm">
+            <div className="bg-orange-50 p-[clamp(1rem,3vw,1.5rem)] rounded-[clamp(0.75rem,2vw,1.25rem)] mt-[clamp(2rem,5vw,2.5rem)] border border-orange-100">
+              <p className="italic text-gray-700 leading-relaxed text-[clamp(0.75rem,2.5vw,1rem)]">
                 "Indikaara didn't just sell my art; they shared my story. It's a
                 partnership that honors my craft and heritage."
               </p>
-              <p className="mt-2 sm:mt-3 font-semibold text-gray-800 text-xs sm:text-sm">
+              <p className="mt-[clamp(0.75rem,2vw,1rem)] font-semibold text-gray-800 text-[clamp(0.75rem,2.5vw,1rem)]">
                 - A. Kumar, Weaver from Varanasi
               </p>
             </div>
             <button
               onClick={() => (window.location.href = "/foundation")}
-              className="mt-8 sm:mt-10 w-full px-5 py-3 sm:px-6 sm:py-4 bg-primary text-white font-bold rounded-full text-base sm:text-lg shadow-lg sm:shadow-xl transition-all hover:bg-orange-700 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-orange-500 focus:ring-opacity-50"
+              className="mt-[clamp(2rem,5vw,2.5rem)] w-full px-[clamp(1.25rem,3vw,1.5rem)] py-[clamp(0.75rem,2vw,1rem)] bg-primary text-white font-bold rounded-full text-[clamp(1rem,2.5vw,1.125rem)] shadow-lg transition-all hover:bg-orange-700 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-orange-500 focus:ring-opacity-50"
             >
               Know Our Foundation
             </button>

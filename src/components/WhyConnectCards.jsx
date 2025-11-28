@@ -1,4 +1,3 @@
-import FoundationCard from "./FoundationCard";
 import React from "react";
 import {
   CheckCircleOutline,
@@ -10,7 +9,20 @@ import {
 } from "@mui/icons-material";
 
 export const WhyConnectCards = () => {
-  const [active, setActive] = React.useState(null);
+  const [expandedIndex, setExpandedIndex] = React.useState(null);
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+      if (window.innerWidth < 768) {
+        setExpandedIndex(null);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const items = [
     {
       icon: CheckCircleOutline,
@@ -51,48 +63,74 @@ export const WhyConnectCards = () => {
   ];
 
   return (
-    <>
-      <div className="grid gap-4 sm:gap-5 lg:gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 mt-6 sm:mt-10">
-        {items.map((i) => (
-          <FoundationCard key={i.title} {...i} onClick={() => setActive(i)} />
-        ))}
-      </div>
+    <div className="grid gap-[clamp(1rem,3vw,2rem)] grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 w-full mt-[clamp(1.5rem,3vw,2.5rem)]">
+      {items.map((item, index) => {
+        const Icon = item.icon;
+        // Mobile: one card at a time (expandedIndex matches current index)
+        // Desktop: all expand together (expandedIndex is not null)
+        const isExpanded = isMobile
+          ? expandedIndex === index
+          : expandedIndex !== null;
 
-      {/* Modal overlay */}
-      {active && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          className="fixed inset-0 z-[120] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
-          onClick={() => setActive(null)}
-        >
+        const handleClick = () => {
+          if (isMobile) {
+            // Mobile: toggle individual card
+            setExpandedIndex(expandedIndex === index ? null : index);
+          } else {
+            // Desktop: expand all or collapse all
+            setExpandedIndex(expandedIndex === null ? index : null);
+          }
+        };
+
+        return (
           <div
-            className="max-w-lg w-full rounded-2xl bg-white text-gray-800 p-5 sm:p-6 shadow-xl"
-            onClick={(e) => e.stopPropagation()}
+            key={item.title}
+            className="rounded-[clamp(0.75rem,3vw,1.5rem)] bg-gray-100/90 shadow-sm transition-all duration-300 overflow-hidden"
           >
-            <div className="flex items-center gap-3 mb-3">
-              <active.icon
-                className="text-[#ac1f23]"
-                style={{ fontSize: "2rem" }}
-              />
-              <h3 className="text-xl sm:text-2xl font-semibold">
-                {active.title}
-              </h3>
-            </div>
-            <p className="text-sm sm:text-base leading-relaxed">
-              {active.description}
-            </p>
-            <div className="mt-5 flex justify-end">
-              <button
-                onClick={() => setActive(null)}
-                className="px-4 py-2 rounded-md bg-[#ac1f23] text-white hover:bg-[#911a1e]"
+            {/* Summary Section */}
+            <button
+              onClick={handleClick}
+              className={`w-full p-[clamp(1rem,3vw,1.5rem)] flex items-start gap-[clamp(0.75rem,2.5vw,1rem)] transition-colors text-left cursor-pointer hover:bg-gray-100`}
+            >
+              <div className="flex-shrink-0">
+                <Icon
+                  className="text-[#ac1f23] drop-shadow-sm"
+                  style={{ fontSize: "clamp(1.5rem, 4vw, 2rem)" }}
+                />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-[clamp(1rem,2.5vw,1.25rem)] font-semibold tracking-wide text-gray-800">
+                  {item.title}
+                </h3>
+              </div>
+              <svg
+                className={`w-[clamp(1rem,2vw,1.25rem)] h-[clamp(1rem,2vw,1.25rem)] flex-shrink-0 transition-transform duration-300 ${
+                  isExpanded ? "rotate-180" : ""
+                } mt-0.5`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                Close
-              </button>
-            </div>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                />
+              </svg>
+            </button>
+
+            {/* Expandable Details */}
+            {isExpanded && (
+              <div className="px-[clamp(1rem,3vw,1.5rem)] pb-[clamp(1rem,3vw,1.5rem)] border-t border-gray-300 pt-[clamp(0.75rem,2vw,1rem)] bg-white animate-in fade-in duration-200">
+                <p className="text-[clamp(0.875rem,2.5vw,1rem)] leading-relaxed text-gray-900 font-medium">
+                  {item.description}
+                </p>
+              </div>
+            )}
           </div>
-        </div>
-      )}
-    </>
+        );
+      })}
+    </div>
   );
 };
