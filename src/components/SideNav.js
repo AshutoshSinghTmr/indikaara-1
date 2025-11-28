@@ -52,15 +52,17 @@ export default function SideNav({ isOpen, setIsOpen, toggleDrawer }) {
   // Responsive width: 100% (<md), 50% (md>=), 25% (lg>=)
   const drawerPaperStyles = {
     "& .MuiBackdrop-root": {
-      backgroundColor: "rgba(0,0,0,0.55)",
-      backdropFilter: "blur(2px)",
-      transition: "background-color 300ms ease, backdrop-filter 300ms ease",
+      backgroundColor: "transparent !important",
+      backdropFilter: "none !important",
+      WebkitBackdropFilter: "none !important",
+      opacity: "0 !important",
+      transition: "opacity 300ms ease",
     },
     "& .MuiDrawer-paper": {
       background:
         "linear-gradient(135deg, rgba(17,17,17,0.94), rgba(20,20,20,0.88))",
-      backdropFilter: "blur(14px)",
-      WebkitBackdropFilter: "blur(14px)",
+      // backdropFilter: "blur(14px)",
+      // WebkitBackdropFilter: "blur(14px)",
       width: "100%",
       boxShadow:
         "0 0 0 1px rgba(255,255,255,0.06), 0 12px 36px -6px rgba(0,0,0,0.65)",
@@ -113,12 +115,6 @@ export default function SideNav({ isOpen, setIsOpen, toggleDrawer }) {
           >
             <ul className="py-2 space-y-1">
               {item.items.map((sub) => {
-                // const makeSlug = (name) => name.toLowerCase().replace(" ", "");
-                // // .replace(/\s+/g, "-");
-                // const baseSlug = makeSlug(sub.name);
-                // const target = sub.comingSoon
-                //   ? `/coming-soon/${baseSlug}`
-                //   : `/catalogue?category=${baseSlug}`;
                 return (
                   <li key={sub.id} className="px-6">
                     <Link

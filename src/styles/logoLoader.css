@@ -5,10 +5,9 @@
   align-items: center;
   justify-content: center;
 
-  /* Blur overlay */
+  /* Blur overlay - removed */
   background: rgba(0, 0, 0, 0.15); /* slight dark/transparent overlay */
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px); /* Safari support */
+  /* backdrop-filter removed */
 
   z-index: 9999;
 }

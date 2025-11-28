@@ -116,7 +116,10 @@ const CataloguePage = () => {
   }
 
   return (
-    <main className="container mx-auto px-4 pt-24 max-w-7xl" role="main">
+    <main
+      className="container mx-auto px-4 -mt-[130px] md:-mt-[146px] lg:-mt-[162px] pt-[130px] md:pt-[146px] lg:pt-[162px] max-w-7xl"
+      role="main"
+    >
       {/* Page Header */}
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-extrabold text-primary mb-4 leading-tight">

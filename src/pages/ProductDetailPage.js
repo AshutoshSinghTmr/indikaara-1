@@ -482,10 +482,9 @@ const ProductDetailPage = () => {
 
   return (
     <main
-      className="container mx-auto px-4 sm:px-6 lg:px-10 xl:px-12 py-8 max-w-7xl"
+      className="container mx-auto px-4 sm:px-6 lg:px-10 xl:px-12 py-8 -mt-[130px] md:-mt-[146px] lg:-mt-[162px] max-w-7xl"
       role="main"
-      // Base top padding ensures no overlap on initial paint before measurement; dynamic added after measure
-      style={{ paddingTop: (headerHeight || 120) + 48 }}
+      style={{ paddingTop: (headerHeight || 120) + 48 + 130 }}
     >
       {/* Product Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12">

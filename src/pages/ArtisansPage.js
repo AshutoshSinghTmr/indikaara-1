@@ -100,7 +100,7 @@ const ArtisansPage = () => {
   }, [searchParams, setSearchParams, artisans]);
 
   return (
-    <main className="bg-[#1a1a1a] min-h-screen pt-20">
+    <main className="bg-[#1a1a1a] min-h-screen -mt-[130px] md:-mt-[146px] lg:-mt-[162px] pt-[130px] md:pt-[146px] lg:pt-[162px]">
       {/* Header Section */}
       <header className="bg-[#8C0000] text-white py-8 sm:py-12 px-4 sm:px-6">
         {/* <header className="bg-gradient-to-r from-red-600 to-red-700 text-white py-8 sm:py-12 px-4 sm:px-6"> */}

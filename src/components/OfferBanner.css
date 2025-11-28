@@ -1,6 +1,5 @@
 .offer-banner {
-  -webkit-backdrop-filter: saturate(160%) blur(6px);
-  backdrop-filter: saturate(160%) blur(6px);
+  /* blur removed */
 }
 
 .offer-marquee {
