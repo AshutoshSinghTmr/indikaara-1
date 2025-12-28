@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import BlogCard from "../components/BlogCard";
 import "../styles/blog.css";
+import BlogImage from "../assets/blogs/blog-1.png";
 
 /**
  * BlogPage Component - Main blog listing page
@@ -20,87 +21,26 @@ const BlogPage = () => {
   const mockBlogs = [
     {
       id: 1,
-      title: "The Art of Handcrafted Pottery: A Journey Through Clay",
+      title: "Understanding Indian Handcrafted Rugs: A Buyer’s Guide",
       excerpt:
-        "Discover the ancient techniques and modern innovations in pottery making that bring beautiful ceramic pieces to life.",
+        "Handcrafted rugs are created knot by knot or weave by weave, guided by the artisan’s eye and experience. ",
       content: "Full blog content here...",
       author: {
-        name: "Priya Sharma",
-        avatar: "/api/placeholder/40/40",
-        bio: "Master potter from Rajasthan",
+        name: "Shradha Sharma",
+        avatar: "",
+        bio: "Fashion Blogger from YourStory",
       },
-      category: "Crafts",
-      tags: ["pottery", "ceramics", "handmade"],
-      publishedAt: "2024-01-15",
+      category: "Rugs",
+      tags: ["Luxury Living", "The_Craft", "handmade"],
+      publishedAt: "2025-08-15",
       readTime: 5,
-      image: "/api/placeholder/600/300",
-      likes: 45,
-      comments: 12,
+      image: BlogImage,
+      likes: 121,
+      comments: 5,
       featured: true,
-    },
-    {
-      id: 2,
-      title: "Preserving Traditional Textile Weaving in Modern Times",
-      excerpt:
-        "How contemporary artisans are keeping age-old weaving traditions alive while adapting to modern market demands.",
-      content: "Full blog content here...",
-      author: {
-        name: "Rajesh Kumar",
-        avatar: "/api/placeholder/40/40",
-        bio: "Textile artist from Gujarat",
-      },
-      category: "Textiles",
-      tags: ["weaving", "textiles", "tradition"],
-      publishedAt: "2024-01-12",
-      readTime: 8,
-      image: "/api/placeholder/600/300",
-      likes: 67,
-      comments: 23,
-      featured: false,
-    },
-    {
-      id: 3,
-      title:
-        "Sustainable Crafting: Eco-Friendly Materials in Indian Handicrafts",
-      excerpt:
-        "Exploring how Indian artisans are incorporating sustainable practices and eco-friendly materials into their craft.",
-      content: "Full blog content here...",
-      author: {
-        name: "Meera Patel",
-        avatar: "/api/placeholder/40/40",
-        bio: "Environmental activist and craft enthusiast",
-      },
-      category: "Sustainability",
-      tags: ["sustainability", "eco-friendly", "environment"],
-      publishedAt: "2024-01-10",
-      readTime: 6,
-      image: "/api/placeholder/600/300",
-      likes: 89,
-      comments: 34,
-      featured: true,
-    },
-    {
-      id: 4,
-      title: "The Revival of Block Printing: From Tradition to Trend",
-      excerpt:
-        "How block printing has evolved from a traditional craft to a modern fashion statement while maintaining its cultural roots.",
-      content: "Full blog content here...",
-      author: {
-        name: "Arjun Singh",
-        avatar: "/api/placeholder/40/40",
-        bio: "Block printing artist from Jaipur",
-      },
-      category: "Crafts",
-      tags: ["block-printing", "fashion", "tradition"],
-      publishedAt: "2024-01-08",
-      readTime: 7,
-      image: "/api/placeholder/600/300",
-      likes: 52,
-      comments: 18,
-      featured: false,
     },
   ];
-
+  // const mockBlogs = [];
   const categories = [
     "all",
     "Crafts",
@@ -215,7 +155,7 @@ const BlogPage = () => {
       </div>
 
       {/* Featured Blogs Section */}
-      {featuredBlogs.length > 0 && (
+      {/* {featuredBlogs.length > 0 && (
         <section className="mb-12">
           <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-6">
             Featured Stories
@@ -226,7 +166,7 @@ const BlogPage = () => {
             ))}
           </div>
         </section>
-      )}
+      )} */}
 
       {/* Search and Filter Section */}
       <div className="mb-8 flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between">

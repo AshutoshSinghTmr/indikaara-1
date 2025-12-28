@@ -9,11 +9,12 @@ import "./styles/globals.css";
 import ScrollToTop from "./utils/scrollToTop";
 import axiosClient from "./api/axiosClient";
 import LogoLoader from "./components/LogoLoader";
-
+import ProductDetailPage from "./pages/ProductDetailPage";
+import CataloguePage from "./pages/CataloguePage";
 // Lazy import all pages for code-splitting
 const HomePage = lazy(() => import("./pages/HomePage"));
-const CataloguePage = lazy(() => import("./pages/CataloguePage"));
-const ProductDetailPage = lazy(() => import("./pages/ProductDetailPage"));
+// const CataloguePage = lazy(() => import("./pages/CataloguePage"));
+// const ProductDetailPage = lazy(() => import("./pages/ProductDetailPage"));
 const CartPage = lazy(() => import("./pages/CartPage"));
 const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
 const AddressPage = lazy(() => import("./pages/AddressPage"));

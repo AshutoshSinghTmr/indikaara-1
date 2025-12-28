@@ -13,8 +13,6 @@
 }
 
 .logo-loader__image {
-  width: 80px;
-  height: 80px;
   animation: logo-spin 1.2s linear infinite;
 }
 
