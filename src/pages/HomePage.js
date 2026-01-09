@@ -9,6 +9,7 @@ import HandicraftShowcase from "../components/HandicraftShowcase";
 import { SplitText } from "gsap/all";
 import gsap from "gsap";
 import { useEffect } from "react";
+import ShippingAndReturn from "../components/ShippingAndReturn";
 gsap.registerPlugin(SplitText);
 
 // Main Home Page
@@ -174,6 +175,13 @@ const HomePage = () => {
                 </div>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/*SHIPPING AND RETURN POLICY SECTION */}
+        <section className="my-24 w-full">
+          <div className="w-full px-4 sm:px-6 lg:px-8">
+            <ShippingAndReturn />
           </div>
         </section>
 
