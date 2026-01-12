@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import '../styles/blog.css';
-import { createBlogPost } from '../api/blogApi';
+import { getAdminPostById, updateBlogPost } from '../api/blogApi';
 import { useAuth } from '../context/AuthContext';
 
-/**
- * CreateBlogPage Component - Blog creation form
- * Features: Rich text editor, image upload, tags, categories
- * Ready for API integration and authentication
- */
-const CreateBlogPage = () => {
+const EditBlogPage = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
-  const { isAuthenticated, token, user } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const { token } = useAuth();
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
-  const [isDragOver, setIsDragOver] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     excerpt: '',
@@ -24,35 +20,45 @@ const CreateBlogPage = () => {
     tags: '',
   });
   const [errors, setErrors] = useState({});
-  
-  // Check if user is admin
+
   useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/login', { state: { from: '/blog/create' } });
-    } else if (user && !user.isAdmin) {
-      // User is authenticated but not admin
-      setError('You need admin privileges to create blog posts.');
+    if (token && id) {
+      fetchPost();
     }
-  }, [isAuthenticated, user, navigate]);
+  }, [token, id]);
 
-
-  // Cleanup image preview URL on unmount
-  React.useEffect(() => {
-    return () => {
-      if (imagePreview) {
-        URL.revokeObjectURL(imagePreview);
+  const fetchPost = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const post = await getAdminPostById(token, id);
+      
+      setFormData({
+        title: post.title || '',
+        excerpt: post.excerpt || '',
+        content: post.content || '',
+        coverImage: post.coverImage || '',
+        tags: post.tags ? post.tags.join(', ') : '',
+      });
+      
+      if (post.coverImage) {
+        setImagePreview(post.coverImage);
       }
-    };
-  }, [imagePreview]);
+    } catch (err) {
+      console.error('Error fetching post:', err);
+      setError(err.response?.data?.message || 'Failed to load blog post');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: value
     }));
 
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -68,7 +74,6 @@ const CreateBlogPage = () => {
       coverImage: url
     }));
     
-    // Set preview if valid URL
     if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
       setImagePreview(url);
     } else {
@@ -106,22 +111,14 @@ const CreateBlogPage = () => {
       return;
     }
 
-    if (!token) {
-      alert('You must be logged in to create blog posts.');
-      navigate('/login');
-      return;
-    }
-
-    setLoading(true);
+    setSaving(true);
     setError(null);
 
     try {
-      // Prepare tags array from comma-separated string
       const tagsArray = formData.tags
         ? formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0)
         : [];
 
-      // Prepare post data
       const postData = {
         title: formData.title.trim(),
         content: formData.content.trim(),
@@ -129,63 +126,56 @@ const CreateBlogPage = () => {
 
       if (formData.excerpt.trim()) {
         postData.excerpt = formData.excerpt.trim();
+      } else {
+        postData.excerpt = '';
       }
 
       if (formData.coverImage.trim()) {
         postData.coverImage = formData.coverImage.trim();
+      } else {
+        postData.coverImage = '';
       }
 
       if (tagsArray.length > 0) {
         postData.tags = tagsArray;
+      } else {
+        postData.tags = [];
       }
 
-      // Create blog post
-      const newPost = await createBlogPost(token, postData);
-
-      // Navigate to the new post (using slug)
-      navigate(`/blog/${newPost.slug}`);
+      const updatedPost = await updateBlogPost(token, id, postData);
+      navigate(`/blog/${updatedPost.slug}`);
     } catch (err) {
-      console.error('Error creating blog:', err);
-      setError(err.response?.data?.message || 'Failed to create blog post. Please try again.');
+      console.error('Error updating blog:', err);
+      setError(err.response?.data?.message || 'Failed to update blog post. Please try again.');
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
 
-  // Show authentication/authorization required message
-  if (!isAuthenticated || (user && !user.isAdmin)) {
+  if (loading) {
+    return (
+      <main className="container mx-auto max-w-4xl px-4 py-8 pt-24">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--primary-color)]"></div>
+        </div>
+      </main>
+    );
+  }
+
+  if (error && !formData.title) {
     return (
       <main className="container mx-auto max-w-4xl px-4 py-8 pt-24">
         <div className="text-center py-12">
-          <div className="mb-8">
-            <svg className="w-16 h-16 mx-auto text-[var(--text-secondary)] mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>
-            <h2 className="text-3xl font-bold text-[var(--text-primary)] mb-3">
-              {!isAuthenticated ? 'Authentication Required' : 'Admin Access Required'}
-            </h2>
-            <p className="text-[var(--text-secondary)] text-lg mb-6">
-              {error || (!isAuthenticated 
-                ? 'You need to sign in to create blog posts.'
-                : 'You need admin privileges to create blog posts.')}
-            </p>
-            <div className="flex gap-4 justify-center">
-              {!isAuthenticated && (
-                <Link 
-                  to="/login"
-                  className="px-6 py-3 bg-[var(--primary-color)] text-white rounded-lg hover:bg-[var(--secondary-color)] transition-colors"
-                >
-                  Sign In
-                </Link>
-              )}
-              <Link 
-                to="/blog"
-                className="px-6 py-3 bg-[#2a2a2a] text-[var(--text-primary)] rounded-lg hover:bg-[#3a3a3a] transition-colors"
-              >
-                Back to Blog
-              </Link>
-            </div>
-          </div>
+          <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-4">
+            Blog post not found
+          </h1>
+          <p className="text-[var(--text-secondary)] mb-6">{error}</p>
+          <Link
+            to="/blog/admin"
+            className="text-[var(--primary-color)] hover:underline"
+          >
+            ← Back to Admin
+          </Link>
         </div>
       </main>
     );
@@ -198,20 +188,17 @@ const CreateBlogPage = () => {
         <div className="flex items-center gap-2 text-sm text-[var(--text-secondary)]">
           <Link to="/" className="text-[var(--primary-color)] hover:underline">Home</Link>
           <span>/</span>
-          <Link to="/blog" className="text-[var(--primary-color)] hover:underline">Blog</Link>
+          <Link to="/blog/admin" className="text-[var(--primary-color)] hover:underline">Admin</Link>
           <span>/</span>
-          <span className="text-[var(--text-primary)] font-medium">Create Post</span>
+          <span className="text-[var(--text-primary)] font-medium">Edit Post</span>
         </div>
       </nav>
 
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-[var(--text-primary)] mb-4">
-          Create New Blog Post
+          Edit Blog Post
         </h1>
-        <p className="text-[var(--text-secondary)]">
-          Share your craft knowledge and stories with the community.
-        </p>
         {error && (
           <div className="mt-4 p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400">
             {error}
@@ -245,7 +232,7 @@ const CreateBlogPage = () => {
         {/* Excerpt */}
         <div>
           <label htmlFor="excerpt" className="block text-sm font-medium text-[var(--text-primary)] mb-2">
-            Excerpt *
+            Excerpt
           </label>
           <textarea
             id="excerpt"
@@ -253,21 +240,10 @@ const CreateBlogPage = () => {
             value={formData.excerpt}
             onChange={handleInputChange}
             rows={3}
-            placeholder="Write a brief summary of your blog post (50-200 characters)"
-            className={`w-full p-4 bg-[#2a2a2a] border rounded-lg text-[var(--text-primary)] placeholder-gray-400 focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent transition-colors resize-none ${
-              errors.excerpt ? 'border-red-500' : 'border-gray-600'
-            }`}
+            placeholder="Write a brief summary of your blog post"
+            className="w-full p-4 bg-[#2a2a2a] border border-gray-600 rounded-lg text-[var(--text-primary)] placeholder-gray-400 focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent transition-colors resize-none"
           />
-          <div className="flex justify-between mt-2">
-            {errors.excerpt && (
-              <p className="text-sm text-red-400">{errors.excerpt}</p>
-            )}
-            <p className="text-sm text-[var(--text-secondary)] ml-auto">
-              {formData.excerpt.length}/200
-            </p>
-          </div>
         </div>
-
 
         {/* Tags */}
         <div>
@@ -283,9 +259,6 @@ const CreateBlogPage = () => {
             placeholder="Enter tags separated by commas (e.g., pottery, ceramics, handmade)"
             className="w-full p-4 bg-[#2a2a2a] border border-gray-600 rounded-lg text-[var(--text-primary)] placeholder-gray-400 focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent transition-colors"
           />
-          <p className="mt-2 text-sm text-[var(--text-secondary)]">
-            Separate tags with commas. This helps readers find your content.
-          </p>
         </div>
 
         {/* Cover Image URL */}
@@ -302,9 +275,6 @@ const CreateBlogPage = () => {
             placeholder="https://example.com/image.jpg"
             className="w-full p-4 bg-[#2a2a2a] border border-gray-600 rounded-lg text-[var(--text-primary)] placeholder-gray-400 focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent transition-colors"
           />
-          <p className="mt-2 text-sm text-[var(--text-secondary)]">
-            Enter the URL of the cover image for your blog post.
-          </p>
           {imagePreview && (
             <div className="mt-4 relative">
               <div className="rounded-lg overflow-hidden border-2 border-gray-600">
@@ -342,38 +312,30 @@ const CreateBlogPage = () => {
               errors.content ? 'border-red-500' : 'border-gray-600'
             }`}
           />
-          <div className="flex justify-between mt-2">
-            {errors.content && (
-              <p className="text-sm text-red-400">{errors.content}</p>
-            )}
-            <p className="text-sm text-[var(--text-secondary)] ml-auto">
-              {formData.content.length} characters
-            </p>
-          </div>
-          <p className="mt-2 text-sm text-[var(--text-secondary)]">
-            Tip: You can use basic HTML tags like &lt;h2&gt;, &lt;p&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;ul&gt;, &lt;ol&gt;, &lt;li&gt; for formatting.
-          </p>
+          {errors.content && (
+            <p className="mt-2 text-sm text-red-400">{errors.content}</p>
+          )}
         </div>
 
         {/* Submit Buttons */}
         <div className="flex gap-4 pt-8 border-t border-gray-700">
           <button
             type="submit"
-            disabled={loading}
+            disabled={saving}
             className="flex-1 py-4 bg-[var(--primary-color)] text-white rounded-lg hover:bg-[var(--secondary-color)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
           >
-            {loading ? (
+            {saving ? (
               <span className="flex items-center justify-center gap-2">
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                Creating...
+                Saving...
               </span>
             ) : (
-              'Create Blog Post (Draft)'
+              'Save Changes'
             )}
           </button>
           <button
             type="button"
-            onClick={() => navigate('/blog')}
+            onClick={() => navigate('/blog/admin')}
             className="px-8 py-4 bg-[#2a2a2a] text-[var(--text-primary)] rounded-lg hover:bg-[#3a3a3a] transition-colors font-medium"
           >
             Cancel
@@ -384,4 +346,4 @@ const CreateBlogPage = () => {
   );
 };
 
-export default CreateBlogPage;
+export default EditBlogPage;
